@@ -1,0 +1,1584 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AL ANHAR DIŞ TİCARET - النظام المحاسبي الشامل</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Cairo', sans-serif; background-color: #121212; color: #e5e7eb; }
+        .glass-panel { background: rgba(30, 30, 35, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255, 215, 0, 0.15); }
+        .gold-gradient { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+        .red-gradient { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
+        .input-number-compact { max-width: 220px; font-family: monospace; letter-spacing: 0.5px; }
+
+        input[type="date"] { cursor: pointer; color-scheme: dark; }
+
+        /* --- تحسين الحسابات الرئيسية وإخفاء Scrollbar --- */
+        .account-scroll-container {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding-bottom: 4px;
+        }
+        .account-scroll-container::-webkit-scrollbar { display: none; }
+
+        .account-btn-tab {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: #f59e0b;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.25s ease-in-out;
+            outline: none;
+        }
+
+        .account-btn-tab:hover {
+            background: rgba(245, 158, 11, 0.15);
+            border-color: #f59e0b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.25);
+        }
+
+        /* --- تصميم الطباعة الاحترافي كشف PDF --- */
+        @media print {
+            body { 
+                background: white !important; 
+                color: black !important; 
+                padding: 0 !important; 
+                margin: 0 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .no-print { display: none !important; }
+            .glass-panel { 
+                background: white !important; 
+                border: none !important; 
+                color: black !important; 
+                box-shadow: none !important; 
+                padding: 0 !important;
+            }
+            .print-statement-box {
+                border: 2px solid #000 !important;
+                padding: 20px !important;
+                border-radius: 8px !important;
+            }
+            .print-header {
+                text-align: center !important;
+                border-b: 2px solid #000 !important;
+                padding-bottom: 12px !important;
+                margin-bottom: 15px !important;
+            }
+            .print-header h1 {
+                font-size: 24px !important;
+                font-weight: 900 !important;
+                color: #000 !important;
+                margin: 0 !important;
+            }
+            .print-header p {
+                font-size: 14px !important;
+                color: #333 !important;
+                margin-top: 4px !important;
+            }
+            .print-meta-grid {
+                display: grid !important;
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 10px !important;
+                margin-bottom: 20px !important;
+                border: 1px solid #ccc !important;
+                padding: 10px !important;
+                background-color: #f9f9f9 !important;
+            }
+            .print-meta-item {
+                font-size: 13px !important;
+                font-weight: bold !important;
+            }
+            table { 
+                width: 100% !important; 
+                border-collapse: collapse !important; 
+                margin-top: 10px !important;
+            }
+            th { 
+                background-color: #f2f2f2 !important; 
+                color: black !important; 
+                border: 1px solid #000 !important; 
+                padding: 8px !important; 
+                font-size: 12px !important;
+                font-weight: bold !important;
+            }
+            td { 
+                border: 1px solid #000 !important; 
+                padding: 8px !important; 
+                color: black !important; 
+                font-size: 12px !important;
+            }
+            .print-total-box {
+                margin-top: 20px !important;
+                padding: 12px !important;
+                border: 2px solid #000 !important;
+                background-color: #f8f8f8 !important;
+                text-align: left !important;
+                font-size: 16px !important;
+                font-weight: 900 !important;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between pb-24">
+
+    <!-- إشعار منبثق (Toast) -->
+    <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 bg-amber-500 text-black font-black px-6 py-3 rounded-2xl shadow-2xl z-50 hidden text-center border-2 border-white">
+        <span id="toastMsg"></span>
+    </div>
+
+    <!-- 0. الشاشة الأساسية عند فتح البرنامج (اختيار النظام) -->
+    <div id="view-landing" class="fixed inset-0 bg-[#121212] z-50 flex flex-col items-center justify-center p-6 text-center">
+        <div class="absolute top-6 left-6 flex items-center gap-3">
+            <button onclick="exportFullBackup()" class="bg-gray-800 hover:bg-gray-700 text-amber-400 border border-amber-500/40 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-lg cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                تصدير نسخة احتياطية
+            </button>
+            <label class="bg-gray-800 hover:bg-gray-700 text-emerald-400 border border-emerald-500/40 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-lg cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                استيراد نسخة
+                <input type="file" id="fullBackupInput" onchange="importFullBackup(event)" class="hidden" accept=".json">
+            </label>
+        </div>
+
+        <div class="mb-10">
+            <h1 class="text-3xl md:text-5xl font-black text-white mb-2">AL ANHAR <span class="text-amber-400 font-light">DIŞ TİCARET</span></h1>
+            <p class="text-gray-400 text-sm md:text-base">اختر قسم المعاملات المطلوب للمتابعة</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-3xl">
+            <button onclick="enterModule('SWFT')" class="glass-panel p-10 rounded-3xl border-2 border-amber-500/40 hover:border-amber-400 hover:scale-105 transition-all shadow-2xl flex flex-col items-center justify-center group cursor-pointer">
+                <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-amber-500 to-blue-600 flex items-center justify-center mb-4 shadow-lg group-hover:rotate-6 transition">
+                    <svg class="w-10 h-10 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 10h18M5 6l7-3 7 4M4 10v11m16-11v11"/></svg>
+                </div>
+                <h2 class="text-4xl font-black text-white mb-2">SWFT</h2>
+                <p class="text-xs text-amber-400/80">إدارة المعاملات والحوالات والكشوفات</p>
+            </button>
+
+            <button onclick="enterModule('RMB')" class="glass-panel p-10 rounded-3xl border-2 border-red-500/40 hover:border-red-400 hover:scale-105 transition-all shadow-2xl flex flex-col items-center justify-center group cursor-pointer">
+                <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-red-600 to-amber-500 flex items-center justify-center mb-4 shadow-lg group-hover:rotate-6 transition">
+                    <span class="text-4xl font-black text-white">¥</span>
+                </div>
+                <h2 class="text-4xl font-black text-red-500 mb-2">RMB ¥</h2>
+                <p class="text-xs text-red-300">معاملات اليوان الصيني (زبائن وشركات)</p>
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== [ قسم SWFT ] ==================== -->
+    <div id="module-swft" class="hidden">
+        <header class="glass-panel border-b border-amber-500/20 sticky top-0 z-40 px-6 py-4 shadow-xl no-print">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-4">
+                    <button onclick="exitToLanding()" class="bg-gray-800 hover:bg-gray-700 text-amber-400 border border-amber-500/30 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 cursor-pointer">
+                        ← الرئيسية الأساسية
+                    </button>
+                    <div class="flex items-center gap-3 cursor-pointer" onclick="switchSwftBottomTab('home')">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-blue-600 flex items-center justify-center shadow-lg">
+                            <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 10h18M5 6l7-3 7 4M4 10v11m16-11v11"/></svg>
+                        </div>
+                        <div>
+                            <h1 class="text-lg font-black tracking-wider text-white">AL ANHAR <span class="text-amber-400 font-light text-xs">SWFT</span></h1>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="account-scroll-container w-full md:w-auto">
+                    <button onclick="openAccountView('Turkey')" class="account-btn-tab">
+                        TR - TURKEY MAIN
+                    </button>
+                    <button onclick="openAccountView('Dubai')" class="account-btn-tab">
+                        DXB - DUBAI MAIN
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-7xl mx-auto w-full p-4 md:p-6 flex-grow">
+            <!-- 1. الرئيسية لـ SWFT -->
+            <div id="swft-tab-home" class="space-y-6">
+                <div class="glass-panel p-4 rounded-2xl border border-amber-500/30 shadow-xl space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-amber-400">🔍 البحث الشامل في كافة معاملات SWFT:</span>
+                        <button onclick="clearSwftGlobalSearch()" class="text-[11px] text-gray-400 hover:text-white underline cursor-pointer">مسح الفلاتر</button>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-[11px] text-gray-400 mb-1">المبلغ الأساسي:</label>
+                            <input type="text" id="globalSwftSearchAmount" oninput="formatFormattedInput(this); renderGlobalSwftTransactions();" placeholder="ابحث بالمبلغ..." class="w-full bg-black/50 border border-gray-700 rounded-xl px-3 py-1.5 text-sm text-white focus:border-amber-500 focus:outline-none font-mono">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-gray-400 mb-1">تصفية الحساب:</label>
+                            <select id="globalSwftSearchAccount" onchange="renderGlobalSwftTransactions()" class="w-full bg-black/50 border border-gray-700 rounded-xl px-3 py-1.5 text-xs text-amber-300 font-bold focus:outline-none">
+                                <option value="ALL">كل الحسابات (TR / DXB)</option>
+                                <option value="Turkey">TR - Turkey Main</option>
+                                <option value="Dubai">DXB - Dubai Main</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-gray-400 mb-1">العملة:</label>
+                            <select id="globalSwftSearchCurrency" onchange="renderGlobalSwftTransactions()" class="w-full bg-black/50 border border-gray-700 rounded-xl px-3 py-1.5 text-xs text-amber-300 font-bold focus:outline-none">
+                                <option value="ALL">الكل ($ / €)</option>
+                                <option value="$">دولار ($)</option>
+                                <option value="€">يورو (€)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="globalSearchResultsContainer" class="glass-panel rounded-2xl overflow-hidden shadow-2xl hidden">
+                    <div class="bg-black/80 px-4 py-3 border-b border-amber-500/20 flex justify-between items-center">
+                        <h3 class="text-xs font-bold text-amber-400" id="globalSearchResultsTitle">نتائج المعاملات</h3>
+                        <button onclick="hideGlobalSearchResults()" class="text-xs text-gray-400 hover:text-white cursor-pointer">إغلاق النتائج ×</button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-right border-collapse">
+                            <thead>
+                                <tr class="bg-black/60 text-amber-400 text-xs uppercase tracking-wider border-b border-amber-500/20">
+                                    <th class="p-3">الشركة</th>
+                                    <th class="p-3">التاريخ</th>
+                                    <th class="p-3">المبلغ الأساسي</th>
+                                    <th class="p-3">العملة</th>
+                                    <th class="p-3">الحساب</th>
+                                    <th class="p-3">الملاحظات</th>
+                                    <th class="p-3">الإجمالي</th>
+                                    <th class="p-3 text-center">التحكم</th>
+                                </tr>
+                            </thead>
+                            <tbody id="globalSwftTableBody" class="divide-y divide-gray-800 text-xs"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <h2 class="text-xl font-bold text-white border-r-4 border-amber-500 pr-3">إدارة الشركات (SWFT)</h2>
+                    <button onclick="openModal('addCompanyModal')" class="gold-gradient text-black font-bold px-5 py-2.5 rounded-xl shadow-lg hover:opacity-90 transition flex items-center gap-2 cursor-pointer">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
+                        إضافة شركة جديدة
+                    </button>
+                </div>
+
+                <div class="glass-panel rounded-2xl overflow-hidden shadow-2xl">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-right border-collapse">
+                            <thead>
+                                <tr class="bg-black/60 text-amber-400 text-xs uppercase tracking-wider border-b border-amber-500/20">
+                                    <th class="p-4">كود الشركة</th>
+                                    <th class="p-4">اسم الشركة</th>
+                                    <th class="p-4 text-center">الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="companiesTableBody" class="divide-y divide-gray-800 text-sm"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تفاصيل شركة SWFT المعاملات -->
+            <div id="swft-view-company-details" class="space-y-6 hidden">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <button onclick="switchSwftBottomTab('home')" class="bg-gray-800 hover:bg-gray-700 text-amber-400 border border-amber-500/30 px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition w-full sm:w-auto justify-center cursor-pointer">
+                        ‹ العودة للرئيسية
+                    </button>
+                    <div class="text-center">
+                        <h2 id="currentCompanyName" class="text-2xl font-black text-amber-400"></h2>
+                        <span id="currentCompanyCode" class="text-xs text-gray-400 font-mono"></span>
+                    </div>
+                    <button onclick="openAddTransactionModal()" class="gold-gradient text-black font-bold px-5 py-2.5 rounded-xl shadow-lg hover:opacity-90 transition flex items-center gap-2 w-full sm:w-auto justify-center cursor-pointer">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
+                        إضافة معاملة
+                    </button>
+                </div>
+
+                <div class="glass-panel p-4 rounded-2xl border border-amber-500/20 shadow-xl">
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
+                            <button onclick="resetCompanyDateToToday()" class="gold-gradient text-black font-bold px-4 py-2 rounded-xl text-xs hover:opacity-90 transition shadow-md cursor-pointer">
+                                إعادة ضبط تاريخ اليوم
+                            </button>
+                            <div class="flex items-center gap-1 bg-black/50 border border-gray-700 rounded-xl px-3 py-1.5">
+                                <span class="text-xs text-gray-400">من تاريخ:</span>
+                                <input type="date" id="compFromDate" onchange="renderTransactions()" class="bg-transparent text-xs text-white focus:outline-none">
+                            </div>
+                            <div class="flex items-center gap-1 bg-black/50 border border-gray-700 rounded-xl px-3 py-1.5">
+                                <span class="text-xs text-gray-400">إلى تاريخ:</span>
+                                <input type="date" id="compToDate" onchange="renderTransactions()" class="bg-transparent text-xs text-white focus:outline-none">
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
+                            <div class="flex items-center gap-2 bg-black/50 border border-gray-700 rounded-xl px-3 py-1.5">
+                                <label class="text-xs text-gray-400">البحث بالمبلغ:</label>
+                                <input type="text" id="compSearchAmount" oninput="formatFormattedInput(this); renderTransactions();" placeholder="أدخل المبلغ..." class="input-number-compact bg-transparent text-sm text-white focus:outline-none font-mono">
+                            </div>
+                            <div class="flex items-center gap-1 bg-black/50 border border-gray-700 rounded-xl px-3 py-1.5">
+                                <label class="text-xs text-gray-400">العملة:</label>
+                                <select id="compSearchCurrency" onchange="renderTransactions()" class="bg-transparent text-xs text-amber-300 font-bold focus:outline-none">
+                                    <option value="ALL">الكل ($ / €)</option>
+                                    <option value="$">دولار ($)</option>
+                                    <option value="€">يورو (€)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-2xl overflow-hidden shadow-2xl">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-right border-collapse">
+                            <thead>
+                                <tr class="bg-black/60 text-amber-400 text-xs uppercase tracking-wider border-b border-amber-500/20">
+                                    <th class="p-4">التاريخ</th>
+                                    <th class="p-4">المبلغ الأساسي</th>
+                                    <th class="p-4">العملة</th>
+                                    <th class="p-4">الحساب</th>
+                                    <th class="p-4">الملاحظات</th>
+                                    <th class="p-4">الإجمالي الكلي</th>
+                                    <th class="p-4 text-center">التحكم</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionsTableBody" class="divide-y divide-gray-800 text-sm"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. المبدئي والنهائي الموحد -->
+            <div id="swft-tab-preview" class="space-y-6 hidden">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-bold text-white border-r-4 border-amber-500 pr-3">شاشة المبدئي والنهائي الموحدة</h2>
+                    <span class="text-xs text-amber-400 font-semibold bg-amber-500/10 border border-amber-500/30 px-3 py-1.5 rounded-xl">
+                        💡 تحديد المبدئي والنهائي يدوي ومستقل بالكامل بدون شرط ترتيب
+                    </span>
+                </div>
+
+                <div class="glass-panel rounded-2xl overflow-hidden shadow-2xl">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-right border-collapse">
+                            <thead>
+                                <tr class="bg-black/80 text-amber-400 text-xs uppercase tracking-wider border-b border-amber-500/20">
+                                    <th class="p-4 text-center">وصول المبدئي</th>
+                                    <th class="p-4 text-center">وصول النهائي</th>
+                                    <th class="p-4">اسم الشركة</th>
+                                    <th class="p-4">المبلغ الأساسي</th>
+                                    <th class="p-4">الحساب / الجهة</th>
+                                    <th class="p-4">بيانات الحساب والملاحظات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="swftPreviewUnifiedTableBody" class="divide-y divide-gray-800 text-sm"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. تبويب كشوفات SWFT (مطابق لتنسيق PDF) -->
+            <div id="swft-tab-statements" class="space-y-6 hidden">
+                <div class="flex justify-between items-center no-print">
+                    <h2 class="text-xl font-bold text-white border-r-4 border-amber-500 pr-3">كشف حساب شركة (SWFT)</h2>
+                    <button onclick="window.print()" class="bg-amber-500 hover:bg-amber-400 text-black font-bold px-5 py-2 rounded-xl text-xs shadow-lg cursor-pointer transition">🖨️ طباعة الكشف PDF</button>
+                </div>
+                <div class="glass-panel p-4 rounded-2xl border border-amber-500/20 space-y-4 no-print">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">اختر الشركة:</label>
+                            <select id="statementSwftCompany" onchange="renderSwftStatement()" class="w-full bg-black/50 border border-gray-700 rounded-xl p-2 text-sm text-white focus:outline-none"></select>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-gray-800">
+                        <div class="flex gap-2">
+                            <button onclick="exportFullBackup()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-4 py-2 rounded-xl text-xs transition flex items-center gap-1 shadow-md cursor-pointer">
+                                📥 تصدير الكشوفات
+                            </button>
+                            <label class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2 rounded-xl text-xs transition flex items-center gap-1 shadow-md cursor-pointer">
+                                📤 استيراد الكشوفات
+                                <input type="file" onchange="importFullBackup(event)" class="hidden" accept=".json">
+                            </label>
+                        </div>
+                        <button onclick="clearSwftStatementFilters()" class="bg-red-600/80 hover:bg-red-600 text-white font-bold px-4 py-2 rounded-xl text-xs transition shadow-md cursor-pointer">
+                            🗑️ مسح الفلاتر
+                        </button>
+                    </div>
+                </div>
+
+                <!-- حاوية الطباعة المصممة لتماثل PDF -->
+                <div id="swftPrintArea" class="glass-panel p-6 rounded-2xl space-y-4 print-statement-box">
+                    <div class="print-header">
+                        <h1 class="text-2xl font-black text-amber-400 text-center">AL ANHAR DIŞ TİCARET</h1>
+                        <p class="text-sm text-gray-300 text-center mt-1">كشف حساب رسمي للعميل</p>
+                    </div>
+
+                    <div class="print-meta-grid border border-gray-800 p-4 rounded-xl grid grid-cols-2 gap-4 text-xs">
+                        <div><span class="text-gray-400">اسم الشركة:</span> <strong id="pdfCompName" class="text-white font-bold">--</strong></div>
+                        <div><span class="text-gray-400">كود الشركة:</span> <strong id="pdfCompCode" class="text-white font-bold font-mono">--</strong></div>
+                        <div><span class="text-gray-400">التاريخ:</span> <strong id="pdfStatementDate" class="text-white font-mono">--</strong></div>
+                        <div><span class="text-gray-400">عملة الكشف:</span> <strong id="pdfStatementCurrency" class="text-amber-400 font-bold">--</strong></div>
+                    </div>
+
+                    <table class="w-full text-right border-collapse text-xs mt-4">
+                        <thead>
+                            <tr class="bg-black/60 text-amber-400 border-b border-gray-800">
+                                <th class="p-3">التاريخ</th>
+                                <th class="p-3">المبلغ الأساسي</th>
+                                <th class="p-3">العملة</th>
+                                <th class="p-3">الحساب</th>
+                                <th class="p-3">الملاحظات</th>
+                                <th class="p-3">الإجمالي الكامل للمعاملة</th>
+                            </tr>
+                        </thead>
+                        <tbody id="swftStatementTableBody" class="divide-y divide-gray-800"></tbody>
+                    </table>
+
+                    <div id="swftStatementTotalBox" class="print-total-box border-t-2 border-amber-500 pt-3 text-left">
+                        <span class="text-sm font-bold text-gray-300">القيمة الإجمالية الكامنة للشركة:</span>
+                        <div id="pdfStatementTotalVal" class="text-xl font-black text-amber-400 font-mono mt-1">$ 0.00</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- الشريط السفلي التنقلي لنظام SWFT -->
+        <nav class="fixed bottom-0 left-0 right-0 glass-panel border-t border-amber-500/20 z-40 px-6 py-3 no-print">
+            <div class="max-w-md mx-auto flex justify-around items-center">
+                <button onclick="switchSwftBottomTab('home')" id="swftNav-home" class="flex flex-col items-center gap-1 text-amber-400 font-bold text-xs cursor-pointer">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                    الرئيسية
+                </button>
+                <button onclick="switchSwftBottomTab('preview')" id="swftNav-preview" class="flex flex-col items-center gap-1 text-gray-400 hover:text-white font-bold text-xs cursor-pointer">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    المبدئي والنهائي
+                </button>
+                <button onclick="switchSwftBottomTab('statements')" id="swftNav-statements" class="flex flex-col items-center gap-1 text-gray-400 hover:text-white font-bold text-xs cursor-pointer">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    كشوفات
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    <!-- ==================== [ قسم RMB ¥ ] ==================== -->
+    <div id="module-rmb" class="hidden">
+        <header class="glass-panel border-b border-red-500/20 sticky top-0 z-40 px-6 py-4 shadow-xl no-print">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <div class="flex items-center gap-4">
+                    <button onclick="exitToLanding()" class="bg-gray-800 hover:bg-gray-700 text-red-400 border border-red-500/30 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 cursor-pointer">
+                        ← الرئيسية الأساسية
+                    </button>
+                    <div class="flex items-center gap-3 cursor-pointer" onclick="switchRmbTab('transactions')">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-red-600 to-amber-500 flex items-center justify-center shadow-lg">
+                            <span class="text-2xl font-black text-white">¥</span>
+                        </div>
+                        <div>
+                            <h1 class="text-lg font-black tracking-wider text-white">AL ANHAR <span class="text-red-500 font-light text-xs">RMB ¥</span></h1>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button onclick="switchRmbTab('transactions')" id="rmbTab-transactions" class="px-4 py-2 rounded-xl text-xs font-bold transition bg-red-600 text-white shadow-lg cursor-pointer">المعاملات</button>
+                    <button onclick="switchRmbTab('clients')" id="rmbTab-clients" class="px-4 py-2 rounded-xl text-xs font-bold transition text-gray-400 hover:text-white cursor-pointer">الزبائن</button>
+                    <button onclick="switchRmbTab('companies')" id="rmbTab-companies" class="px-4 py-2 rounded-xl text-xs font-bold transition text-gray-400 hover:text-white cursor-pointer">الشركات</button>
+                    <button onclick="switchRmbTab('statements')" id="rmbTab-statements" class="px-4 py-2 rounded-xl text-xs font-bold transition text-gray-400 hover:text-white cursor-pointer">كشف حساب RMB</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-7xl mx-auto w-full p-4 md:p-6 flex-grow">
+            <div id="rmb-sec-transactions" class="space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <h2 class="text-xl font-bold text-white border-r-4 border-red-500 pr-3" id="rmbTransTitle">معاملات RMB ¥</h2>
+                    <div class="flex gap-2">
+                        <button id="btnBackFromContext" onclick="clearRmbContextFilter()" class="hidden bg-gray-800 text-gray-200 hover:bg-gray-700 font-bold px-4 py-2.5 rounded-xl text-xs transition cursor-pointer">
+                            عرض جميع المعاملات
+                        </button>
+                        <button onclick="openRmbTransModal()" class="red-gradient text-white font-bold px-5 py-2.5 rounded-xl shadow-lg hover:opacity-90 transition flex items-center gap-2 cursor-pointer">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
+                            إضافة معاملة جديدة
+                        </button>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-4 rounded-2xl border border-red-500/20 shadow-xl space-y-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs text-red-400 font-bold mb-1">🔍 البحث بالمبلغ الأساسي (RMB ¥):</label>
+                            <input type="text" id="rmbSearchAmount" oninput="formatFormattedInput(this); renderRmbTransactions();" placeholder="أدخل المبلغ الأساسي للبحث..." class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-2 text-sm text-white focus:border-red-500 focus:outline-none font-mono">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-red-400 font-bold mb-1">📝 البحث في خانة بيانات الحساب:</label>
+                            <input type="text" id="rmbSearchDetails" oninput="renderRmbTransactions();" placeholder="أدخل جزء من بيانات الحساب..." class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-2 text-sm text-white focus:border-red-500 focus:outline-none">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-2xl overflow-hidden shadow-2xl">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-right border-collapse">
+                            <thead>
+                                <tr class="bg-black/60 text-red-400 text-xs uppercase tracking-wider border-b border-red-500/20">
+                                    <th class="p-4">التاريخ</th>
+                                    <th class="p-4">الزبون</th>
+                                    <th class="p-4">الشركة</th>
+                                    <th class="p-4">المبلغ الأساسي (¥)</th>
+                                    <th class="p-4">بيانات الحساب</th>
+                                    <th class="p-4 text-center">حذف</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rmbTransactionsTableBody" class="divide-y divide-gray-800 text-sm"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="rmb-sec-clients" class="space-y-6 hidden">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-bold text-white border-r-4 border-red-500 pr-3">قائمة الزبائن (RMB ¥)</h2>
+                    <button onclick="openModal('addRmbClientModal')" class="red-gradient text-white font-bold px-5 py-2.5 rounded-xl shadow-lg hover:opacity-90 transition cursor-pointer">
+                        + إضافة زبون جديد
+                    </button>
+                </div>
+                <div class="glass-panel rounded-2xl overflow-hidden shadow-2xl">
+                    <table class="w-full text-right border-collapse">
+                        <thead>
+                            <tr class="bg-black/60 text-red-400 text-xs uppercase border-b border-red-500/20">
+                                <th class="p-4">اسم الزبون</th>
+                                <th class="p-4 text-center">الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rmbClientsTableBody" class="divide-y divide-gray-800 text-sm"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="rmb-sec-companies" class="space-y-6 hidden">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-bold text-white border-r-4 border-red-500 pr-3">قائمة الشركات (RMB ¥)</h2>
+                    <button onclick="openModal('addRmbCompanyModal')" class="red-gradient text-white font-bold px-5 py-2.5 rounded-xl shadow-lg hover:opacity-90 transition cursor-pointer">
+                        + إضافة شركة جديدة
+                    </button>
+                </div>
+                <div class="glass-panel rounded-2xl overflow-hidden shadow-2xl">
+                    <table class="w-full text-right border-collapse">
+                        <thead>
+                            <tr class="bg-black/60 text-red-400 text-xs uppercase border-b border-red-500/20">
+                                <th class="p-4">اسم الشركة</th>
+                                <th class="p-4 text-center">الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rmbCompaniesTableBody" class="divide-y divide-gray-800 text-sm"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- كشف حساب RMB مطابق لنسق PDF -->
+            <div id="rmb-sec-statements" class="space-y-6 hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-4 no-print">
+                    <h2 class="text-xl font-bold text-white border-r-4 border-red-500 pr-3">كشف حساب ومعاملات RMB ¥</h2>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="exportRmbData()" class="bg-gray-800 hover:bg-gray-700 text-red-400 border border-red-500/30 px-3 py-1.5 rounded-xl text-xs font-bold cursor-pointer">تصدير بيانات RMB</button>
+                        <label class="bg-gray-800 hover:bg-gray-700 text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded-xl text-xs font-bold cursor-pointer">
+                            استيراد بيانات RMB
+                            <input type="file" id="importRmbInput" onchange="importRmbData(event)" class="hidden" accept=".json">
+                        </label>
+                        <button onclick="window.print()" class="red-gradient text-white px-4 py-1.5 rounded-xl text-xs font-bold shadow-lg cursor-pointer">🖨️ طباعة الكشف PDF</button>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-4 rounded-2xl border border-red-500/20 space-y-3 no-print">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">نوع الكشف:</label>
+                            <select id="rmbStatementType" onchange="updateRmbStatementFilterOptions()" class="w-full bg-black/50 border border-gray-700 rounded-xl p-2 text-sm text-white focus:outline-none">
+                                <option value="CLIENT">حسب الزبون</option>
+                                <option value="COMPANY">حسب الشركة</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-400 mb-1">اختر الاسم:</label>
+                            <select id="rmbStatementTargetSelect" onchange="renderRmbStatementTable()" class="w-full bg-black/50 border border-gray-700 rounded-xl p-2 text-sm text-white focus:outline-none"></select>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="rmbPrintArea" class="glass-panel p-6 rounded-2xl space-y-4 print-statement-box">
+                    <div class="print-header">
+                        <h1 class="text-2xl font-black text-red-500 text-center">AL ANHAR DIŞ TİCARET</h1>
+                        <p class="text-sm text-gray-300 text-center mt-1">كشف حساب رسمي للعميل (RMB ¥)</p>
+                    </div>
+
+                    <div class="print-meta-grid border border-gray-800 p-4 rounded-xl grid grid-cols-2 gap-4 text-xs">
+                        <div><span class="text-gray-400">اسم الكشف:</span> <strong id="rmbPdfTargetName" class="text-white font-bold">--</strong></div>
+                        <div><span class="text-gray-400">نوع الكشف:</span> <strong id="rmbPdfTargetType" class="text-white font-bold">--</strong></div>
+                        <div><span class="text-gray-400">التاريخ:</span> <strong id="rmbPdfStatementDate" class="text-white font-mono">--</strong></div>
+                        <div><span class="text-gray-400">عملة الكشف:</span> <strong class="text-red-400 font-bold">RMB (¥)</strong></div>
+                    </div>
+
+                    <table class="w-full text-right border-collapse text-xs mt-4">
+                        <thead>
+                            <tr class="bg-black/60 text-red-400 border-b border-gray-800">
+                                <th class="p-3">التاريخ</th>
+                                <th class="p-3">الزبون</th>
+                                <th class="p-3">الشركة</th>
+                                <th class="p-3">المبلغ (¥)</th>
+                                <th class="p-3">بيانات الحساب / الملاحظات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rmbStatementTableBody" class="divide-y divide-gray-800"></tbody>
+                    </table>
+                    <div class="print-total-box border-t-2 border-red-500 pt-3 text-left">
+                        <span class="text-sm font-bold text-gray-300">القيمة الإجمالية الكامنة:</span>
+                        <div id="rmbStatementTotal" class="text-xl font-black text-red-500 font-mono mt-1">0.00 ¥</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+
+    <!-- إضافة شركة SWFT -->
+    <div id="addCompanyModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-md p-6 rounded-3xl border border-amber-500/30 space-y-4 shadow-2xl">
+            <h3 class="text-lg font-bold text-amber-400 border-b border-gray-800 pb-3">إضافة شركة جديدة (SWFT)</h3>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">اسم الشركة</label>
+                    <input type="text" id="inputCompanyName" class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-2.5 text-white focus:border-amber-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">كود الشركة</label>
+                    <input type="text" id="inputCompanyCode" class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-2.5 text-white focus:border-amber-500 focus:outline-none">
+                </div>
+            </div>
+            <div class="flex justify-end gap-3 pt-3">
+                <button onclick="closeModal('addCompanyModal')" class="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-xl text-sm font-semibold transition cursor-pointer">إلغاء</button>
+                <button onclick="saveCompany()" class="gold-gradient text-black font-bold px-5 py-2 rounded-xl shadow-lg hover:opacity-90 transition cursor-pointer">حفظ الشركة</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- إضافة / تعديل معاملة SWFT الشاملة -->
+    <div id="addTransactionModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-lg p-6 rounded-3xl border border-amber-500/30 space-y-4 shadow-2xl">
+            <h3 id="modalTransTitle" class="text-lg font-bold text-amber-400 border-b border-gray-800 pb-3">إضافة معاملة جديدة (SWFT)</h3>
+            <input type="hidden" id="editingTransId" value="">
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">التاريخ</label>
+                    <input type="date" id="transDate" class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-2 text-white focus:border-amber-500 focus:outline-none font-mono">
+                </div>
+
+                <div class="grid grid-cols-3 gap-3 items-end">
+                    <div class="col-span-2">
+                        <label class="block text-xs text-gray-400 mb-1">المبلغ الأساسي</label>
+                        <input type="text" id="transAmount" oninput="formatFormattedInput(this)" placeholder="أدخل المبلغ..." class="w-full input-number-compact bg-black/50 border border-gray-700 rounded-xl px-4 py-2 text-white focus:border-amber-500 focus:outline-none font-bold text-lg">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">العملة</label>
+                        <select id="transCurrency" class="w-full bg-amber-500/20 border border-amber-500/50 text-amber-300 font-bold rounded-xl px-3 py-2 text-base focus:border-amber-500 focus:outline-none">
+                            <option value="$">$ دولار</option>
+                            <option value="€">€ يورو</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs text-amber-400 font-bold mb-1">الحساب المستهدف:</label>
+                    <select id="transAccountSelect" class="w-full bg-black/50 border border-amber-500/50 text-white font-bold rounded-xl px-3 py-2 text-sm focus:border-amber-500 focus:outline-none">
+                        <option value="Turkey">TR - Turkey Main</option>
+                        <option value="Dubai">DXB - Dubai Main</option>
+                    </select>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-3 bg-black/30 p-3 rounded-xl border border-gray-800">
+                    <div>
+                        <label class="block text-xs text-amber-400 mb-1">العمولة الأولى</label>
+                        <input type="text" id="comm1Val" oninput="formatFormattedInput(this)" value="0" class="w-full input-number-compact bg-black/50 border border-gray-700 rounded-xl px-3 py-2 text-white focus:border-amber-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">نوع الحساب</label>
+                        <select id="comm1Type" class="w-full bg-black/50 border border-gray-700 rounded-xl px-3 py-2 text-white focus:border-amber-500 focus:outline-none">
+                            <option value="permil">بالألف (‰)</option>
+                            <option value="percent">بالمية (%)</option>
+                            <option value="value">قيمة مضافة ($/€)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 bg-black/30 p-3 rounded-xl border border-gray-800">
+                    <div>
+                        <label class="block text-xs text-amber-400 mb-1">العمولة الثانية</label>
+                        <input type="text" id="comm2Val" oninput="formatFormattedInput(this)" value="0" class="w-full input-number-compact bg-black/50 border border-gray-700 rounded-xl px-3 py-2 text-white focus:border-amber-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">نوع الحساب</label>
+                        <select id="comm2Type" class="w-full bg-black/50 border border-gray-700 rounded-xl px-3 py-2 text-white focus:border-amber-500 focus:outline-none">
+                            <option value="permil">بالألف (‰)</option>
+                            <option value="percent">بالمية (%)</option>
+                            <option value="value">قيمة مضافة ($/€)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">ملاحظة المعاملة</label>
+                    <input type="text" id="transNote" placeholder="اكتب ملاحظتك هنا..." class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-2 text-white focus:border-amber-500 focus:outline-none text-xs">
+                </div>
+            </div>
+            <div class="flex justify-end gap-3 pt-3">
+                <button onclick="closeModal('addTransactionModal')" class="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-xl text-sm font-semibold transition cursor-pointer">إلغاء</button>
+                <button onclick="saveTransaction()" class="gold-gradient text-black font-bold px-5 py-2 rounded-xl shadow-lg hover:opacity-90 transition cursor-pointer">حفظ المعاملة</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- إضافة زبون RMB -->
+    <div id="addRmbClientModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-md p-6 rounded-3xl border border-red-500/30 space-y-4 shadow-2xl">
+            <h3 class="text-lg font-bold text-red-400 border-b border-gray-800 pb-3">إضافة زبون جديد (RMB)</h3>
+            <div>
+                <label class="block text-xs text-gray-400 mb-1">اسم الزبون</label>
+                <input type="text" id="inputRmbClientName" class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-2.5 text-white focus:border-red-500 focus:outline-none">
+            </div>
+            <div class="flex justify-end gap-3 pt-3">
+                <button onclick="closeModal('addRmbClientModal')" class="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-xl text-sm transition cursor-pointer">إلغاء</button>
+                <button onclick="saveRmbClient()" class="red-gradient text-white font-bold px-5 py-2 rounded-xl shadow-lg hover:opacity-90 transition cursor-pointer">حفظ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- إضافة شركة RMB -->
+    <div id="addRmbCompanyModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-md p-6 rounded-3xl border border-red-500/30 space-y-4 shadow-2xl">
+            <h3 class="text-lg font-bold text-red-400 border-b border-gray-800 pb-3">إضافة شركة جديدة (RMB)</h3>
+            <div>
+                <label class="block text-xs text-gray-400 mb-1">اسم الشركة</label>
+                <input type="text" id="inputRmbCompanyName" class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-2.5 text-white focus:border-red-500 focus:outline-none">
+            </div>
+            <div class="flex justify-end gap-3 pt-3">
+                <button onclick="closeModal('addRmbCompanyModal')" class="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-xl text-sm transition cursor-pointer">إلغاء</button>
+                <button onclick="saveRmbCompany()" class="red-gradient text-white font-bold px-5 py-2 rounded-xl shadow-lg hover:opacity-90 transition cursor-pointer">حفظ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- إضافة معاملة RMB -->
+    <div id="addRmbTransactionModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-md p-6 rounded-3xl border border-red-500/30 space-y-4 shadow-2xl">
+            <h3 class="text-lg font-bold text-red-400 border-b border-gray-800 pb-3">إضافة معاملة (RMB ¥)</h3>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">التاريخ</label>
+                    <input type="date" id="rmbTransDate" class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-2 text-white focus:border-red-500 focus:outline-none font-mono">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">الزبون</label>
+                    <select id="rmbTransClientSelect" class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-2 text-white focus:border-red-500 focus:outline-none"></select>
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">الشركة</label>
+                    <select id="rmbTransCompanySelect" class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-2 text-white focus:border-red-500 focus:outline-none"></select>
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">المبلغ الأساسي (RMB ¥)</label>
+                    <div class="relative">
+                        <input type="text" id="rmbTransAmount" oninput="formatFormattedInput(this)" placeholder="أدخل المبلغ..." class="w-full bg-black/50 border border-gray-700 rounded-xl pl-10 pr-4 py-2 text-white focus:border-red-500 focus:outline-none font-mono font-bold text-lg">
+                        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-red-500 font-black text-xl">¥</span>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">بيانات الحساب (ملاحظات المعاملة)</label>
+                    <textarea id="rmbTransAccountDetails" rows="3" placeholder="أدخل بيانات الحساب أو تفاصيل المعاملة..." class="w-full bg-black/50 border border-gray-700 rounded-xl p-3 text-white focus:border-red-500 focus:outline-none text-xs"></textarea>
+                </div>
+            </div>
+            <div class="flex justify-end gap-3 pt-3">
+                <button onclick="closeModal('addRmbTransactionModal')" class="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-xl text-sm transition cursor-pointer">إلغاء</button>
+                <button onclick="saveRmbTransaction()" class="red-gradient text-white font-bold px-5 py-2 rounded-xl shadow-lg hover:opacity-90 transition cursor-pointer">حفظ المعاملة</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript المحدث بالكامل -->
+    <script>
+        let db = JSON.parse(localStorage.getItem('alanhar_db')) || {
+            companies: [],
+            transactions: [],
+            rmbClients: [],
+            rmbCompanies: [],
+            rmbTransactions: []
+        };
+
+        if(!db.companies) db.companies = [];
+        if(!db.transactions) db.transactions = [];
+        if(!db.rmbClients) db.rmbClients = [];
+        if(!db.rmbCompanies) db.rmbCompanies = [];
+        if(!db.rmbTransactions) db.rmbTransactions = [];
+
+        let currentActiveCompanyId = null;
+        let currentRmbContext = { type: 'ALL', id: null };
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 2500);
+        }
+
+        function saveData() {
+            localStorage.setItem('alanhar_db', JSON.stringify(db));
+        }
+
+        function getTodayDateString() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        function formatFormattedInput(input) {
+            let rawValue = input.value.replace(/,/g, '');
+            if (isNaN(rawValue) || rawValue === '') return;
+            let parts = rawValue.split('.');
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            input.value = parts.join('.');
+        }
+
+        function parseNumber(str) {
+            if(!str) return 0;
+            return parseFloat(str.toString().replace(/,/g, '')) || 0;
+        }
+
+        function enterModule(moduleName) {
+            document.getElementById('view-landing').classList.add('hidden');
+            if(moduleName === 'SWFT') {
+                document.getElementById('module-swft').classList.remove('hidden');
+                document.getElementById('module-rmb').classList.add('hidden');
+                switchSwftBottomTab('home');
+            } else if(moduleName === 'RMB') {
+                document.getElementById('module-rmb').classList.remove('hidden');
+                document.getElementById('module-swft').classList.add('hidden');
+                switchRmbTab('transactions');
+            }
+        }
+
+        function exitToLanding() {
+            document.getElementById('module-swft').classList.add('hidden');
+            document.getElementById('module-rmb').classList.add('hidden');
+            document.getElementById('view-landing').classList.remove('hidden');
+        }
+
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+        /* ================= SWFT LOGIC ================= */
+        function switchSwftBottomTab(tab) {
+            ['home', 'preview', 'statements'].forEach(t => {
+                document.getElementById(`swft-tab-${t}`).classList.add('hidden');
+                document.getElementById(`swftNav-${t}`).className = "flex flex-col items-center gap-1 text-gray-400 hover:text-white font-bold text-xs cursor-pointer";
+            });
+
+            document.getElementById('swft-view-company-details').classList.add('hidden');
+
+            document.getElementById(`swft-tab-${tab}`).classList.remove('hidden');
+            document.getElementById(`swftNav-${tab}`).className = "flex flex-col items-center gap-1 text-amber-400 font-bold text-xs cursor-pointer";
+
+            if(tab === 'home') renderCompanies();
+            else if(tab === 'preview') renderSwftPreview();
+            else if(tab === 'statements') prepareSwftStatementView();
+        }
+
+        function openAccountView(accountName) {
+            switchSwftBottomTab('home');
+            document.getElementById('globalSwftSearchAccount').value = accountName;
+            renderGlobalSwftTransactions();
+        }
+
+        function clearSwftGlobalSearch() {
+            document.getElementById('globalSwftSearchAmount').value = '';
+            document.getElementById('globalSwftSearchAccount').value = 'ALL';
+            document.getElementById('globalSwftSearchCurrency').value = 'ALL';
+            hideGlobalSearchResults();
+        }
+
+        function hideGlobalSearchResults() {
+            document.getElementById('globalSearchResultsContainer').classList.add('hidden');
+        }
+
+        function renderGlobalSwftTransactions() {
+            let amount = parseNumber(document.getElementById('globalSwftSearchAmount').value);
+            let account = document.getElementById('globalSwftSearchAccount').value;
+            let currency = document.getElementById('globalSwftSearchCurrency').value;
+
+            let container = document.getElementById('globalSearchResultsContainer');
+            let tbody = document.getElementById('globalSwftTableBody');
+            tbody.innerHTML = '';
+
+            if(amount === 0 && account === 'ALL' && currency === 'ALL') {
+                container.classList.add('hidden');
+                return;
+            }
+
+            container.classList.remove('hidden');
+            let accLabel = account === 'ALL' ? 'كل الحسابات' : (account === 'Dubai' ? 'DXB - Dubai Main' : 'TR - Turkey Main');
+            document.getElementById('globalSearchResultsTitle').innerText = `نتائج تصفية المعاملات (${accLabel}):`;
+
+            let results = db.transactions.filter(t => {
+                if(amount > 0 && !t.amount.toString().includes(amount.toString())) return false;
+                if(account !== 'ALL' && (t.account || 'Turkey') !== account) return false;
+                if(currency !== 'ALL' && (t.currency || '$') !== currency) return false;
+                return true;
+            });
+
+            if(results.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-gray-500">لا توجد نتائج مطابقة للبحث.</td></tr>`;
+                return;
+            }
+
+            results.forEach(t => {
+                let comp = db.companies.find(c => c.id === t.companyId);
+                let curr = t.currency || '$';
+                let accName = t.account === 'Dubai' ? 'DXB - Dubai Main' : 'TR - Turkey Main';
+
+                let tr = document.createElement('tr');
+                tr.className = "hover:bg-white/5 transition";
+                tr.innerHTML = `
+                    <td class="p-3 font-bold text-amber-400">${comp ? comp.name : 'شركة محذوفة'}</td>
+                    <td class="p-3 font-mono text-gray-300">${t.date}</td>
+                    <td class="p-3 font-mono font-bold text-white">${t.amount.toLocaleString(undefined,{minimumFractionDigits:2})}</td>
+                    <td class="p-3 font-bold text-amber-300">${curr}</td>
+                    <td class="p-3 font-bold text-blue-400">${accName}</td>
+                    <td class="p-3 text-gray-300 max-w-xs break-words">${t.note || '-'}</td>
+                    <td class="p-3 font-mono font-bold text-white">${t.finalTotal.toLocaleString(undefined,{minimumFractionDigits:2})} ${curr}</td>
+                    <td class="p-3 text-center flex justify-center gap-2">
+                        <button onclick="editSwftTransaction('${t.id}')" class="text-amber-400 hover:underline font-bold cursor-pointer">تعديل</button>
+                        <button onclick="deleteSwftTransaction('${t.id}')" class="text-red-400 hover:underline font-bold cursor-pointer">حذف</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function saveCompany() {
+            let name = document.getElementById('inputCompanyName').value.trim();
+            let code = document.getElementById('inputCompanyCode').value.trim();
+            if(!name || !code) return alert('الرجاء إدخال اسم الكود والشركة.');
+            db.companies.push({ id: Date.now().toString(), name, code });
+            saveData();
+            closeModal('addCompanyModal');
+            document.getElementById('inputCompanyName').value = '';
+            document.getElementById('inputCompanyCode').value = '';
+            renderCompanies();
+        }
+
+        function renderCompanies() {
+            let tbody = document.getElementById('companiesTableBody');
+            tbody.innerHTML = '';
+            if(db.companies.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" class="text-center py-6 text-gray-500">لا توجد شركات مسجلة.</td></tr>`;
+                return;
+            }
+            db.companies.forEach(comp => {
+                let tr = document.createElement('tr');
+                tr.className = "hover:bg-white/5 transition cursor-pointer";
+                tr.innerHTML = `
+                    <td class="p-4 font-mono text-amber-400 font-bold">${comp.code}</td>
+                    <td class="p-4 font-semibold text-white">${comp.name}</td>
+                    <td class="p-4 text-center">
+                        <button onclick="openCompanyDetails('${comp.id}')" class="bg-amber-500/20 text-amber-400 hover:bg-amber-500 hover:text-black px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer">عرض المعاملات</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function openCompanyDetails(compId) {
+            currentActiveCompanyId = compId;
+            let comp = db.companies.find(c => c.id === compId);
+            if(!comp) return;
+            document.getElementById('currentCompanyName').innerText = comp.name;
+            document.getElementById('currentCompanyCode').innerText = `الكود: ${comp.code}`;
+            resetCompanyDateToToday();
+            
+            ['home', 'preview', 'statements'].forEach(t => document.getElementById(`swft-tab-${t}`).classList.add('hidden'));
+            document.getElementById('swft-view-company-details').classList.remove('hidden');
+        }
+
+        function resetCompanyDateToToday() {
+            let today = getTodayDateString();
+            document.getElementById('compFromDate').value = today;
+            document.getElementById('compToDate').value = today;
+            renderTransactions();
+        }
+
+        function openAddTransactionModal() {
+            document.getElementById('editingTransId').value = '';
+            document.getElementById('modalTransTitle').innerText = 'إضافة معاملة جديدة (SWFT)';
+            document.getElementById('transDate').value = getTodayDateString();
+            document.getElementById('transAmount').value = '';
+            document.getElementById('comm1Val').value = '0';
+            document.getElementById('comm2Val').value = '0';
+            document.getElementById('transNote').value = '';
+            openModal('addTransactionModal');
+        }
+
+        function editSwftTransaction(id) {
+            let t = db.transactions.find(x => x.id === id);
+            if(!t) return;
+            document.getElementById('editingTransId').value = t.id;
+            document.getElementById('modalTransTitle').innerText = 'تعديل المعاملة (SWFT)';
+            document.getElementById('transDate').value = t.date;
+            document.getElementById('transAmount').value = t.amount.toString();
+            document.getElementById('transCurrency').value = t.currency || '$';
+            document.getElementById('transAccountSelect').value = t.account || 'Turkey';
+            document.getElementById('transNote').value = t.note || '';
+            openModal('addTransactionModal');
+        }
+
+        function saveTransaction() {
+            let editId = document.getElementById('editingTransId').value;
+            let date = document.getElementById('transDate').value;
+            let amount = parseNumber(document.getElementById('transAmount').value);
+            let currency = document.getElementById('transCurrency').value || '$';
+            let account = document.getElementById('transAccountSelect').value || 'Turkey';
+            let note = document.getElementById('transNote').value.trim();
+
+            let c1Val = parseNumber(document.getElementById('comm1Val').value);
+            let c1Type = document.getElementById('comm1Type').value;
+            let c2Val = parseNumber(document.getElementById('comm2Val').value);
+            let c2Type = document.getElementById('comm2Type').value;
+
+            if(!date || amount <= 0) return alert('الرجاء إدخال بيانات صالحة.');
+
+            let c1Calc = c1Type === 'value' ? c1Val : (c1Type === 'permil' ? (amount * c1Val) / 1000 : (amount * c1Val) / 100);
+            let c2Calc = c2Type === 'value' ? c2Val : (c2Type === 'permil' ? (amount * c2Val) / 1000 : (amount * c2Val) / 100);
+
+            if(editId) {
+                let idx = db.transactions.findIndex(t => t.id === editId);
+                if(idx !== -1) {
+                    db.transactions[idx].date = date;
+                    db.transactions[idx].amount = amount;
+                    db.transactions[idx].currency = currency;
+                    db.transactions[idx].account = account;
+                    db.transactions[idx].note = note;
+                    db.transactions[idx].c1CalculatedAmount = c1Calc;
+                    db.transactions[idx].c2CalculatedAmount = c2Calc;
+                    db.transactions[idx].finalTotal = amount + c1Calc + c2Calc;
+                }
+            } else {
+                db.transactions.push({
+                    id: Date.now().toString(),
+                    companyId: currentActiveCompanyId,
+                    date, amount, currency, account, note,
+                    c1CalculatedAmount: c1Calc,
+                    c2CalculatedAmount: c2Calc,
+                    finalTotal: amount + c1Calc + c2Calc,
+                    initialChecked: false,
+                    finalChecked: false
+                });
+            }
+
+            saveData();
+            closeModal('addTransactionModal');
+            renderTransactions();
+            renderGlobalSwftTransactions();
+            showToast(editId ? 'تم تعديل المعاملة بنجاح!' : 'تم حفظ المعاملة بنجاح!');
+        }
+
+        function renderTransactions() {
+            let tbody = document.getElementById('transactionsTableBody');
+            tbody.innerHTML = '';
+            let searchAmount = parseNumber(document.getElementById('compSearchAmount').value);
+            let searchCurr = document.getElementById('compSearchCurrency').value;
+            let fromDate = document.getElementById('compFromDate').value;
+            let toDate = document.getElementById('compToDate').value;
+
+            let compTrans = db.transactions.filter(t => {
+                if(t.companyId !== currentActiveCompanyId) return false;
+                if(searchAmount > 0 && !t.amount.toString().includes(searchAmount.toString())) return false;
+                if(searchCurr !== 'ALL' && (t.currency || '$') !== searchCurr) return false;
+                if(fromDate && t.date < fromDate) return false;
+                if(toDate && t.date > toDate) return false;
+                return true;
+            });
+
+            if(compTrans.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-gray-500">لا توجد معاملات مطابقة.</td></tr>`;
+                return;
+            }
+
+            compTrans.forEach(t => {
+                let curr = t.currency || '$';
+                let accName = t.account === 'Dubai' ? 'DXB - Dubai Main' : 'TR - Turkey Main';
+                let tr = document.createElement('tr');
+                tr.className = "hover:bg-white/5 transition";
+                tr.innerHTML = `
+                    <td class="p-4 font-mono text-gray-300">${t.date}</td>
+                    <td class="p-4 font-mono font-bold text-amber-400">${t.amount.toLocaleString(undefined,{minimumFractionDigits:2})}</td>
+                    <td class="p-4 font-bold text-amber-300">${curr}</td>
+                    <td class="p-4 font-bold text-blue-400">${accName}</td>
+                    <td class="p-4 text-xs text-gray-300 max-w-xs break-words">${t.note || '-'}</td>
+                    <td class="p-4 font-mono font-bold text-white">${t.finalTotal.toLocaleString(undefined,{minimumFractionDigits:2})} ${curr}</td>
+                    <td class="p-4 text-center flex justify-center gap-2">
+                        <button onclick="editSwftTransaction('${t.id}')" class="text-amber-400 hover:text-amber-300 font-bold text-xs cursor-pointer">تعديل</button>
+                        <button onclick="deleteSwftTransaction('${t.id}')" class="text-red-400 hover:text-red-300 font-bold text-xs cursor-pointer">حذف</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function deleteSwftTransaction(id) {
+            if(confirm('هل انت متاكد من حذف المعاملة؟')) {
+                db.transactions = db.transactions.filter(t => t.id !== id);
+                saveData();
+                renderTransactions();
+                renderGlobalSwftTransactions();
+            }
+        }
+
+        /* ================= شاشة المبدئي والنهائي الموحدة ================= */
+        function toggleTransactionStatus(id, type) {
+            let t = db.transactions.find(x => x.id === id);
+            if(t) {
+                if(type === 'initial') t.initialChecked = !t.initialChecked;
+                if(type === 'final') t.finalChecked = !t.finalChecked;
+                saveData();
+                renderSwftPreview();
+            }
+        }
+
+        function renderSwftPreview() {
+            let tbody = document.getElementById('swftPreviewUnifiedTableBody');
+            tbody.innerHTML = '';
+
+            if(!db.transactions || db.transactions.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-gray-500">لا توجد معاملات حالية.</td></tr>`;
+                return;
+            }
+
+            db.transactions.forEach(t => {
+                let comp = db.companies.find(c => c.id === t.companyId);
+                let curr = t.currency || '$';
+                let accName = t.account === 'Dubai' ? 'DXB - Dubai Main' : 'TR - Turkey Main';
+                let isFullyCompleted = t.initialChecked && t.finalChecked;
+
+                let tr = document.createElement('tr');
+                tr.className = isFullyCompleted ? "bg-emerald-950/20 opacity-60 transition duration-300" : "hover:bg-white/5 transition duration-300";
+
+                tr.innerHTML = `
+                    <td class="p-4 text-center">
+                        <input type="checkbox" ${t.initialChecked ? 'checked' : ''} onchange="toggleTransactionStatus('${t.id}', 'initial')" class="w-5 h-5 accent-amber-500 rounded cursor-pointer">
+                    </td>
+                    <td class="p-4 text-center">
+                        <input type="checkbox" ${t.finalChecked ? 'checked' : ''} onchange="toggleTransactionStatus('${t.id}', 'final')" class="w-5 h-5 accent-emerald-500 rounded cursor-pointer">
+                    </td>
+                    <td class="p-4 font-bold text-amber-400">${comp ? comp.name : 'شركة غير محددة'}</td>
+                    <td class="p-4 font-mono font-bold text-white">${t.amount.toLocaleString(undefined,{minimumFractionDigits:2})} ${curr}</td>
+                    <td class="p-4 font-bold text-blue-400">${accName}</td>
+                    <td class="p-4 text-xs text-gray-300 max-w-xs break-words">${t.note || '-'}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function prepareSwftStatementView() {
+            let select = document.getElementById('statementSwftCompany');
+            select.innerHTML = '';
+            db.companies.forEach(c => {
+                select.innerHTML += `<option value="${c.id}">${c.name} (${c.code})</option>`;
+            });
+            renderSwftStatement();
+        }
+
+        /* --- تحديث عرض وتنسيق كشف SWFT ليكون طابق PDF --- */
+        function renderSwftStatement() {
+            let compId = document.getElementById('statementSwftCompany').value;
+            let comp = db.companies.find(c => c.id === compId);
+            let tbody = document.getElementById('swftStatementTableBody');
+            tbody.innerHTML = '';
+            if(!comp) return;
+
+            document.getElementById('pdfCompName').innerText = comp.name;
+            document.getElementById('pdfCompCode').innerText = comp.code;
+            document.getElementById('pdfStatementDate').innerText = getTodayDateString();
+
+            let trans = db.transactions.filter(t => t.companyId === compId);
+            let totalAmount = 0;
+            let currencyUsed = "$";
+
+            if(trans.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-gray-500">لا توجد معاملات لهذه الشركة.</td></tr>`;
+            } else {
+                trans.forEach(t => {
+                    let curr = t.currency || '$';
+                    currencyUsed = curr;
+                    let accName = t.account === 'Dubai' ? 'DXB - Dubai Main' : 'TR - Turkey Main';
+                    totalAmount += t.finalTotal;
+
+                    let tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td class="p-3 font-mono">${t.date}</td>
+                        <td class="p-3 font-mono font-bold">${t.amount.toLocaleString(undefined,{minimumFractionDigits:2})}</td>
+                        <td class="p-3">${curr}</td>
+                        <td class="p-3 font-bold">${accName}</td>
+                        <td class="p-3">${t.note || '-'}</td>
+                        <td class="p-3 font-mono font-bold">${t.finalTotal.toLocaleString(undefined,{minimumFractionDigits:2})} ${curr}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            document.getElementById('pdfStatementCurrency').innerText = currencyUsed;
+            document.getElementById('pdfStatementTotalVal').innerText = `${currencyUsed} ${totalAmount.toLocaleString(undefined,{minimumFractionDigits:2})}`;
+        }
+
+        function clearSwftStatementFilters() {
+            if(document.getElementById('statementSwftCompany').options.length > 0) {
+                document.getElementById('statementSwftCompany').selectedIndex = 0;
+                renderSwftStatement();
+            }
+            showToast('تم مسح الفلاتر بنجاح!');
+        }
+
+        /* ================= RMB LOGIC ================= */
+        function switchRmbTab(tab) {
+            ['transactions', 'clients', 'companies', 'statements'].forEach(t => {
+                document.getElementById(`rmb-sec-${t}`).classList.add('hidden');
+                document.getElementById(`rmbTab-${t}`).className = "px-4 py-2 rounded-xl text-xs font-bold transition text-gray-400 hover:text-white cursor-pointer";
+            });
+
+            document.getElementById(`rmb-sec-${tab}`).classList.remove('hidden');
+            document.getElementById(`rmbTab-${tab}`).className = "px-4 py-2 rounded-xl text-xs font-bold transition bg-red-600 text-white shadow-lg cursor-pointer";
+
+            if(tab === 'transactions') renderRmbTransactions();
+            else if(tab === 'clients') renderRmbClients();
+            else if(tab === 'companies') renderRmbCompanies();
+            else if(tab === 'statements') prepareRmbStatementView();
+        }
+
+        function saveRmbClient() {
+            let name = document.getElementById('inputRmbClientName').value.trim();
+            if(!name) return alert('يرجى أدخال اسم الزبون.');
+            db.rmbClients.push({ id: Date.now().toString(), name });
+            saveData();
+            closeModal('addRmbClientModal');
+            document.getElementById('inputRmbClientName').value = '';
+            renderRmbClients();
+        }
+
+        function renderRmbClients() {
+            let tbody = document.getElementById('rmbClientsTableBody');
+            tbody.innerHTML = '';
+            if(db.rmbClients.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="2" class="text-center py-6 text-gray-500">لا يوجد زبائن مسجلين.</td></tr>`;
+                return;
+            }
+            db.rmbClients.forEach(c => {
+                let tr = document.createElement('tr');
+                tr.className = "hover:bg-white/5 transition";
+                tr.innerHTML = `
+                    <td class="p-4 font-bold text-white">${c.name}</td>
+                    <td class="p-4 text-center">
+                        <button onclick="filterRmbContext('CLIENT', '${c.id}', '${c.name}')" class="bg-red-500/20 text-red-400 hover:bg-red-600 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer">عرض معاملات الزبون</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function saveRmbCompany() {
+            let name = document.getElementById('inputRmbCompanyName').value.trim();
+            if(!name) return alert('يرجى أدخال اسم الشركة.');
+            db.rmbCompanies.push({ id: Date.now().toString(), name });
+            saveData();
+            closeModal('addRmbCompanyModal');
+            document.getElementById('inputRmbCompanyName').value = '';
+            renderRmbCompanies();
+        }
+
+        function renderRmbCompanies() {
+            let tbody = document.getElementById('rmbCompaniesTableBody');
+            tbody.innerHTML = '';
+            if(db.rmbCompanies.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="2" class="text-center py-6 text-gray-500">لا توجد شركات مسجلة.</td></tr>`;
+                return;
+            }
+            db.rmbCompanies.forEach(comp => {
+                let tr = document.createElement('tr');
+                tr.className = "hover:bg-white/5 transition";
+                tr.innerHTML = `
+                    <td class="p-4 font-bold text-white">${comp.name}</td>
+                    <td class="p-4 text-center">
+                        <button onclick="filterRmbContext('COMPANY', '${comp.id}', '${comp.name}')" class="bg-red-500/20 text-red-400 hover:bg-red-600 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer">عرض معاملات الشركة</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function filterRmbContext(type, id, name) {
+            currentRmbContext = { type, id };
+            document.getElementById('btnBackFromContext').classList.remove('hidden');
+            document.getElementById('rmbTransTitle').innerText = type === 'CLIENT' ? `معاملات الزبون: ${name}` : `معاملات الشركة: ${name}`;
+            switchRmbTab('transactions');
+        }
+
+        function clearRmbContextFilter() {
+            currentRmbContext = { type: 'ALL', id: null };
+            document.getElementById('btnBackFromContext').classList.add('hidden');
+            document.getElementById('rmbTransTitle').innerText = "معاملات RMB ¥";
+            renderRmbTransactions();
+        }
+
+        function openRmbTransModal() {
+            if(db.rmbClients.length === 0 || db.rmbCompanies.length === 0) {
+                return alert('يرجى إضافة زبون وشركة واحدة على الأقل قبل إضافة معاملة.');
+            }
+
+            document.getElementById('rmbTransDate').value = getTodayDateString();
+            document.getElementById('rmbTransAmount').value = '';
+            document.getElementById('rmbTransAccountDetails').value = '';
+
+            let clientSelect = document.getElementById('rmbTransClientSelect');
+            clientSelect.innerHTML = '';
+            db.rmbClients.forEach(c => clientSelect.innerHTML += `<option value="${c.id}">${c.name}</option>`);
+
+            let compSelect = document.getElementById('rmbTransCompanySelect');
+            compSelect.innerHTML = '';
+            db.rmbCompanies.forEach(c => compSelect.innerHTML += `<option value="${c.id}">${c.name}</option>`);
+
+            if(currentRmbContext.type === 'CLIENT') {
+                clientSelect.value = currentRmbContext.id;
+                clientSelect.disabled = true;
+                compSelect.disabled = false;
+            } else if(currentRmbContext.type === 'COMPANY') {
+                compSelect.value = currentRmbContext.id;
+                compSelect.disabled = true;
+                clientSelect.disabled = false;
+            } else {
+                clientSelect.disabled = false;
+                compSelect.disabled = false;
+            }
+
+            openModal('addRmbTransactionModal');
+        }
+
+        function saveRmbTransaction() {
+            let date = document.getElementById('rmbTransDate').value;
+            let clientId = document.getElementById('rmbTransClientSelect').value;
+            let companyId = document.getElementById('rmbTransCompanySelect').value;
+            let amount = parseNumber(document.getElementById('rmbTransAmount').value);
+            let accountDetails = document.getElementById('rmbTransAccountDetails').value.trim();
+
+            if(!date || !clientId || !companyId || amount <= 0) {
+                return alert('يرجى إدخال كافة البيانات بشكل صحيح.');
+            }
+
+            db.rmbTransactions.push({ id: Date.now().toString(), date, clientId, companyId, amount, accountDetails });
+
+            saveData();
+            closeModal('addRmbTransactionModal');
+            renderRmbTransactions();
+            showToast('تمت إضافة معاملة RMB بنجاح!');
+        }
+
+        function renderRmbTransactions() {
+            let tbody = document.getElementById('rmbTransactionsTableBody');
+            tbody.innerHTML = '';
+
+            let searchAmount = parseNumber(document.getElementById('rmbSearchAmount').value);
+            let searchDetails = document.getElementById('rmbSearchDetails').value.toLowerCase().trim();
+
+            let list = db.rmbTransactions.filter(t => {
+                if(currentRmbContext.type === 'CLIENT' && t.clientId !== currentRmbContext.id) return false;
+                if(currentRmbContext.type === 'COMPANY' && t.companyId !== currentRmbContext.id) return false;
+                if(searchAmount > 0 && !t.amount.toString().includes(searchAmount.toString())) return false;
+                if(searchDetails && !t.accountDetails.toLowerCase().includes(searchDetails)) return false;
+                return true;
+            });
+
+            if(list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-gray-500">لا توجد معاملات مطابقة للبحث.</td></tr>`;
+                return;
+            }
+
+            list.forEach(t => {
+                let client = db.rmbClients.find(c => c.id === t.clientId);
+                let company = db.rmbCompanies.find(c => c.id === t.companyId);
+
+                let tr = document.createElement('tr');
+                tr.className = "hover:bg-white/5 transition";
+                tr.innerHTML = `
+                    <td class="p-4 font-mono text-gray-300">${t.date}</td>
+                    <td class="p-4 font-bold text-white">${client ? client.name : 'غير محدد'}</td>
+                    <td class="p-4 font-bold text-amber-400">${company ? company.name : 'غير محدد'}</td>
+                    <td class="p-4 font-mono font-bold text-red-400 text-base">${t.amount.toLocaleString(undefined,{minimumFractionDigits:2})} ¥</td>
+                    <td class="p-4 text-xs text-gray-300 max-w-xs break-words">${t.accountDetails || '-'}</td>
+                    <td class="p-4 text-center">
+                        <button onclick="deleteRmbTransaction('${t.id}')" class="text-red-500 hover:text-red-400 font-bold text-xs cursor-pointer">حذف</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function deleteRmbTransaction(id) {
+            if(confirm('هل أنت تأكد من حذف هذه المعاملة؟')) {
+                db.rmbTransactions = db.rmbTransactions.filter(t => t.id !== id);
+                saveData();
+                renderRmbTransactions();
+            }
+        }
+
+        function prepareRmbStatementView() {
+            updateRmbStatementFilterOptions();
+        }
+
+        function updateRmbStatementFilterOptions() {
+            let type = document.getElementById('rmbStatementType').value;
+            let select = document.getElementById('rmbStatementTargetSelect');
+            select.innerHTML = '';
+
+            if(type === 'CLIENT') {
+                db.rmbClients.forEach(c => select.innerHTML += `<option value="${c.id}">${c.name}</option>`);
+            } else {
+                db.rmbCompanies.forEach(c => select.innerHTML += `<option value="${c.id}">${c.name}</option>`);
+            }
+            renderRmbStatementTable();
+        }
+
+        /* --- تحديث عرض وتنسيق كشف RMB ليكون طابق PDF --- */
+        function renderRmbStatementTable() {
+            let type = document.getElementById('rmbStatementType').value;
+            let targetId = document.getElementById('rmbStatementTargetSelect').value;
+            let tbody = document.getElementById('rmbStatementTableBody');
+            tbody.innerHTML = '';
+
+            let targetName = "--";
+            if(type === 'CLIENT') {
+                let cl = db.rmbClients.find(c => c.id === targetId);
+                if(cl) targetName = cl.name;
+            } else {
+                let comp = db.rmbCompanies.find(c => c.id === targetId);
+                if(comp) targetName = comp.name;
+            }
+
+            document.getElementById('rmbPdfTargetName').innerText = targetName;
+            document.getElementById('rmbPdfTargetType').innerText = type === 'CLIENT' ? "كشف حساب زبون" : "كشف حساب شركة";
+            document.getElementById('rmbPdfStatementDate').innerText = getTodayDateString();
+
+            let list = db.rmbTransactions.filter(t => type === 'CLIENT' ? t.clientId === targetId : t.companyId === targetId);
+
+            let total = 0;
+            if(list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-gray-500">لا توجد معاملات مسجلة.</td></tr>`;
+            } else {
+                list.forEach(t => {
+                    let client = db.rmbClients.find(c => c.id === t.clientId);
+                    let company = db.rmbCompanies.find(c => c.id === t.companyId);
+                    total += t.amount;
+
+                    let tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td class="p-3 font-mono">${t.date}</td>
+                        <td class="p-3 font-bold">${client ? client.name : '-'}</td>
+                        <td class="p-3 font-bold">${company ? company.name : '-'}</td>
+                        <td class="p-3 font-mono font-bold">${t.amount.toLocaleString(undefined,{minimumFractionDigits:2})} ¥</td>
+                        <td class="p-3">${t.accountDetails || '-'}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            document.getElementById('rmbStatementTotal').innerText = `${total.toLocaleString(undefined,{minimumFractionDigits:2})} ¥`;
+        }
+
+        function exportRmbData() {
+            let rmbData = { rmbClients: db.rmbClients, rmbCompanies: db.rmbCompanies, rmbTransactions: db.rmbTransactions };
+            let blob = new Blob([JSON.stringify(rmbData, null, 2)], { type: 'application/json' });
+            let a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `RMB_Data_${getTodayDateString()}.json`;
+            a.click();
+        }
+
+        function importRmbData(e) {
+            let file = e.target.files[0];
+            if(!file) return;
+            let reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    let imported = JSON.parse(evt.target.result);
+                    if(imported.rmbClients) db.rmbClients = imported.rmbClients;
+                    if(imported.rmbCompanies) db.rmbCompanies = imported.rmbCompanies;
+                    if(imported.rmbTransactions) db.rmbTransactions = imported.rmbTransactions;
+                    saveData();
+                    showToast('تم استيراد بيانات RMB بنجاح!');
+                    renderRmbTransactions();
+                } catch(err) {
+                    alert('ملف غير صالح.');
+                }
+            }
+            reader.readAsText(file);
+        }
+
+        function exportFullBackup() {
+            let blob = new Blob([JSON.stringify(db, null, 2)], { type: 'application/json' });
+            let a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `FULL_SYSTEM_BACKUP_${getTodayDateString()}.json`;
+            a.click();
+        }
+
+        function importFullBackup(e) {
+            let file = e.target.files[0];
+            if(!file) return;
+            let reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    db = JSON.parse(evt.target.result);
+                    saveData();
+                    showToast('تم استعادة النسخة الاحتياطية الشاملة بنجاح!');
+                } catch(err) {
+                    alert('ملف النسخة الاحتياطية غير صالح.');
+                }
+            }
+            reader.readAsText(file);
+        }
+    </script>
+   <script type="module">
+  // 1. تعريف واستدعاء مكتبات الفايربيس
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+  // 2. إعدادات مشروعك
+  const firebaseConfig = {
+    apiKey: "AIzaSyCruQTijtvF5HqGaSvKoAyCeLwWyyLiDd0",
+    authDomain: "tarek88-5691c.firebaseapp.com",
+    projectId: "tarek88-5691c",
+    storageBucket: "tarek88-5691c.appspot.com",
+    messagingSenderId: "1032977435671",
+    appId: "1:632977435671:web:f11e2346ffb44b9f560052"
+  };
+
+  // 3. تشغيل الفايربيس وربطه بقاعدة البيانات
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // جعل قاعدة البيانات متاحة في كامل البرنامج
+  window.db = db;
+</script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+body { 
+    font-family: 'Cairo', sans-serif; 
+    background-color: #121212; 
+    color: #e5e7eb; 
+}
+
+.glass-panel { 
+    background: rgba(30, 30, 35, 0.85); 
+    backdrop-filter: blur(12px); 
+    border: 1px solid rgba(255, 215, 0, 0.15); 
+}
+
+.gold-gradient { 
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); 
+}
+
+.red-gradient { 
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); 
+}
+
+.input-number-compact { 
+    max-width: 220px; 
+    font-family: monospace; 
+    letter-spacing: 0.5px; 
+}
+
+input[type="date"] { 
+    cursor: pointer; 
+    color-scheme: dark; 
+}
+
+/* --- تحسين الحسابات الرئيسية وإخفاء Scrollbar --- */
+.account-scroll-container {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 4px;
+}
+
+.account-scroll-container::-webkit-scrollbar { 
+    display: none; 
+}
+
+.account-btn-tab {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    color: #f59e0b;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.25s ease-in-out;
+    outline: none;
+}
+
+.account-btn-tab:hover {
+    background: rgba(245, 158, 11, 0.15);
+    border-color: #f59e0b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.25);
+}
+
+/* --- تصميم الطباعة الاحترافي كشف PDF --- */
+@media print {
+    body { 
+        background: white !important; 
+        color: black !important; 
+        padding: 0 !important; 
+        margin: 0 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+    .no-print { 
+        display: none !important; 
+    }
+    .glass-panel { 
+        background: white !important; 
+        border: none !important; 
+        color: black !important; 
+        box-shadow: none !important; 
+        padding: 0 !important;
+    }
+    .print-statement-box {
+        border: 2px solid #000 !important;
+        padding: 20px !important;
+        border-radius: 8px !important;
+    }
+    .print-header {
+        text-align: center !important;
+        border-bottom: 2px solid #000 !important;
+        padding-bottom: 12px !important;
+        margin-bottom: 15px !important;
+    }
+    .print-header h1 {
+        font-size: 24px !important;
+        font-weight: 900 !important;
+        color: #000 !important;
+        margin: 0 !important;
+    }
+    .print-header p {
+        font-size: 14px !important;
+        color: #333 !important;
+        margin-top: 4px !important;
+    }
+    .print-meta-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+        margin-bottom: 20px !important;
+        border: 1px solid #ccc !important;
+        padding: 10px !important;
+        background-color: #f9f9f9 !important;
+    }
+    .print-meta-item {
+        font-size: 13px !important;
+        font-weight: bold !important;
+    }
+    table { 
+        width: 100% !important; 
+        border-collapse: collapse !important; 
+        margin-top: 10px !important;
+    }
+    th { 
+        background-color: #f2f2f2 !important; 
+        color: black !important; 
+        border: 1px solid #000 !important; 
+        padding: 8px !important; 
+        font-size: 12px !important;
+        font-weight: bold !important;
+    }
+    td { 
+        border: 1px solid #000 !important; 
+        padding: 8px !important; 
+        color: black !important; 
+        font-size: 12px !important;
+    }
+    .print-total-box {
+        margin-top: 20px !important;
+        padding: 12px !important;
+        border: 2px solid #000 !important;
+        background-color: #f8f8f8 !important;
+        text-align: left !important;
+        font-size: 16px !important;
+        font-weight: 900 !important;
+    }
+}
