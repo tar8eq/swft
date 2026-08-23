@@ -263,10 +263,15 @@
 
                 <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
                     <h2 class="text-xl font-bold text-white border-r-4 border-amber-500 pr-3">إدارة الشركات (SWFT)</h2>
-                    <button onclick="openModal('addCompanyModal')" class="gold-gradient text-black font-bold px-5 py-2.5 rounded-xl shadow-lg hover:opacity-90 transition flex items-center gap-2 cursor-pointer">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
-                        إضافة شركة جديدة
-                    </button>
+                    <div class="flex gap-2">
+                        <button onclick="switchSwftBottomTab('trash')" class="bg-gray-800 hover:bg-gray-700 text-red-400 border border-red-500/40 font-bold px-4 py-2.5 rounded-xl shadow-lg transition flex items-center gap-2 cursor-pointer text-xs">
+                            🗑️ سلة المحذوفات
+                        </button>
+                        <button onclick="openModal('addCompanyModal')" class="gold-gradient text-black font-bold px-5 py-2.5 rounded-xl shadow-lg hover:opacity-90 transition flex items-center gap-2 cursor-pointer">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
+                            إضافة شركة جديدة
+                        </button>
+                    </div>
                 </div>
 
                 <div class="glass-panel rounded-2xl overflow-hidden shadow-2xl">
@@ -391,7 +396,7 @@
                 <div class="glass-panel p-4 rounded-2xl border border-amber-500/20 space-y-4 no-print">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
-                            <label class="block text-xs text-gray-400 mb-1">اختر الشركة:</label>
+                            <label class="block text-xs text-gray-400 mb-1">اختر الشركة (يشمل الحسابات في سلة المحذوفات):</label>
                             <select id="statementSwftCompany" onchange="renderSwftStatement()" class="w-full bg-black/50 border border-gray-700 rounded-xl p-2 text-sm text-white focus:outline-none"></select>
                         </div>
                     </div>
@@ -446,6 +451,28 @@
                     </div>
                 </div>
             </div>
+
+            <!-- 4. سلة المحذوفات SWFT -->
+            <div id="swft-tab-trash" class="space-y-6 hidden">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-bold text-white border-r-4 border-red-500 pr-3">سلة المحذوفات (الشركات التي تحتوي على معاملات)</h2>
+                    <button onclick="switchSwftBottomTab('home')" class="bg-gray-800 text-amber-400 border border-amber-500/30 px-4 py-2 rounded-xl text-xs font-bold cursor-pointer">
+                        العودة للشركات الرئيسية
+                    </button>
+                </div>
+                <div class="glass-panel rounded-2xl overflow-hidden shadow-2xl">
+                    <table class="w-full text-right border-collapse">
+                        <thead>
+                            <tr class="bg-black/60 text-red-400 text-xs uppercase border-b border-red-500/20">
+                                <th class="p-4">كود الشركة</th>
+                                <th class="p-4">اسم الشركة</th>
+                                <th class="p-4 text-center">الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="swftTrashTableBody" class="divide-y divide-gray-800 text-sm"></tbody>
+                    </table>
+                </div>
+            </div>
         </main>
 
         <!-- الشريط السفلي التنقلي لنظام SWFT -->
@@ -489,6 +516,7 @@
                     <button onclick="switchRmbTab('transactions')" id="rmbTab-transactions" class="px-4 py-2 rounded-xl text-xs font-bold transition bg-red-600 text-white shadow-lg cursor-pointer">المعاملات</button>
                     <button onclick="switchRmbTab('clients')" id="rmbTab-clients" class="px-4 py-2 rounded-xl text-xs font-bold transition text-gray-400 hover:text-white cursor-pointer">الزبائن</button>
                     <button onclick="switchRmbTab('companies')" id="rmbTab-companies" class="px-4 py-2 rounded-xl text-xs font-bold transition text-gray-400 hover:text-white cursor-pointer">الشركات</button>
+                    <button onclick="switchRmbTab('trash')" id="rmbTab-trash" class="px-4 py-2 rounded-xl text-xs font-bold transition text-red-400 hover:text-red-300 cursor-pointer">🗑️ المحذوفات</button>
                     <button onclick="switchRmbTab('statements')" id="rmbTab-statements" class="px-4 py-2 rounded-xl text-xs font-bold transition text-gray-400 hover:text-white cursor-pointer">كشف حساب RMB</button>
                 </div>
             </div>
@@ -581,6 +609,25 @@
                 </div>
             </div>
 
+            <!-- سلة المحذوفات RMB -->
+            <div id="rmb-sec-trash" class="space-y-6 hidden">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-xl font-bold text-white border-r-4 border-red-500 pr-3">سلة المحذوفات (RMB ¥)</h2>
+                </div>
+                <div class="glass-panel rounded-2xl overflow-hidden shadow-2xl">
+                    <table class="w-full text-right border-collapse">
+                        <thead>
+                            <tr class="bg-black/60 text-red-400 text-xs uppercase border-b border-red-500/20">
+                                <th class="p-4">النوع</th>
+                                <th class="p-4">الاسم</th>
+                                <th class="p-4 text-center">الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rmbTrashTableBody" class="divide-y divide-gray-800 text-sm"></tbody>
+                    </table>
+                </div>
+            </div>
+
             <!-- كشف حساب RMB مطابق لنسق PDF -->
             <div id="rmb-sec-statements" class="space-y-6 hidden">
                 <div class="flex flex-col sm:flex-row justify-between items-center gap-4 no-print">
@@ -605,7 +652,7 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs text-gray-400 mb-1">اختر الاسم:</label>
+                            <label class="block text-xs text-gray-400 mb-1">اختر الاسم (يشمل المحذوفين مع معاملات):</label>
                             <select id="rmbStatementTargetSelect" onchange="renderRmbStatementTable()" class="w-full bg-black/50 border border-gray-700 rounded-xl p-2 text-sm text-white focus:outline-none"></select>
                         </div>
                     </div>
@@ -647,10 +694,11 @@
 
     <!-- Modals -->
 
-    <!-- إضافة شركة SWFT -->
+    <!-- إضافة / تعديل شركة SWFT -->
     <div id="addCompanyModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="glass-panel w-full max-w-md p-6 rounded-3xl border border-amber-500/30 space-y-4 shadow-2xl">
-            <h3 class="text-lg font-bold text-amber-400 border-b border-gray-800 pb-3">إضافة شركة جديدة (SWFT)</h3>
+            <h3 id="modalCompanyTitle" class="text-lg font-bold text-amber-400 border-b border-gray-800 pb-3">إضافة شركة جديدة (SWFT)</h3>
+            <input type="hidden" id="editingCompanyId" value="">
             <div class="space-y-3">
                 <div>
                     <label class="block text-xs text-gray-400 mb-1">اسم الشركة</label>
@@ -743,10 +791,11 @@
         </div>
     </div>
 
-    <!-- إضافة زبون RMB -->
+    <!-- إضافة / تعديل زبون RMB -->
     <div id="addRmbClientModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="glass-panel w-full max-w-md p-6 rounded-3xl border border-red-500/30 space-y-4 shadow-2xl">
-            <h3 class="text-lg font-bold text-red-400 border-b border-gray-800 pb-3">إضافة زبون جديد (RMB)</h3>
+            <h3 id="modalRmbClientTitle" class="text-lg font-bold text-red-400 border-b border-gray-800 pb-3">إضافة زبون جديد (RMB)</h3>
+            <input type="hidden" id="editingRmbClientId" value="">
             <div>
                 <label class="block text-xs text-gray-400 mb-1">اسم الزبون</label>
                 <input type="text" id="inputRmbClientName" class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-2.5 text-white focus:border-red-500 focus:outline-none">
@@ -758,10 +807,11 @@
         </div>
     </div>
 
-    <!-- إضافة شركة RMB -->
+    <!-- إضافة / تعديل شركة RMB -->
     <div id="addRmbCompanyModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="glass-panel w-full max-w-md p-6 rounded-3xl border border-red-500/30 space-y-4 shadow-2xl">
-            <h3 class="text-lg font-bold text-red-400 border-b border-gray-800 pb-3">إضافة شركة جديدة (RMB)</h3>
+            <h3 id="modalRmbCompanyTitle" class="text-lg font-bold text-red-400 border-b border-gray-800 pb-3">إضافة شركة جديدة (RMB)</h3>
+            <input type="hidden" id="editingRmbCompanyId" value="">
             <div>
                 <label class="block text-xs text-gray-400 mb-1">اسم الشركة</label>
                 <input type="text" id="inputRmbCompanyName" class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-2.5 text-white focus:border-red-500 focus:outline-none">
@@ -809,7 +859,7 @@
         </div>
     </div>
 
-    <!-- JavaScript المحدث بالكامل المربوط مع الفايربيس والمزامنة المباشرة -->
+    <!-- JavaScript المحدث بالكامل المربوط مع الفايربيس والمزامنة المباشرة وسلة المحذوفات -->
     <script>
         let appDb = JSON.parse(localStorage.getItem('alanhar_db')) || {
             companies: [],
@@ -848,9 +898,11 @@
             renderTransactions();
             renderSwftPreview();
             renderSwftStatement();
+            renderSwftTrash();
             renderRmbTransactions();
             renderRmbClients();
             renderRmbCompanies();
+            renderRmbTrash();
             renderRmbStatementTable();
         }
 
@@ -899,19 +951,24 @@
 
         /* ================= SWFT LOGIC ================= */
         function switchSwftBottomTab(tab) {
-            ['home', 'preview', 'statements'].forEach(t => {
-                document.getElementById(`swft-tab-${t}`).classList.add('hidden');
-                document.getElementById(`swftNav-${t}`).className = "flex flex-col items-center gap-1 text-gray-400 hover:text-white font-bold text-xs cursor-pointer";
+            ['home', 'preview', 'statements', 'trash'].forEach(t => {
+                let el = document.getElementById(`swft-tab-${t}`);
+                if(el) el.classList.add('hidden');
+                let nav = document.getElementById(`swftNav-${t}`);
+                if(nav) nav.className = "flex flex-col items-center gap-1 text-gray-400 hover:text-white font-bold text-xs cursor-pointer";
             });
 
             document.getElementById('swft-view-company-details').classList.add('hidden');
 
-            document.getElementById(`swft-tab-${tab}`).classList.remove('hidden');
-            document.getElementById(`swftNav-${tab}`).className = "flex flex-col items-center gap-1 text-amber-400 font-bold text-xs cursor-pointer";
+            let activeTab = document.getElementById(`swft-tab-${tab}`);
+            if(activeTab) activeTab.classList.remove('hidden');
+            let activeNav = document.getElementById(`swftNav-${tab}`);
+            if(activeNav) activeNav.className = "flex flex-col items-center gap-1 text-amber-400 font-bold text-xs cursor-pointer";
 
             if(tab === 'home') renderCompanies();
             else if(tab === 'preview') renderSwftPreview();
             else if(tab === 'statements') prepareSwftStatementView();
+            else if(tab === 'trash') renderSwftTrash();
         }
 
         function openAccountView(accountName) {
@@ -985,33 +1042,123 @@
             });
         }
 
+        function openAddCompanyModal() {
+            document.getElementById('editingCompanyId').value = '';
+            document.getElementById('modalCompanyTitle').innerText = 'إضافة شركة جديدة (SWFT)';
+            document.getElementById('inputCompanyName').value = '';
+            document.getElementById('inputCompanyCode').value = '';
+            openModal('addCompanyModal');
+        }
+
+        function openEditCompanyModal(id) {
+            let comp = appDb.companies.find(c => c.id === id);
+            if(!comp) return;
+            document.getElementById('editingCompanyId').value = comp.id;
+            document.getElementById('modalCompanyTitle').innerText = 'تعديل بيانات الشركة (SWFT)';
+            document.getElementById('inputCompanyName').value = comp.name;
+            document.getElementById('inputCompanyCode').value = comp.code;
+            openModal('addCompanyModal');
+        }
+
         function saveCompany() {
+            let editId = document.getElementById('editingCompanyId').value;
             let name = document.getElementById('inputCompanyName').value.trim();
             let code = document.getElementById('inputCompanyCode').value.trim();
             if(!name || !code) return alert('الرجاء إدخال اسم الكود والشركة.');
-            appDb.companies.push({ id: Date.now().toString(), name, code });
+
+            if(editId) {
+                let comp = appDb.companies.find(c => c.id === editId);
+                if(comp) {
+                    comp.name = name;
+                    comp.code = code;
+                }
+            } else {
+                appDb.companies.push({ id: Date.now().toString(), name, code, isDeleted: false });
+            }
+
             saveData();
             closeModal('addCompanyModal');
             document.getElementById('inputCompanyName').value = '';
             document.getElementById('inputCompanyCode').value = '';
             renderCompanies();
+            showToast(editId ? 'تم تعديل الشركة بنجاح!' : 'تم حفظ الشركة بنجاح!');
+        }
+
+        function deleteCompany(id) {
+            let hasTransactions = appDb.transactions.some(t => t.companyId === id);
+            let comp = appDb.companies.find(c => c.id === id);
+
+            if (hasTransactions) {
+                if(confirm(`الشركة "${comp ? comp.name : ''}" لديها معاملات قائمة. سيتم نقلها إلى سلة المحذوفات للرئيسية لحفظ بياناتها وكشوفاتها. هل تريد المتابعة؟`)) {
+                    comp.isDeleted = true;
+                    saveData();
+                    renderCompanies();
+                    showToast('تم نقل الشركة إلى سلة المحذوفات.');
+                }
+            } else {
+                if(confirm(`الشركة "${comp ? comp.name : ''}" لا تحتوي على أي معاملات. سيتم حذفها نهائياً من البرنامج. هل تريد المتابعة؟`)) {
+                    appDb.companies = appDb.companies.filter(c => c.id !== id);
+                    saveData();
+                    renderCompanies();
+                    showToast('تم حذف الشركة نهائياً.');
+                }
+            }
+        }
+
+        function restoreCompany(id) {
+            let comp = appDb.companies.find(c => c.id === id);
+            if(comp) {
+                comp.isDeleted = false;
+                saveData();
+                renderCompanies();
+                renderSwftTrash();
+                showToast('تم استعادة الشركة بنجاح إلى الرئيسية!');
+            }
         }
 
         function renderCompanies() {
             let tbody = document.getElementById('companiesTableBody');
             tbody.innerHTML = '';
-            if(appDb.companies.length === 0) {
+            let activeCompanies = appDb.companies.filter(c => !c.isDeleted);
+
+            if(activeCompanies.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="3" class="text-center py-6 text-gray-500">لا توجد شركات مسجلة.</td></tr>`;
                 return;
             }
-            appDb.companies.forEach(comp => {
+            activeCompanies.forEach(comp => {
                 let tr = document.createElement('tr');
-                tr.className = "hover:bg-white/5 transition cursor-pointer";
+                tr.className = "hover:bg-white/5 transition";
                 tr.innerHTML = `
                     <td class="p-4 font-mono text-amber-400 font-bold">${comp.code}</td>
                     <td class="p-4 font-semibold text-white">${comp.name}</td>
-                    <td class="p-4 text-center">
+                    <td class="p-4 text-center flex justify-center gap-2">
                         <button onclick="openCompanyDetails('${comp.id}')" class="bg-amber-500/20 text-amber-400 hover:bg-amber-500 hover:text-black px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer">عرض المعاملات</button>
+                        <button onclick="openEditCompanyModal('${comp.id}')" class="bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer">تعديل</button>
+                        <button onclick="deleteCompany('${comp.id}')" class="bg-red-600/20 text-red-400 hover:bg-red-600 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer">حذف</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderSwftTrash() {
+            let tbody = document.getElementById('swftTrashTableBody');
+            tbody.innerHTML = '';
+            let deletedCompanies = appDb.companies.filter(c => c.isDeleted);
+
+            if(deletedCompanies.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" class="text-center py-6 text-gray-500">سلة المحذوفات فارغة.</td></tr>`;
+                return;
+            }
+
+            deletedCompanies.forEach(comp => {
+                let tr = document.createElement('tr');
+                tr.className = "hover:bg-white/5 transition";
+                tr.innerHTML = `
+                    <td class="p-4 font-mono text-red-400 font-bold">${comp.code}</td>
+                    <td class="p-4 font-semibold text-white">${comp.name}</td>
+                    <td class="p-4 text-center flex justify-center gap-2">
+                        <button onclick="restoreCompany('${comp.id}')" class="bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer">استعادة للرئيسية ↩</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -1026,7 +1173,10 @@
             document.getElementById('currentCompanyCode').innerText = `الكود: ${comp.code}`;
             resetCompanyDateToToday();
             
-            ['home', 'preview', 'statements'].forEach(t => document.getElementById(`swft-tab-${t}`).classList.add('hidden'));
+            ['home', 'preview', 'statements', 'trash'].forEach(t => {
+                let el = document.getElementById(`swft-tab-${t}`);
+                if(el) el.classList.add('hidden');
+            });
             document.getElementById('swft-view-company-details').classList.remove('hidden');
         }
 
@@ -1199,7 +1349,7 @@
                     <td class="p-4 text-center">
                         <input type="checkbox" ${t.finalChecked ? 'checked' : ''} onchange="toggleTransactionStatus('${t.id}', 'final')" class="w-5 h-5 accent-emerald-500 rounded cursor-pointer">
                     </td>
-                    <td class="p-4 font-bold text-amber-400">${comp ? comp.name : 'شركة غير محددة'}</td>
+                    <td class="p-4 font-bold text-amber-400">${comp ? comp.name : 'شركة غير محددة'} ${comp && comp.isDeleted ? '<span class="text-red-400 text-xs">(محدوفة)</span>' : ''}</td>
                     <td class="p-4 font-mono font-bold text-white">${t.amount.toLocaleString(undefined,{minimumFractionDigits:2})} ${curr}</td>
                     <td class="p-4 font-bold text-blue-400">${accName}</td>
                     <td class="p-4 text-xs text-gray-300 max-w-xs break-words">${t.note || '-'}</td>
@@ -1211,8 +1361,10 @@
         function prepareSwftStatementView() {
             let select = document.getElementById('statementSwftCompany');
             select.innerHTML = '';
+            // يعرض كافة الحسابات والشركات بما فيها الشركات التي في سلة المحذوفات
             appDb.companies.forEach(c => {
-                select.innerHTML += `<option value="${c.id}">${c.name} (${c.code})</option>`;
+                let tag = c.isDeleted ? ' [سلة المحذوفات]' : '';
+                select.innerHTML += `<option value="${c.id}">${c.name} (${c.code})${tag}</option>`;
             });
             renderSwftStatement();
         }
@@ -1225,7 +1377,7 @@
             tbody.innerHTML = '';
             if(!comp) return;
 
-            document.getElementById('pdfCompName').innerText = comp.name;
+            document.getElementById('pdfCompName').innerText = comp.name + (comp.isDeleted ? ' (محدوفة)' : '');
             document.getElementById('pdfCompCode').innerText = comp.code;
             document.getElementById('pdfStatementDate').innerText = getTodayDateString();
 
@@ -1269,74 +1421,240 @@
 
         /* ================= RMB LOGIC ================= */
         function switchRmbTab(tab) {
-            ['transactions', 'clients', 'companies', 'statements'].forEach(t => {
-                document.getElementById(`rmb-sec-${t}`).classList.add('hidden');
-                document.getElementById(`rmbTab-${t}`).className = "px-4 py-2 rounded-xl text-xs font-bold transition text-gray-400 hover:text-white cursor-pointer";
+            ['transactions', 'clients', 'companies', 'trash', 'statements'].forEach(t => {
+                let sec = document.getElementById(`rmb-sec-${t}`);
+                if(sec) sec.classList.add('hidden');
+                let btn = document.getElementById(`rmbTab-${t}`);
+                if(btn) btn.className = "px-4 py-2 rounded-xl text-xs font-bold transition text-gray-400 hover:text-white cursor-pointer";
             });
 
-            document.getElementById(`rmb-sec-${tab}`).classList.remove('hidden');
-            document.getElementById(`rmbTab-${tab}`).className = "px-4 py-2 rounded-xl text-xs font-bold transition bg-red-600 text-white shadow-lg cursor-pointer";
+            let activeSec = document.getElementById(`rmb-sec-${tab}`);
+            if(activeSec) activeSec.classList.remove('hidden');
+            let activeBtn = document.getElementById(`rmbTab-${tab}`);
+            if(activeBtn) activeBtn.className = "px-4 py-2 rounded-xl text-xs font-bold transition bg-red-600 text-white shadow-lg cursor-pointer";
 
             if(tab === 'transactions') renderRmbTransactions();
             else if(tab === 'clients') renderRmbClients();
             else if(tab === 'companies') renderRmbCompanies();
+            else if(tab === 'trash') renderRmbTrash();
             else if(tab === 'statements') prepareRmbStatementView();
         }
 
+        function openAddRmbClientModal() {
+            document.getElementById('editingRmbClientId').value = '';
+            document.getElementById('modalRmbClientTitle').innerText = 'إضافة زبون جديد (RMB)';
+            document.getElementById('inputRmbClientName').value = '';
+            openModal('addRmbClientModal');
+        }
+
+        function openEditRmbClientModal(id) {
+            let cl = appDb.rmbClients.find(c => c.id === id);
+            if(!cl) return;
+            document.getElementById('editingRmbClientId').value = cl.id;
+            document.getElementById('modalRmbClientTitle').innerText = 'تعديل بيانات الزبون (RMB)';
+            document.getElementById('inputRmbClientName').value = cl.name;
+            openModal('addRmbClientModal');
+        }
+
         function saveRmbClient() {
+            let editId = document.getElementById('editingRmbClientId').value;
             let name = document.getElementById('inputRmbClientName').value.trim();
             if(!name) return alert('يرجى أدخال اسم الزبون.');
-            appDb.rmbClients.push({ id: Date.now().toString(), name });
+
+            if(editId) {
+                let cl = appDb.rmbClients.find(c => c.id === editId);
+                if(cl) cl.name = name;
+            } else {
+                appDb.rmbClients.push({ id: Date.now().toString(), name, isDeleted: false });
+            }
+
             saveData();
             closeModal('addRmbClientModal');
             document.getElementById('inputRmbClientName').value = '';
             renderRmbClients();
+            showToast(editId ? 'تم تعديل الزبون بنجاح!' : 'تم حفظ الزبون بنجاح!');
+        }
+
+        function deleteRmbClient(id) {
+            let hasTrans = appDb.rmbTransactions.some(t => t.clientId === id);
+            let cl = appDb.rmbClients.find(c => c.id === id);
+
+            if (hasTrans) {
+                if(confirm(`الزبون "${cl ? cl.name : ''}" لديه معاملات مسجلة. سيتم نقله إلى سلة المحذوفات لحفظ كشوفاته. هل تريد المتابعة؟`)) {
+                    cl.isDeleted = true;
+                    saveData();
+                    renderRmbClients();
+                    showToast('تم نقل الزبون إلى سلة المحذوفات.');
+                }
+            } else {
+                if(confirm(`الزبون "${cl ? cl.name : ''}" لا يحتوي على معاملات. سيتم حذفه نهائياً. هل تريد المتابعة؟`)) {
+                    appDb.rmbClients = appDb.rmbClients.filter(c => c.id !== id);
+                    saveData();
+                    renderRmbClients();
+                    showToast('تم حذف الزبون نهائياً.');
+                }
+            }
+        }
+
+        function restoreRmbClient(id) {
+            let cl = appDb.rmbClients.find(c => c.id === id);
+            if(cl) {
+                cl.isDeleted = false;
+                saveData();
+                renderRmbClients();
+                renderRmbTrash();
+                showToast('تم استعادة الزبون بنجاح!');
+            }
         }
 
         function renderRmbClients() {
             let tbody = document.getElementById('rmbClientsTableBody');
             tbody.innerHTML = '';
-            if(appDb.rmbClients.length === 0) {
+            let list = appDb.rmbClients.filter(c => !c.isDeleted);
+
+            if(list.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="2" class="text-center py-6 text-gray-500">لا يوجد زبائن مسجلين.</td></tr>`;
                 return;
             }
-            appDb.rmbClients.forEach(c => {
+            list.forEach(c => {
                 let tr = document.createElement('tr');
                 tr.className = "hover:bg-white/5 transition";
                 tr.innerHTML = `
                     <td class="p-4 font-bold text-white">${c.name}</td>
-                    <td class="p-4 text-center">
-                        <button onclick="filterRmbContext('CLIENT', '${c.id}', '${c.name}')" class="bg-red-500/20 text-red-400 hover:bg-red-600 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer">عرض معاملات الزبون</button>
+                    <td class="p-4 text-center flex justify-center gap-2">
+                        <button onclick="filterRmbContext('CLIENT', '${c.id}', '${c.name}')" class="bg-red-500/20 text-red-400 hover:bg-red-600 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer">عرض المعاملات</button>
+                        <button onclick="openEditRmbClientModal('${c.id}')" class="bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer">تعديل</button>
+                        <button onclick="deleteRmbClient('${c.id}')" class="bg-red-600/20 text-red-400 hover:bg-red-600 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer">حذف</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
             });
         }
 
+        function openAddRmbCompanyModal() {
+            document.getElementById('editingRmbCompanyId').value = '';
+            document.getElementById('modalRmbCompanyTitle').innerText = 'إضافة شركة جديدة (RMB)';
+            document.getElementById('inputRmbCompanyName').value = '';
+            openModal('addRmbCompanyModal');
+        }
+
+        function openEditRmbCompanyModal(id) {
+            let comp = appDb.rmbCompanies.find(c => c.id === id);
+            if(!comp) return;
+            document.getElementById('editingRmbCompanyId').value = comp.id;
+            document.getElementById('modalRmbCompanyTitle').innerText = 'تعديل بيانات الشركة (RMB)';
+            document.getElementById('inputRmbCompanyName').value = comp.name;
+            openModal('addRmbCompanyModal');
+        }
+
         function saveRmbCompany() {
+            let editId = document.getElementById('editingRmbCompanyId').value;
             let name = document.getElementById('inputRmbCompanyName').value.trim();
             if(!name) return alert('يرجى أدخال اسم الشركة.');
-            appDb.rmbCompanies.push({ id: Date.now().toString(), name });
+
+            if(editId) {
+                let comp = appDb.rmbCompanies.find(c => c.id === editId);
+                if(comp) comp.name = name;
+            } else {
+                appDb.rmbCompanies.push({ id: Date.now().toString(), name, isDeleted: false });
+            }
+
             saveData();
             closeModal('addRmbCompanyModal');
             document.getElementById('inputRmbCompanyName').value = '';
             renderRmbCompanies();
+            showToast(editId ? 'تم تعديل الشركة بنجاح!' : 'تم حفظ الشركة بنجاح!');
+        }
+
+        function deleteRmbCompany(id) {
+            let hasTrans = appDb.rmbTransactions.some(t => t.companyId === id);
+            let comp = appDb.rmbCompanies.find(c => c.id === id);
+
+            if (hasTrans) {
+                if(confirm(`الشركة "${comp ? comp.name : ''}" لديها معاملات مسجلة. سيتم نقلها إلى سلة المحذوفات. هل تريد المتابعة؟`)) {
+                    comp.isDeleted = true;
+                    saveData();
+                    renderRmbCompanies();
+                    showToast('تم نقل الشركة إلى سلة المحذوفات.');
+                }
+            } else {
+                if(confirm(`الشركة "${comp ? comp.name : ''}" لا تحتوي على معاملات. سيتم حذفها نهائياً. هل تريد المتابعة؟`)) {
+                    appDb.rmbCompanies = appDb.rmbCompanies.filter(c => c.id !== id);
+                    saveData();
+                    renderRmbCompanies();
+                    showToast('تم حذف الشركة نهائياً.');
+                }
+            }
+        }
+
+        function restoreRmbCompany(id) {
+            let comp = appDb.rmbCompanies.find(c => c.id === id);
+            if(comp) {
+                comp.isDeleted = false;
+                saveData();
+                renderRmbCompanies();
+                renderRmbTrash();
+                showToast('تم استعادة الشركة بنجاح!');
+            }
         }
 
         function renderRmbCompanies() {
             let tbody = document.getElementById('rmbCompaniesTableBody');
             tbody.innerHTML = '';
-            if(appDb.rmbCompanies.length === 0) {
+            let list = appDb.rmbCompanies.filter(c => !c.isDeleted);
+
+            if(list.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="2" class="text-center py-6 text-gray-500">لا توجد شركات مسجلة.</td></tr>`;
                 return;
             }
-            appDb.rmbCompanies.forEach(comp => {
+            list.forEach(comp => {
                 let tr = document.createElement('tr');
                 tr.className = "hover:bg-white/5 transition";
                 tr.innerHTML = `
                     <td class="p-4 font-bold text-white">${comp.name}</td>
+                    <td class="p-4 text-center flex justify-center gap-2">
+                        <button onclick="filterRmbContext('COMPANY', '${comp.id}', '${comp.name}')" class="bg-red-500/20 text-red-400 hover:bg-red-600 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer">عرض المعاملات</button>
+                        <button onclick="openEditRmbCompanyModal('${comp.id}')" class="bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer">تعديل</button>
+                        <button onclick="deleteRmbCompany('${comp.id}')" class="bg-red-600/20 text-red-400 hover:bg-red-600 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer">حذف</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderRmbTrash() {
+            let tbody = document.getElementById('rmbTrashTableBody');
+            tbody.innerHTML = '';
+
+            let delClients = appDb.rmbClients.filter(c => c.isDeleted);
+            let delCompanies = appDb.rmbCompanies.filter(c => c.isDeleted);
+
+            if(delClients.length === 0 && delCompanies.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" class="text-center py-6 text-gray-500">سلة المحذوفات فارغة.</td></tr>`;
+                return;
+            }
+
+            delClients.forEach(c => {
+                let tr = document.createElement('tr');
+                tr.className = "hover:bg-white/5 transition";
+                tr.innerHTML = `
+                    <td class="p-4 font-bold text-amber-400">زبون</td>
+                    <td class="p-4 font-bold text-white">${c.name}</td>
                     <td class="p-4 text-center">
-                        <button onclick="filterRmbContext('COMPANY', '${comp.id}', '${comp.name}')" class="bg-red-500/20 text-red-400 hover:bg-red-600 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer">عرض معاملات الشركة</button>
+                        <button onclick="restoreRmbClient('${c.id}')" class="bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer">استعادة ↩</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            delCompanies.forEach(c => {
+                let tr = document.createElement('tr');
+                tr.className = "hover:bg-white/5 transition";
+                tr.innerHTML = `
+                    <td class="p-4 font-bold text-blue-400">شركة</td>
+                    <td class="p-4 font-bold text-white">${c.name}</td>
+                    <td class="p-4 text-center">
+                        <button onclick="restoreRmbCompany('${c.id}')" class="bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer">استعادة ↩</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -1358,7 +1676,10 @@
         }
 
         function openRmbTransModal() {
-            if(appDb.rmbClients.length === 0 || appDb.rmbCompanies.length === 0) {
+            let activeClients = appDb.rmbClients.filter(c => !c.isDeleted);
+            let activeCompanies = appDb.rmbCompanies.filter(c => !c.isDeleted);
+
+            if(activeClients.length === 0 || activeCompanies.length === 0) {
                 return alert('يرجى إضافة زبون وشركة واحدة على الأقل قبل إضافة معاملة.');
             }
 
@@ -1368,11 +1689,11 @@
 
             let clientSelect = document.getElementById('rmbTransClientSelect');
             clientSelect.innerHTML = '';
-            appDb.rmbClients.forEach(c => clientSelect.innerHTML += `<option value="${c.id}">${c.name}</option>`);
+            activeClients.forEach(c => clientSelect.innerHTML += `<option value="${c.id}">${c.name}</option>`);
 
             let compSelect = document.getElementById('rmbTransCompanySelect');
             compSelect.innerHTML = '';
-            appDb.rmbCompanies.forEach(c => compSelect.innerHTML += `<option value="${c.id}">${c.name}</option>`);
+            activeCompanies.forEach(c => compSelect.innerHTML += `<option value="${c.id}">${c.name}</option>`);
 
             if(currentRmbContext.type === 'CLIENT') {
                 clientSelect.value = currentRmbContext.id;
@@ -1437,8 +1758,8 @@
                 tr.className = "hover:bg-white/5 transition";
                 tr.innerHTML = `
                     <td class="p-4 font-mono text-gray-300">${t.date}</td>
-                    <td class="p-4 font-bold text-white">${client ? client.name : 'غير محدد'}</td>
-                    <td class="p-4 font-bold text-amber-400">${company ? company.name : 'غير محدد'}</td>
+                    <td class="p-4 font-bold text-white">${client ? client.name : 'غير محدد'} ${client && client.isDeleted ? '<span class="text-red-400 text-xs">(محدوف)</span>' : ''}</td>
+                    <td class="p-4 font-bold text-amber-400">${company ? company.name : 'غير محدد'} ${company && company.isDeleted ? '<span class="text-red-400 text-xs">(محدوفة)</span>' : ''}</td>
                     <td class="p-4 font-mono font-bold text-red-400 text-base">${t.amount.toLocaleString(undefined,{minimumFractionDigits:2})} ¥</td>
                     <td class="p-4 text-xs text-gray-300 max-w-xs break-words">${t.accountDetails || '-'}</td>
                     <td class="p-4 text-center">
@@ -1467,9 +1788,15 @@
             select.innerHTML = '';
 
             if(type === 'CLIENT') {
-                appDb.rmbClients.forEach(c => select.innerHTML += `<option value="${c.id}">${c.name}</option>`);
+                appDb.rmbClients.forEach(c => {
+                    let tag = c.isDeleted ? ' [محدوف]' : '';
+                    select.innerHTML += `<option value="${c.id}">${c.name}${tag}</option>`;
+                });
             } else {
-                appDb.rmbCompanies.forEach(c => select.innerHTML += `<option value="${c.id}">${c.name}</option>`);
+                appDb.rmbCompanies.forEach(c => {
+                    let tag = c.isDeleted ? ' [محدوف]' : '';
+                    select.innerHTML += `<option value="${c.id}">${c.name}${tag}</option>`;
+                });
             }
             renderRmbStatementTable();
         }
@@ -1484,10 +1811,10 @@
             let targetName = "--";
             if(type === 'CLIENT') {
                 let cl = appDb.rmbClients.find(c => c.id === targetId);
-                if(cl) targetName = cl.name;
+                if(cl) targetName = cl.name + (cl.isDeleted ? ' (محدوف)' : '');
             } else {
                 let comp = appDb.rmbCompanies.find(c => c.id === targetId);
-                if(comp) targetName = comp.name;
+                if(comp) targetName = comp.name + (comp.isDeleted ? ' (محدوف)' : '');
             }
 
             document.getElementById('rmbPdfTargetName').innerText = targetName;
