@@ -1580,5 +1580,50 @@
   // جعل قاعدة البيانات متاحة في كامل البرنامج
   window.db = db;
 </script>
+<script type="module">
+  // 1. استدعاء مكتبات الفايربيس
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+  // 2. إعدادات المشروع
+  const firebaseConfig = {
+    apiKey: "AIzaSyCruQTijtvF5HqGaSvKoAyCeLwWyyLiDd0",
+    authDomain: "tarek88-5691c.firebaseapp.com",
+    projectId: "tarek88-5691c",
+    storageBucket: "tarek88-5691c.appspot.com",
+    messagingSenderId: "1032977435671",
+    appId: "1:632977435671:web:f11e2346ffb44b9f560052"
+  };
+
+  // 3. تشغيل الفايربيس
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  window.db = db;
+
+  // 4. دالة للحفظ في الفايربيس (استدعها في برنامجك بدل saveData القديمة)
+  window.saveToFirebase = async function(data) {
+    try {
+      await setDoc(doc(db, "appData", "currentData"), {
+        payload: JSON.stringify(data),
+        updatedAt: new Date()
+      });
+      console.log("تم الحفظ في Firebase أونلاين!");
+    } catch (e) {
+      console.error("خطأ في الحفظ:", e);
+    }
+  };
+
+  // 5. الاستماع للبيانات أونلاين مجرد فتح الصفحة
+  onSnapshot(doc(db, "appData", "currentData"), (docSnap) => {
+    if (docSnap.exists()) {
+      const liveData = JSON.parse(docSnap.data().payload);
+      // ربط البيانات الحية بمتغير البرنامج الرئيسي
+      if (typeof db !== 'undefined' && Array.isArray(db)) {
+        window.dbData = liveData;
+      }
+      console.log("تم جلب التحديثات أونلاين:", liveData);
+    }
+  });
+</script>
 </body>
 </html>
