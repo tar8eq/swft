@@ -809,9 +809,9 @@
         </div>
     </div>
 
-    <!-- JavaScript المحدث بالكامل -->
+    <!-- JavaScript المحدث بالكامل المربوط مع الفايربيس والمزامنة المباشرة -->
     <script>
-        let db = JSON.parse(localStorage.getItem('alanhar_db')) || {
+        let appDb = JSON.parse(localStorage.getItem('alanhar_db')) || {
             companies: [],
             transactions: [],
             rmbClients: [],
@@ -819,11 +819,11 @@
             rmbTransactions: []
         };
 
-        if(!db.companies) db.companies = [];
-        if(!db.transactions) db.transactions = [];
-        if(!db.rmbClients) db.rmbClients = [];
-        if(!db.rmbCompanies) db.rmbCompanies = [];
-        if(!db.rmbTransactions) db.rmbTransactions = [];
+        if(!appDb.companies) appDb.companies = [];
+        if(!appDb.transactions) appDb.transactions = [];
+        if(!appDb.rmbClients) appDb.rmbClients = [];
+        if(!appDb.rmbCompanies) appDb.rmbCompanies = [];
+        if(!appDb.rmbTransactions) appDb.rmbTransactions = [];
 
         let currentActiveCompanyId = null;
         let currentRmbContext = { type: 'ALL', id: null };
@@ -836,7 +836,22 @@
         }
 
         function saveData() {
-            localStorage.setItem('alanhar_db', JSON.stringify(db));
+            localStorage.setItem('alanhar_db', JSON.stringify(appDb));
+            if (typeof window.saveToFirebase === 'function') {
+                window.saveToFirebase(appDb);
+            }
+        }
+
+        function refreshActiveUI() {
+            renderCompanies();
+            renderGlobalSwftTransactions();
+            renderTransactions();
+            renderSwftPreview();
+            renderSwftStatement();
+            renderRmbTransactions();
+            renderRmbClients();
+            renderRmbCompanies();
+            renderRmbStatementTable();
         }
 
         function getTodayDateString() {
@@ -934,7 +949,7 @@
             let accLabel = account === 'ALL' ? 'كل الحسابات' : (account === 'Dubai' ? 'DXB - Dubai Main' : 'TR - Turkey Main');
             document.getElementById('globalSearchResultsTitle').innerText = `نتائج تصفية المعاملات (${accLabel}):`;
 
-            let results = db.transactions.filter(t => {
+            let results = appDb.transactions.filter(t => {
                 if(amount > 0 && !t.amount.toString().includes(amount.toString())) return false;
                 if(account !== 'ALL' && (t.account || 'Turkey') !== account) return false;
                 if(currency !== 'ALL' && (t.currency || '$') !== currency) return false;
@@ -947,7 +962,7 @@
             }
 
             results.forEach(t => {
-                let comp = db.companies.find(c => c.id === t.companyId);
+                let comp = appDb.companies.find(c => c.id === t.companyId);
                 let curr = t.currency || '$';
                 let accName = t.account === 'Dubai' ? 'DXB - Dubai Main' : 'TR - Turkey Main';
 
@@ -974,7 +989,7 @@
             let name = document.getElementById('inputCompanyName').value.trim();
             let code = document.getElementById('inputCompanyCode').value.trim();
             if(!name || !code) return alert('الرجاء إدخال اسم الكود والشركة.');
-            db.companies.push({ id: Date.now().toString(), name, code });
+            appDb.companies.push({ id: Date.now().toString(), name, code });
             saveData();
             closeModal('addCompanyModal');
             document.getElementById('inputCompanyName').value = '';
@@ -985,11 +1000,11 @@
         function renderCompanies() {
             let tbody = document.getElementById('companiesTableBody');
             tbody.innerHTML = '';
-            if(db.companies.length === 0) {
+            if(appDb.companies.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="3" class="text-center py-6 text-gray-500">لا توجد شركات مسجلة.</td></tr>`;
                 return;
             }
-            db.companies.forEach(comp => {
+            appDb.companies.forEach(comp => {
                 let tr = document.createElement('tr');
                 tr.className = "hover:bg-white/5 transition cursor-pointer";
                 tr.innerHTML = `
@@ -1005,7 +1020,7 @@
 
         function openCompanyDetails(compId) {
             currentActiveCompanyId = compId;
-            let comp = db.companies.find(c => c.id === compId);
+            let comp = appDb.companies.find(c => c.id === compId);
             if(!comp) return;
             document.getElementById('currentCompanyName').innerText = comp.name;
             document.getElementById('currentCompanyCode').innerText = `الكود: ${comp.code}`;
@@ -1034,7 +1049,7 @@
         }
 
         function editSwftTransaction(id) {
-            let t = db.transactions.find(x => x.id === id);
+            let t = appDb.transactions.find(x => x.id === id);
             if(!t) return;
             document.getElementById('editingTransId').value = t.id;
             document.getElementById('modalTransTitle').innerText = 'تعديل المعاملة (SWFT)';
@@ -1065,19 +1080,19 @@
             let c2Calc = c2Type === 'value' ? c2Val : (c2Type === 'permil' ? (amount * c2Val) / 1000 : (amount * c2Val) / 100);
 
             if(editId) {
-                let idx = db.transactions.findIndex(t => t.id === editId);
+                let idx = appDb.transactions.findIndex(t => t.id === editId);
                 if(idx !== -1) {
-                    db.transactions[idx].date = date;
-                    db.transactions[idx].amount = amount;
-                    db.transactions[idx].currency = currency;
-                    db.transactions[idx].account = account;
-                    db.transactions[idx].note = note;
-                    db.transactions[idx].c1CalculatedAmount = c1Calc;
-                    db.transactions[idx].c2CalculatedAmount = c2Calc;
-                    db.transactions[idx].finalTotal = amount + c1Calc + c2Calc;
+                    appDb.transactions[idx].date = date;
+                    appDb.transactions[idx].amount = amount;
+                    appDb.transactions[idx].currency = currency;
+                    appDb.transactions[idx].account = account;
+                    appDb.transactions[idx].note = note;
+                    appDb.transactions[idx].c1CalculatedAmount = c1Calc;
+                    appDb.transactions[idx].c2CalculatedAmount = c2Calc;
+                    appDb.transactions[idx].finalTotal = amount + c1Calc + c2Calc;
                 }
             } else {
-                db.transactions.push({
+                appDb.transactions.push({
                     id: Date.now().toString(),
                     companyId: currentActiveCompanyId,
                     date, amount, currency, account, note,
@@ -1104,7 +1119,7 @@
             let fromDate = document.getElementById('compFromDate').value;
             let toDate = document.getElementById('compToDate').value;
 
-            let compTrans = db.transactions.filter(t => {
+            let compTrans = appDb.transactions.filter(t => {
                 if(t.companyId !== currentActiveCompanyId) return false;
                 if(searchAmount > 0 && !t.amount.toString().includes(searchAmount.toString())) return false;
                 if(searchCurr !== 'ALL' && (t.currency || '$') !== searchCurr) return false;
@@ -1141,7 +1156,7 @@
 
         function deleteSwftTransaction(id) {
             if(confirm('هل انت متاكد من حذف المعاملة؟')) {
-                db.transactions = db.transactions.filter(t => t.id !== id);
+                appDb.transactions = appDb.transactions.filter(t => t.id !== id);
                 saveData();
                 renderTransactions();
                 renderGlobalSwftTransactions();
@@ -1150,7 +1165,7 @@
 
         /* ================= شاشة المبدئي والنهائي الموحدة ================= */
         function toggleTransactionStatus(id, type) {
-            let t = db.transactions.find(x => x.id === id);
+            let t = appDb.transactions.find(x => x.id === id);
             if(t) {
                 if(type === 'initial') t.initialChecked = !t.initialChecked;
                 if(type === 'final') t.finalChecked = !t.finalChecked;
@@ -1163,13 +1178,13 @@
             let tbody = document.getElementById('swftPreviewUnifiedTableBody');
             tbody.innerHTML = '';
 
-            if(!db.transactions || db.transactions.length === 0) {
+            if(!appDb.transactions || appDb.transactions.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-gray-500">لا توجد معاملات حالية.</td></tr>`;
                 return;
             }
 
-            db.transactions.forEach(t => {
-                let comp = db.companies.find(c => c.id === t.companyId);
+            appDb.transactions.forEach(t => {
+                let comp = appDb.companies.find(c => c.id === t.companyId);
                 let curr = t.currency || '$';
                 let accName = t.account === 'Dubai' ? 'DXB - Dubai Main' : 'TR - Turkey Main';
                 let isFullyCompleted = t.initialChecked && t.finalChecked;
@@ -1196,7 +1211,7 @@
         function prepareSwftStatementView() {
             let select = document.getElementById('statementSwftCompany');
             select.innerHTML = '';
-            db.companies.forEach(c => {
+            appDb.companies.forEach(c => {
                 select.innerHTML += `<option value="${c.id}">${c.name} (${c.code})</option>`;
             });
             renderSwftStatement();
@@ -1205,7 +1220,7 @@
         /* --- تحديث عرض وتنسيق كشف SWFT ليكون طابق PDF --- */
         function renderSwftStatement() {
             let compId = document.getElementById('statementSwftCompany').value;
-            let comp = db.companies.find(c => c.id === compId);
+            let comp = appDb.companies.find(c => c.id === compId);
             let tbody = document.getElementById('swftStatementTableBody');
             tbody.innerHTML = '';
             if(!comp) return;
@@ -1214,7 +1229,7 @@
             document.getElementById('pdfCompCode').innerText = comp.code;
             document.getElementById('pdfStatementDate').innerText = getTodayDateString();
 
-            let trans = db.transactions.filter(t => t.companyId === compId);
+            let trans = appDb.transactions.filter(t => t.companyId === compId);
             let totalAmount = 0;
             let currencyUsed = "$";
 
@@ -1271,7 +1286,7 @@
         function saveRmbClient() {
             let name = document.getElementById('inputRmbClientName').value.trim();
             if(!name) return alert('يرجى أدخال اسم الزبون.');
-            db.rmbClients.push({ id: Date.now().toString(), name });
+            appDb.rmbClients.push({ id: Date.now().toString(), name });
             saveData();
             closeModal('addRmbClientModal');
             document.getElementById('inputRmbClientName').value = '';
@@ -1281,11 +1296,11 @@
         function renderRmbClients() {
             let tbody = document.getElementById('rmbClientsTableBody');
             tbody.innerHTML = '';
-            if(db.rmbClients.length === 0) {
+            if(appDb.rmbClients.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="2" class="text-center py-6 text-gray-500">لا يوجد زبائن مسجلين.</td></tr>`;
                 return;
             }
-            db.rmbClients.forEach(c => {
+            appDb.rmbClients.forEach(c => {
                 let tr = document.createElement('tr');
                 tr.className = "hover:bg-white/5 transition";
                 tr.innerHTML = `
@@ -1301,7 +1316,7 @@
         function saveRmbCompany() {
             let name = document.getElementById('inputRmbCompanyName').value.trim();
             if(!name) return alert('يرجى أدخال اسم الشركة.');
-            db.rmbCompanies.push({ id: Date.now().toString(), name });
+            appDb.rmbCompanies.push({ id: Date.now().toString(), name });
             saveData();
             closeModal('addRmbCompanyModal');
             document.getElementById('inputRmbCompanyName').value = '';
@@ -1311,11 +1326,11 @@
         function renderRmbCompanies() {
             let tbody = document.getElementById('rmbCompaniesTableBody');
             tbody.innerHTML = '';
-            if(db.rmbCompanies.length === 0) {
+            if(appDb.rmbCompanies.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="2" class="text-center py-6 text-gray-500">لا توجد شركات مسجلة.</td></tr>`;
                 return;
             }
-            db.rmbCompanies.forEach(comp => {
+            appDb.rmbCompanies.forEach(comp => {
                 let tr = document.createElement('tr');
                 tr.className = "hover:bg-white/5 transition";
                 tr.innerHTML = `
@@ -1343,7 +1358,7 @@
         }
 
         function openRmbTransModal() {
-            if(db.rmbClients.length === 0 || db.rmbCompanies.length === 0) {
+            if(appDb.rmbClients.length === 0 || appDb.rmbCompanies.length === 0) {
                 return alert('يرجى إضافة زبون وشركة واحدة على الأقل قبل إضافة معاملة.');
             }
 
@@ -1353,11 +1368,11 @@
 
             let clientSelect = document.getElementById('rmbTransClientSelect');
             clientSelect.innerHTML = '';
-            db.rmbClients.forEach(c => clientSelect.innerHTML += `<option value="${c.id}">${c.name}</option>`);
+            appDb.rmbClients.forEach(c => clientSelect.innerHTML += `<option value="${c.id}">${c.name}</option>`);
 
             let compSelect = document.getElementById('rmbTransCompanySelect');
             compSelect.innerHTML = '';
-            db.rmbCompanies.forEach(c => compSelect.innerHTML += `<option value="${c.id}">${c.name}</option>`);
+            appDb.rmbCompanies.forEach(c => compSelect.innerHTML += `<option value="${c.id}">${c.name}</option>`);
 
             if(currentRmbContext.type === 'CLIENT') {
                 clientSelect.value = currentRmbContext.id;
@@ -1386,7 +1401,7 @@
                 return alert('يرجى إدخال كافة البيانات بشكل صحيح.');
             }
 
-            db.rmbTransactions.push({ id: Date.now().toString(), date, clientId, companyId, amount, accountDetails });
+            appDb.rmbTransactions.push({ id: Date.now().toString(), date, clientId, companyId, amount, accountDetails });
 
             saveData();
             closeModal('addRmbTransactionModal');
@@ -1401,7 +1416,7 @@
             let searchAmount = parseNumber(document.getElementById('rmbSearchAmount').value);
             let searchDetails = document.getElementById('rmbSearchDetails').value.toLowerCase().trim();
 
-            let list = db.rmbTransactions.filter(t => {
+            let list = appDb.rmbTransactions.filter(t => {
                 if(currentRmbContext.type === 'CLIENT' && t.clientId !== currentRmbContext.id) return false;
                 if(currentRmbContext.type === 'COMPANY' && t.companyId !== currentRmbContext.id) return false;
                 if(searchAmount > 0 && !t.amount.toString().includes(searchAmount.toString())) return false;
@@ -1415,8 +1430,8 @@
             }
 
             list.forEach(t => {
-                let client = db.rmbClients.find(c => c.id === t.clientId);
-                let company = db.rmbCompanies.find(c => c.id === t.companyId);
+                let client = appDb.rmbClients.find(c => c.id === t.clientId);
+                let company = appDb.rmbCompanies.find(c => c.id === t.companyId);
 
                 let tr = document.createElement('tr');
                 tr.className = "hover:bg-white/5 transition";
@@ -1436,7 +1451,7 @@
 
         function deleteRmbTransaction(id) {
             if(confirm('هل أنت تأكد من حذف هذه المعاملة؟')) {
-                db.rmbTransactions = db.rmbTransactions.filter(t => t.id !== id);
+                appDb.rmbTransactions = appDb.rmbTransactions.filter(t => t.id !== id);
                 saveData();
                 renderRmbTransactions();
             }
@@ -1452,9 +1467,9 @@
             select.innerHTML = '';
 
             if(type === 'CLIENT') {
-                db.rmbClients.forEach(c => select.innerHTML += `<option value="${c.id}">${c.name}</option>`);
+                appDb.rmbClients.forEach(c => select.innerHTML += `<option value="${c.id}">${c.name}</option>`);
             } else {
-                db.rmbCompanies.forEach(c => select.innerHTML += `<option value="${c.id}">${c.name}</option>`);
+                appDb.rmbCompanies.forEach(c => select.innerHTML += `<option value="${c.id}">${c.name}</option>`);
             }
             renderRmbStatementTable();
         }
@@ -1468,10 +1483,10 @@
 
             let targetName = "--";
             if(type === 'CLIENT') {
-                let cl = db.rmbClients.find(c => c.id === targetId);
+                let cl = appDb.rmbClients.find(c => c.id === targetId);
                 if(cl) targetName = cl.name;
             } else {
-                let comp = db.rmbCompanies.find(c => c.id === targetId);
+                let comp = appDb.rmbCompanies.find(c => c.id === targetId);
                 if(comp) targetName = comp.name;
             }
 
@@ -1479,15 +1494,15 @@
             document.getElementById('rmbPdfTargetType').innerText = type === 'CLIENT' ? "كشف حساب زبون" : "كشف حساب شركة";
             document.getElementById('rmbPdfStatementDate').innerText = getTodayDateString();
 
-            let list = db.rmbTransactions.filter(t => type === 'CLIENT' ? t.clientId === targetId : t.companyId === targetId);
+            let list = appDb.rmbTransactions.filter(t => type === 'CLIENT' ? t.clientId === targetId : t.companyId === targetId);
 
             let total = 0;
             if(list.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-gray-500">لا توجد معاملات مسجلة.</td></tr>`;
             } else {
                 list.forEach(t => {
-                    let client = db.rmbClients.find(c => c.id === t.clientId);
-                    let company = db.rmbCompanies.find(c => c.id === t.companyId);
+                    let client = appDb.rmbClients.find(c => c.id === t.clientId);
+                    let company = appDb.rmbCompanies.find(c => c.id === t.companyId);
                     total += t.amount;
 
                     let tr = document.createElement('tr');
@@ -1506,7 +1521,7 @@
         }
 
         function exportRmbData() {
-            let rmbData = { rmbClients: db.rmbClients, rmbCompanies: db.rmbCompanies, rmbTransactions: db.rmbTransactions };
+            let rmbData = { rmbClients: appDb.rmbClients, rmbCompanies: appDb.rmbCompanies, rmbTransactions: appDb.rmbTransactions };
             let blob = new Blob([JSON.stringify(rmbData, null, 2)], { type: 'application/json' });
             let a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
@@ -1521,9 +1536,9 @@
             reader.onload = function(evt) {
                 try {
                     let imported = JSON.parse(evt.target.result);
-                    if(imported.rmbClients) db.rmbClients = imported.rmbClients;
-                    if(imported.rmbCompanies) db.rmbCompanies = imported.rmbCompanies;
-                    if(imported.rmbTransactions) db.rmbTransactions = imported.rmbTransactions;
+                    if(imported.rmbClients) appDb.rmbClients = imported.rmbClients;
+                    if(imported.rmbCompanies) appDb.rmbCompanies = imported.rmbCompanies;
+                    if(imported.rmbTransactions) appDb.rmbTransactions = imported.rmbTransactions;
                     saveData();
                     showToast('تم استيراد بيانات RMB بنجاح!');
                     renderRmbTransactions();
@@ -1535,7 +1550,7 @@
         }
 
         function exportFullBackup() {
-            let blob = new Blob([JSON.stringify(db, null, 2)], { type: 'application/json' });
+            let blob = new Blob([JSON.stringify(appDb, null, 2)], { type: 'application/json' });
             let a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
             a.download = `FULL_SYSTEM_BACKUP_${getTodayDateString()}.json`;
@@ -1548,9 +1563,10 @@
             let reader = new FileReader();
             reader.onload = function(evt) {
                 try {
-                    db = JSON.parse(evt.target.result);
+                    appDb = JSON.parse(evt.target.result);
                     saveData();
                     showToast('تم استعادة النسخة الاحتياطية الشاملة بنجاح!');
+                    refreshActiveUI();
                 } catch(err) {
                     alert('ملف النسخة الاحتياطية غير صالح.');
                 }
@@ -1558,72 +1574,51 @@
             reader.readAsText(file);
         }
     </script>
-   <script type="module">
-  // 1. تعريف واستدعاء مكتبات الفايربيس
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-  // 2. إعدادات مشروعك
-  const firebaseConfig = {
-    apiKey: "AIzaSyCruQTijtvF5HqGaSvKoAyCeLwWyyLiDd0",
-    authDomain: "tarek88-5691c.firebaseapp.com",
-    projectId: "tarek88-5691c",
-    storageBucket: "tarek88-5691c.appspot.com",
-    messagingSenderId: "1032977435671",
-    appId: "1:632977435671:web:f11e2346ffb44b9f560052"
-  };
+    <!-- تهيئة Firebase وتفعيل الحفظ والمزامنة المباشرة -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+      import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-  // 3. تشغيل الفايربيس وربطه بقاعدة البيانات
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+      const firebaseConfig = {
+        apiKey: "AIzaSyCruQTijtvF5HqGaSvKoAyCeLwWyyLiDd0",
+        authDomain: "tarek88-5691c.firebaseapp.com",
+        projectId: "tarek88-5691c",
+        storageBucket: "tarek88-5691c.appspot.com",
+        messagingSenderId: "1032977435671",
+        appId: "1:632977435671:web:f11e2346ffb44b9f560052"
+      };
 
-  // جعل قاعدة البيانات متاحة في كامل البرنامج
-  window.db = db;
-</script>
-<script type="module">
-  // 1. استدعاء مكتبات الفايربيس
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+      const app = initializeApp(firebaseConfig);
+      const firebaseDb = getFirestore(app);
 
-  // 2. إعدادات المشروع
-  const firebaseConfig = {
-    apiKey: "AIzaSyCruQTijtvF5HqGaSvKoAyCeLwWyyLiDd0",
-    authDomain: "tarek88-5691c.firebaseapp.com",
-    projectId: "tarek88-5691c",
-    storageBucket: "tarek88-5691c.appspot.com",
-    messagingSenderId: "1032977435671",
-    appId: "1:632977435671:web:f11e2346ffb44b9f560052"
-  };
+      // دالة الحفظ السحابي أونلاين
+      window.saveToFirebase = async function(data) {
+        try {
+          await setDoc(doc(firebaseDb, "appData", "currentData"), {
+            payload: JSON.stringify(data),
+            updatedAt: new Date()
+          });
+          console.log("تم الحفظ أونلاين في Firebase!");
+        } catch (e) {
+          console.error("خطأ أثناء الحفظ في Firebase:", e);
+        }
+      };
 
-  // 3. تشغيل الفايربيس
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  window.db = db;
-
-  // 4. دالة للحفظ في الفايربيس (استدعها في برنامجك بدل saveData القديمة)
-  window.saveToFirebase = async function(data) {
-    try {
-      await setDoc(doc(db, "appData", "currentData"), {
-        payload: JSON.stringify(data),
-        updatedAt: new Date()
+      // المزامنة الفورية أونلاين مجرد فتح الصفحة أو تعديل البيانات من أي جهاز
+      onSnapshot(doc(firebaseDb, "appData", "currentData"), (docSnap) => {
+        if (docSnap.exists()) {
+          const liveData = JSON.parse(docSnap.data().payload);
+          if (liveData) {
+            window.appDb = liveData;
+            localStorage.setItem('alanhar_db', JSON.stringify(liveData));
+            if (typeof window.refreshActiveUI === 'function') {
+              window.refreshActiveUI();
+            }
+          }
+          console.log("تم تحديث البيانات أونلاين بصلة حية:", liveData);
+        }
       });
-      console.log("تم الحفظ في Firebase أونلاين!");
-    } catch (e) {
-      console.error("خطأ في الحفظ:", e);
-    }
-  };
-
-  // 5. الاستماع للبيانات أونلاين مجرد فتح الصفحة
-  onSnapshot(doc(db, "appData", "currentData"), (docSnap) => {
-    if (docSnap.exists()) {
-      const liveData = JSON.parse(docSnap.data().payload);
-      // ربط البيانات الحية بمتغير البرنامج الرئيسي
-      if (typeof db !== 'undefined' && Array.isArray(db)) {
-        window.dbData = liveData;
-      }
-      console.log("تم جلب التحديثات أونلاين:", liveData);
-    }
-  });
-</script>
+    </script>
 </body>
 </html>
