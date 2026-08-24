@@ -72,7 +72,7 @@
             }
             .print-header {
                 text-align: center !important;
-                border-b: 2px solid #000 !important;
+                border-bottom: 2px solid #000 !important;
                 padding-bottom: 12px !important;
                 margin-bottom: 15px !important;
             }
@@ -129,6 +129,19 @@
                 font-weight: 900 !important;
             }
         }
+
+        /* ==================== نظام الدخول OTP ==================== */
+        .otp-login-input {
+            width: 58px; height: 68px; text-align: center; font-size: 30px; font-weight: 900;
+            border-radius: 16px; border: 2px solid rgba(255,255,255,.12);
+            background: rgba(0,0,0,.35); color: #fff; outline: none; transition: .2s;
+            font-family: monospace;
+        }
+        .otp-login-input:focus { border-color: #f59e0b; box-shadow: 0 0 0 4px rgba(245,158,11,.12); transform: translateY(-2px); }
+        .otp-login-input::-webkit-outer-spin-button, .otp-login-input::-webkit-inner-spin-button { margin: 0; -webkit-appearance: none; }
+        .otp-request-card { animation: otpFadeIn .28s ease-out; }
+        @keyframes otpFadeIn { from { opacity:0; transform: translateY(12px) scale(.98); } to { opacity:1; transform:none; } }
+        .status-dot { width:9px; height:9px; border-radius:999px; display:inline-block; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between pb-24">
@@ -138,9 +151,83 @@
         <span id="toastMsg"></span>
     </div>
 
+
+    <!-- ==================== شاشة الدخول الجديدة ==================== -->
+    <div id="auth-screen" class="fixed inset-0 bg-[#121212] z-[100] flex items-center justify-center p-4">
+        <div class="w-full max-w-md otp-request-card">
+            <div class="text-center mb-7">
+                <div class="inline-flex w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-500 to-purple-600 items-center justify-center shadow-2xl mb-4">
+                    <span class="text-2xl font-black text-white">OTP</span>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-black text-white">OTP Verification</h1>
+                <div class="text-4xl font-black text-purple-500 mt-1">V3</div>
+                <p class="text-gray-400 text-sm mt-2">أدخل كود الدخول المرتبط بحسابك</p>
+            </div>
+
+            <div id="login-card" class="glass-panel rounded-[28px] p-7 shadow-2xl border border-white/10">
+                <h2 class="text-xl font-black text-white text-center mb-2">Verification</h2>
+                <p class="text-gray-400 text-center text-sm mb-7">أدخل كود الدخول المكوّن من 4 أرقام</p>
+
+                <div id="otpInputs" dir="ltr" class="flex justify-center gap-3 mb-6">
+                    <input class="otp-login-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code" aria-label="رقم 1">
+                    <input class="otp-login-input" maxlength="1" inputmode="numeric" aria-label="رقم 2">
+                    <input class="otp-login-input" maxlength="1" inputmode="numeric" aria-label="رقم 3">
+                    <input class="otp-login-input" maxlength="1" inputmode="numeric" aria-label="رقم 4">
+                </div>
+
+                <button onclick="loginWithCode()" class="w-full gold-gradient text-black font-black py-3 rounded-2xl shadow-lg hover:opacity-90 transition cursor-pointer">
+                    دخول إلى البرنامج
+                </button>
+
+                <button onclick="showAccessRequestForm()" class="w-full mt-3 bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 rounded-2xl border border-gray-700 transition cursor-pointer">
+                    ليس لدي كود — طلب كود دخول
+                </button>
+
+                <div id="loginMessage" class="hidden mt-4 text-center text-sm font-bold rounded-xl px-4 py-3"></div>
+            </div>
+
+            <div id="access-request-card" class="hidden glass-panel rounded-[28px] p-7 shadow-2xl border border-emerald-500/20">
+                <div class="flex items-center justify-between mb-5">
+                    <div>
+                        <h2 class="text-xl font-black text-white">طلب كود دخول</h2>
+                        <p class="text-xs text-gray-400 mt-1">أرسل طلبك للمسؤول للموافقة عليه</p>
+                    </div>
+                    <button onclick="showLoginForm()" class="text-gray-400 hover:text-white text-sm cursor-pointer">رجوع</button>
+                </div>
+
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">الاسم</label>
+                        <input id="requestName" type="text" maxlength="80" placeholder="اكتب اسمك" class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-3 text-white focus:border-emerald-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">كود الدخول الذي تريده (4 أرقام)</label>
+                        <input id="requestCode" type="text" maxlength="4" inputmode="numeric" placeholder="مثال: 1234" class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-3 text-white font-mono font-black tracking-[.4em] text-center focus:border-emerald-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">تأكيد الكود</label>
+                        <input id="requestCodeConfirm" type="text" maxlength="4" inputmode="numeric" placeholder="أعد الكود" class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-3 text-white font-mono font-black tracking-[.4em] text-center focus:border-emerald-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 mb-1">ملاحظة للمسؤول (اختياري)</label>
+                        <textarea id="requestNote" rows="2" maxlength="250" placeholder="مثلاً: موظف جديد..." class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-3 text-white text-xs focus:border-emerald-500 focus:outline-none"></textarea>
+                    </div>
+                </div>
+
+                <button onclick="submitAccessRequest()" class="w-full mt-5 bg-emerald-600 hover:bg-emerald-500 text-white font-black py-3 rounded-2xl shadow-lg transition cursor-pointer">
+                    إرسال الطلب للمسؤول
+                </button>
+                <div id="requestMessage" class="hidden mt-4 text-center text-sm font-bold rounded-xl px-4 py-3"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- 0. الشاشة الأساسية عند فتح البرنامج (اختيار النظام) -->
     <div id="view-landing" class="fixed inset-0 bg-[#121212] z-50 flex flex-col items-center justify-center p-6 text-center">
         <div class="absolute top-6 left-6 flex items-center gap-3">
+            <button id="adminRequestsBtn" onclick="openAccessRequests()" class="hidden bg-gray-800 hover:bg-gray-700 text-purple-300 border border-purple-500/40 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-lg cursor-pointer">
+                🔐 طلبات الدخول <span id="pendingRequestsBadge" class="bg-purple-600 text-white rounded-full px-2 py-0.5">0</span>
+            </button>
             <button onclick="exportFullBackup()" class="bg-gray-800 hover:bg-gray-700 text-amber-400 border border-amber-500/40 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-lg cursor-pointer">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                 تصدير نسخة احتياطية
@@ -150,11 +237,15 @@
                 استيراد نسخة
                 <input type="file" id="fullBackupInput" onchange="importFullBackup(event)" class="hidden" accept=".json">
             </label>
+            <button onclick="logoutUser()" class="bg-gray-800 hover:bg-gray-700 text-red-300 border border-red-500/30 px-4 py-2 rounded-xl text-xs font-bold transition shadow-lg cursor-pointer">
+                تسجيل الخروج
+            </button>
         </div>
 
         <div class="mb-10">
             <h1 class="text-3xl md:text-5xl font-black text-white mb-2">AL ANHAR <span class="text-amber-400 font-light">DIŞ TİCARET</span></h1>
             <p class="text-gray-400 text-sm md:text-base">اختر قسم المعاملات المطلوب للمتابعة</p>
+            <p id="currentUserBadge" class="text-amber-400 text-xs font-bold mt-2">الحساب: --</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-3xl">
@@ -253,6 +344,7 @@
                                     <th class="p-3">الحساب</th>
                                     <th class="p-3">الملاحظات</th>
                                     <th class="p-3">الإجمالي</th>
+                                    <th class="p-3">الموظف / الحساب</th>
                                     <th class="p-3 text-center">التحكم</th>
                                 </tr>
                             </thead>
@@ -267,7 +359,7 @@
                         <button onclick="switchSwftBottomTab('trash')" class="bg-gray-800 hover:bg-gray-700 text-red-400 border border-red-500/40 font-bold px-4 py-2.5 rounded-xl shadow-lg transition flex items-center gap-2 cursor-pointer text-xs">
                             🗑️ سلة المحذوفات
                         </button>
-                        <button onclick="openModal('addCompanyModal')" class="gold-gradient text-black font-bold px-5 py-2.5 rounded-xl shadow-lg hover:opacity-90 transition flex items-center gap-2 cursor-pointer">
+                        <button onclick="openAddCompanyModal()" class="gold-gradient text-black font-bold px-5 py-2.5 rounded-xl shadow-lg hover:opacity-90 transition flex items-center gap-2 cursor-pointer">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
                             إضافة شركة جديدة
                         </button>
@@ -350,6 +442,7 @@
                                     <th class="p-4">الحساب</th>
                                     <th class="p-4">الملاحظات</th>
                                     <th class="p-4">الإجمالي الكلي</th>
+                                    <th class="p-4">الموظف / الحساب</th>
                                     <th class="p-4 text-center">التحكم</th>
                                 </tr>
                             </thead>
@@ -379,6 +472,7 @@
                                     <th class="p-4">المبلغ الأساسي</th>
                                     <th class="p-4">الحساب / الجهة</th>
                                     <th class="p-4">بيانات الحساب والملاحظات</th>
+                                    <th class="p-4">الموظف / الحساب</th>
                                 </tr>
                             </thead>
                             <tbody id="swftPreviewUnifiedTableBody" class="divide-y divide-gray-800 text-sm"></tbody>
@@ -440,6 +534,7 @@
                                 <th class="p-3">الحساب</th>
                                 <th class="p-3">الملاحظات</th>
                                 <th class="p-3">الإجمالي الكامل للمعاملة</th>
+                                <th class="p-3">الموظف / الحساب</th>
                             </tr>
                         </thead>
                         <tbody id="swftStatementTableBody" class="divide-y divide-gray-800"></tbody>
@@ -560,6 +655,7 @@
                                     <th class="p-4">الشركة</th>
                                     <th class="p-4">المبلغ الأساسي (¥)</th>
                                     <th class="p-4">بيانات الحساب</th>
+                                    <th class="p-4">الموظف / الحساب</th>
                                     <th class="p-4 text-center">حذف</th>
                                 </tr>
                             </thead>
@@ -572,7 +668,7 @@
             <div id="rmb-sec-clients" class="space-y-6 hidden">
                 <div class="flex justify-between items-center">
                     <h2 class="text-xl font-bold text-white border-r-4 border-red-500 pr-3">قائمة الزبائن (RMB ¥)</h2>
-                    <button onclick="openModal('addRmbClientModal')" class="red-gradient text-white font-bold px-5 py-2.5 rounded-xl shadow-lg hover:opacity-90 transition cursor-pointer">
+                    <button onclick="openAddRmbClientModal()" class="red-gradient text-white font-bold px-5 py-2.5 rounded-xl shadow-lg hover:opacity-90 transition cursor-pointer">
                         + إضافة زبون جديد
                     </button>
                 </div>
@@ -592,7 +688,7 @@
             <div id="rmb-sec-companies" class="space-y-6 hidden">
                 <div class="flex justify-between items-center">
                     <h2 class="text-xl font-bold text-white border-r-4 border-red-500 pr-3">قائمة الشركات (RMB ¥)</h2>
-                    <button onclick="openModal('addRmbCompanyModal')" class="red-gradient text-white font-bold px-5 py-2.5 rounded-xl shadow-lg hover:opacity-90 transition cursor-pointer">
+                    <button onclick="openAddRmbCompanyModal()" class="red-gradient text-white font-bold px-5 py-2.5 rounded-xl shadow-lg hover:opacity-90 transition cursor-pointer">
                         + إضافة شركة جديدة
                     </button>
                 </div>
@@ -633,10 +729,10 @@
                 <div class="flex flex-col sm:flex-row justify-between items-center gap-4 no-print">
                     <h2 class="text-xl font-bold text-white border-r-4 border-red-500 pr-3">كشف حساب ومعاملات RMB ¥</h2>
                     <div class="flex flex-wrap gap-2">
-                        <button onclick="exportRmbData()" class="bg-gray-800 hover:bg-gray-700 text-red-400 border border-red-500/30 px-3 py-1.5 rounded-xl text-xs font-bold cursor-pointer">تصدير بيانات RMB</button>
+                        <button onclick="exportFullBackup()" class="bg-gray-800 hover:bg-gray-700 text-red-400 border border-red-500/30 px-3 py-1.5 rounded-xl text-xs font-bold cursor-pointer">تصدير بيانات RMB</button>
                         <label class="bg-gray-800 hover:bg-gray-700 text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded-xl text-xs font-bold cursor-pointer">
                             استيراد بيانات RMB
-                            <input type="file" id="importRmbInput" onchange="importRmbData(event)" class="hidden" accept=".json">
+                            <input type="file" id="importRmbInput" onchange="importFullBackup(event)" class="hidden" accept=".json">
                         </label>
                         <button onclick="window.print()" class="red-gradient text-white px-4 py-1.5 rounded-xl text-xs font-bold shadow-lg cursor-pointer">🖨️ طباعة الكشف PDF</button>
                     </div>
@@ -679,6 +775,7 @@
                                 <th class="p-3">الشركة</th>
                                 <th class="p-3">المبلغ (¥)</th>
                                 <th class="p-3">بيانات الحساب / الملاحظات</th>
+                                <th class="p-3">الموظف / الحساب</th>
                             </tr>
                         </thead>
                         <tbody id="rmbStatementTableBody" class="divide-y divide-gray-800"></tbody>
@@ -690,6 +787,21 @@
                 </div>
             </div>
         </main>
+    </div>
+
+
+    <!-- ==================== إدارة طلبات الدخول (للمسؤول فقط) ==================== -->
+    <div id="accessRequestsModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-[90] hidden flex items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-3xl p-6 rounded-3xl border border-purple-500/30 shadow-2xl max-h-[88vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-gray-800 pb-4 mb-4">
+                <div>
+                    <h3 class="text-xl font-black text-purple-300">طلبات الدخول</h3>
+                    <p class="text-xs text-gray-400 mt-1">المسؤول: TAREK — مراجعة طلبات الأكواد</p>
+                </div>
+                <button onclick="closeModal('accessRequestsModal')" class="text-gray-400 hover:text-white text-2xl cursor-pointer">×</button>
+            </div>
+            <div id="accessRequestsList" class="space-y-3"></div>
+        </div>
     </div>
 
     <!-- Modals -->
@@ -859,14 +971,16 @@
         </div>
     </div>
 
-    <!-- JavaScript المحدث بالكامل المربوط مع الفايربيس والمزامنة المباشرة وسلة المحذوفات -->
+    <!-- JavaScript المحدث بالكامل والمغلق بصورة صحيحة -->
     <script>
         let appDb = JSON.parse(localStorage.getItem('alanhar_db')) || {
             companies: [],
             transactions: [],
             rmbClients: [],
             rmbCompanies: [],
-            rmbTransactions: []
+            rmbTransactions: [],
+            users: [],
+            accessRequests: []
         };
 
         if(!appDb.companies) appDb.companies = [];
@@ -874,9 +988,312 @@
         if(!appDb.rmbClients) appDb.rmbClients = [];
         if(!appDb.rmbCompanies) appDb.rmbCompanies = [];
         if(!appDb.rmbTransactions) appDb.rmbTransactions = [];
+        if(!appDb.users) appDb.users = [];
+        if(!appDb.accessRequests) appDb.accessRequests = [];
 
+        /* الحساب الرئيسي ثابت: TAREK / 8008 */
+        const ADMIN_USER = { id: 'admin-tarek', name: 'TAREK', code: '8008', role: 'admin', status: 'approved' };
+        if(!appDb.users.some(u => u.id === ADMIN_USER.id)) {
+            appDb.users.unshift({...ADMIN_USER});
+            localStorage.setItem('alanhar_db', JSON.stringify(appDb));
+        } else {
+            const adminIdx = appDb.users.findIndex(u => u.id === ADMIN_USER.id);
+            appDb.users[adminIdx] = {...ADMIN_USER};
+        }
+
+        /* السجلات القديمة من النسخة السابقة لم تكن تحفظ اسم الموظف؛ نربطها بالحساب الرئيسي حتى تبقى خانة الموظف مكتملة. */
+        appDb.transactions.forEach(t => { if(!t.employeeName) t.employeeName = 'TAREK'; });
+        appDb.rmbTransactions.forEach(t => { if(!t.employeeName) t.employeeName = 'TAREK'; });
+
+        let currentUser = null;
         let currentActiveCompanyId = null;
         let currentRmbContext = { type: 'ALL', id: null };
+
+
+        /* ==================== AUTH / ACCESS CONTROL ==================== */
+        const TELEGRAM_BOT_TOKEN = "7860582198:AAHRrpCCr83B1X1O7BGHebRUc-5h9VaPDBk";
+        const TELEGRAM_ADMIN_CHAT_ID = "355888174";
+
+        function normalizeCode(value) {
+            return String(value || '').replace(/\D/g, '').slice(0, 4);
+        }
+
+        function getOtpInputs() {
+            return Array.from(document.querySelectorAll('#otpInputs .otp-login-input'));
+        }
+
+        function getEnteredOtp() {
+            return getOtpInputs().map(i => i.value).join('');
+        }
+
+        function showLoginMessage(msg, ok=true) {
+            const el = document.getElementById('loginMessage');
+            if(!el) return;
+            el.className = `mt-4 text-center text-sm font-bold rounded-xl px-4 py-3 ${ok ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/20' : 'bg-red-500/15 text-red-300 border border-red-500/20'}`;
+            el.innerText = msg;
+            el.classList.remove('hidden');
+        }
+
+        function showRequestMessage(msg, ok=true) {
+            const el = document.getElementById('requestMessage');
+            if(!el) return;
+            el.className = `mt-4 text-center text-sm font-bold rounded-xl px-4 py-3 ${ok ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/20' : 'bg-red-500/15 text-red-300 border border-red-500/20'}`;
+            el.innerText = msg;
+            el.classList.remove('hidden');
+        }
+
+        function showLoginForm() {
+            document.getElementById('access-request-card').classList.add('hidden');
+            document.getElementById('login-card').classList.remove('hidden');
+            document.getElementById('requestMessage').classList.add('hidden');
+            getOtpInputs().forEach(i => i.value = '');
+            getOtpInputs()[0]?.focus();
+        }
+
+        function showAccessRequestForm() {
+            document.getElementById('login-card').classList.add('hidden');
+            document.getElementById('access-request-card').classList.remove('hidden');
+            document.getElementById('loginMessage').classList.add('hidden');
+            document.getElementById('requestName')?.focus();
+        }
+
+        function loginWithCode() {
+            const code = getEnteredOtp();
+            if(code.length !== 4) return showLoginMessage('أدخل الكود المكوّن من 4 أرقام.', false);
+
+            if(code === ADMIN_USER.code) {
+                currentUser = {...ADMIN_USER};
+                completeLogin();
+                return;
+            }
+
+            const user = appDb.users.find(u => u.code === code && u.status === 'approved');
+            if(!user) {
+                const pending = appDb.accessRequests.find(r => r.code === code && r.status === 'pending');
+                if(pending) return showLoginMessage('هذا الكود ما زال قيد المراجعة. انتظر موافقة المسؤول.', false);
+                return showLoginMessage('الكود غير صحيح أو لم تتم الموافقة عليه.', false);
+            }
+
+            currentUser = {...user};
+            completeLogin();
+        }
+
+        function completeLogin() {
+            document.getElementById('auth-screen').classList.add('hidden');
+            document.getElementById('view-landing').classList.remove('hidden');
+            updateAdminControls();
+            showToast(`مرحباً ${currentUser.name} 👋`);
+        }
+
+        function logoutUser() {
+            currentUser = null;
+            document.getElementById('module-swft').classList.add('hidden');
+            document.getElementById('module-rmb').classList.add('hidden');
+            document.getElementById('view-landing').classList.add('hidden');
+            document.getElementById('auth-screen').classList.remove('hidden');
+            showLoginForm();
+            updateAdminControls();
+        }
+
+        function updateAdminControls() {
+            const btn = document.getElementById('adminRequestsBtn');
+            if(!btn) return;
+            const isAdmin = currentUser && currentUser.role === 'admin';
+            btn.classList.toggle('hidden', !isAdmin);
+            const pending = appDb.accessRequests.filter(r => r.status === 'pending').length;
+            const badge = document.getElementById('pendingRequestsBadge');
+            if(badge) badge.innerText = pending;
+            const userBadge = document.getElementById('currentUserBadge');
+            if(userBadge) userBadge.innerText = currentUser ? `الحساب: ${currentUser.name}${currentUser.role === 'admin' ? ' — مسؤول' : ''}` : 'الحساب: --';
+        }
+
+        function sendTelegramMessage(message) {
+            if(!TELEGRAM_BOT_TOKEN || !TELEGRAM_ADMIN_CHAT_ID) return;
+            /* Image beacon يتجاوز قيود CORS لأننا لا نحتاج قراءة الاستجابة. */
+            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${encodeURIComponent(TELEGRAM_ADMIN_CHAT_ID)}&text=${encodeURIComponent(message)}`;
+            try {
+                const beacon = new Image();
+                beacon.referrerPolicy = 'no-referrer';
+                beacon.src = url;
+            } catch(e) {}
+        }
+
+        function submitAccessRequest() {
+            const name = document.getElementById('requestName').value.trim();
+            const code = normalizeCode(document.getElementById('requestCode').value);
+            const confirmCode = normalizeCode(document.getElementById('requestCodeConfirm').value);
+            const note = document.getElementById('requestNote').value.trim();
+
+            if(name.length < 2) return showRequestMessage('يرجى كتابة الاسم.', false);
+            if(code.length !== 4) return showRequestMessage('الكود يجب أن يكون 4 أرقام.', false);
+            if(code === ADMIN_USER.code) return showRequestMessage('هذا الكود محجوز للمسؤول.', false);
+            if(code !== confirmCode) return showRequestMessage('تأكيد الكود غير مطابق.', false);
+            if(appDb.users.some(u => u.code === code && u.status === 'approved')) return showRequestMessage('هذا الكود مستخدم بالفعل.', false);
+            if(appDb.accessRequests.some(r => r.code === code && r.status === 'pending')) return showRequestMessage('يوجد طلب قيد المراجعة بنفس الكود.', false);
+
+            const request = {
+                id: 'REQ-' + Date.now().toString(36).toUpperCase(),
+                name,
+                code,
+                note,
+                status: 'pending',
+                createdAt: new Date().toISOString()
+            };
+
+            appDb.accessRequests.unshift(request);
+            saveData();
+
+            const msg =
+`🔐 طلب كود دخول جديد
+━━━━━━━━━━━━
+👤 الاسم: ${name}
+🔢 الكود المطلوب: ${code}
+🆔 رقم الطلب: ${request.id}
+📝 الملاحظة: ${note || '-'}
+⏳ الحالة: قيد المراجعة
+
+افتح البرنامج بالكود الرئيسي 8008 لمراجعة الطلب.`;
+            sendTelegramMessage(msg);
+
+            document.getElementById('requestName').value = '';
+            document.getElementById('requestCode').value = '';
+            document.getElementById('requestCodeConfirm').value = '';
+            document.getElementById('requestNote').value = '';
+            showRequestMessage(`تم إرسال الطلب بنجاح. رقم الطلب: ${request.id} — انتظر موافقة المسؤول.`, true);
+        }
+
+        function openAccessRequests() {
+            if(!currentUser || currentUser.role !== 'admin') return alert('هذه الشاشة للمسؤول فقط.');
+            renderAccessRequests();
+            openModal('accessRequestsModal');
+        }
+
+        function renderAccessRequests() {
+            const container = document.getElementById('accessRequestsList');
+            if(!container) return;
+            const requests = appDb.accessRequests || [];
+            if(requests.length === 0) {
+                container.innerHTML = `<div class="text-center py-10 text-gray-500">لا توجد طلبات دخول حالياً.</div>`;
+                updateAdminControls();
+                return;
+            }
+
+            container.innerHTML = '';
+            requests.forEach(r => {
+                const color = r.status === 'pending' ? 'yellow' : (r.status === 'approved' ? 'emerald' : 'red');
+                const statusText = r.status === 'pending' ? 'قيد المراجعة' : (r.status === 'approved' ? 'تمت الموافقة' : 'مرفوض');
+                const div = document.createElement('div');
+                div.className = 'bg-black/30 border border-gray-800 rounded-2xl p-4';
+                div.innerHTML = `
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div class="space-y-1">
+                            <div class="font-black text-white text-lg">${escapeHtml(r.name)}</div>
+                            <div class="text-xs text-gray-400">رقم الطلب: <span class="font-mono text-gray-300">${escapeHtml(r.id)}</span></div>
+                            <div class="text-sm">الكود: <span class="font-mono font-black text-purple-300 tracking-widest">${escapeHtml(r.code)}</span></div>
+                            <div class="text-xs text-gray-500">${r.note ? 'الملاحظة: ' + escapeHtml(r.note) : 'بدون ملاحظة'}</div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold px-3 py-1.5 rounded-full bg-${color}-500/10 text-${color}-300 border border-${color}-500/20">
+                                <span class="status-dot bg-${color}-400"></span> ${statusText}
+                            </span>
+                            ${r.status === 'pending' ? `
+                                <button onclick="approveAccessRequest('${r.id}')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-xs font-black cursor-pointer">موافقة</button>
+                                <button onclick="rejectAccessRequest('${r.id}')" class="bg-red-600/80 hover:bg-red-600 text-white px-4 py-2 rounded-xl text-xs font-black cursor-pointer">رفض</button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+            updateAdminControls();
+        }
+
+        function approveAccessRequest(id) {
+            if(!currentUser || currentUser.role !== 'admin') return;
+            const r = appDb.accessRequests.find(x => x.id === id);
+            if(!r || r.status !== 'pending') return;
+
+            if(appDb.users.some(u => u.code === r.code && u.status === 'approved')) {
+                r.status = 'rejected';
+                r.decisionNote = 'الكود مستخدم مسبقاً';
+            } else {
+                const user = {
+                    id: 'USR-' + Date.now().toString(36).toUpperCase(),
+                    name: r.name,
+                    code: r.code,
+                    role: 'user',
+                    status: 'approved',
+                    createdAt: new Date().toISOString(),
+                    requestId: r.id
+                };
+                appDb.users.push(user);
+                r.status = 'approved';
+                r.approvedAt = new Date().toISOString();
+                r.approvedBy = ADMIN_USER.name;
+
+                sendTelegramMessage(`✅ تمت الموافقة على طلب الدخول
+👤 ${r.name}
+🔢 الكود: ${r.code}
+🆔 الطلب: ${r.id}`);
+            }
+
+            saveData();
+            renderAccessRequests();
+            showToast('تمت الموافقة وإضافة الحساب بنجاح.');
+        }
+
+        function rejectAccessRequest(id) {
+            if(!currentUser || currentUser.role !== 'admin') return;
+            const r = appDb.accessRequests.find(x => x.id === id);
+            if(!r || r.status !== 'pending') return;
+            r.status = 'rejected';
+            r.rejectedAt = new Date().toISOString();
+            r.rejectedBy = ADMIN_USER.name;
+            saveData();
+            sendTelegramMessage(`❌ تم رفض طلب الدخول
+👤 ${r.name}
+🔢 الكود: ${r.code}
+🆔 الطلب: ${r.id}`);
+            renderAccessRequests();
+            showToast('تم رفض الطلب.');
+        }
+
+        function escapeHtml(value) {
+            return String(value ?? '').replace(/[&<>"']/g, c => ({
+                '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#039;'
+            }[c]));
+        }
+
+        function employeeLabel(t) {
+            return escapeHtml(t.employeeName || t.createdByName || 'غير محدد');
+        }
+
+        function setupOtpInputs() {
+            const inputs = getOtpInputs();
+            inputs.forEach((input, index) => {
+                input.addEventListener('input', () => {
+                    input.value = normalizeCode(input.value).slice(-1);
+                    if(input.value && index < inputs.length - 1) inputs[index + 1].focus();
+                    if(getEnteredOtp().length === 4) loginWithCode();
+                });
+                input.addEventListener('keydown', e => {
+                    if(e.key === 'Backspace' && !input.value && index > 0) inputs[index - 1].focus();
+                    if(e.key === 'ArrowLeft' && index > 0) inputs[index - 1].focus();
+                    if(e.key === 'ArrowRight' && index < inputs.length - 1) inputs[index + 1].focus();
+                    if(e.key === 'Enter') loginWithCode();
+                });
+                input.addEventListener('paste', e => {
+                    e.preventDefault();
+                    const pasted = normalizeCode((e.clipboardData || window.clipboardData).getData('text'));
+                    pasted.split('').forEach((digit, j) => {
+                        if(inputs[index + j]) inputs[index + j].value = digit;
+                    });
+                    const next = Math.min(index + pasted.length, inputs.length - 1);
+                    inputs[next]?.focus();
+                    if(getEnteredOtp().length === 4) loginWithCode();
+                });
+            });
+        }
 
         function showToast(msg) {
             const toast = document.getElementById('toast');
@@ -890,20 +1307,6 @@
             if (typeof window.saveToFirebase === 'function') {
                 window.saveToFirebase(appDb);
             }
-        }
-
-        function refreshActiveUI() {
-            renderCompanies();
-            renderGlobalSwftTransactions();
-            renderTransactions();
-            renderSwftPreview();
-            renderSwftStatement();
-            renderSwftTrash();
-            renderRmbTransactions();
-            renderRmbClients();
-            renderRmbCompanies();
-            renderRmbTrash();
-            renderRmbStatementTable();
         }
 
         function getTodayDateString() {
@@ -928,6 +1331,7 @@
         }
 
         function enterModule(moduleName) {
+            if(!currentUser) return showLoginMessage('يجب تسجيل الدخول أولاً.', false);
             document.getElementById('view-landing').classList.add('hidden');
             if(moduleName === 'SWFT') {
                 document.getElementById('module-swft').classList.remove('hidden');
@@ -944,6 +1348,7 @@
             document.getElementById('module-swft').classList.add('hidden');
             document.getElementById('module-rmb').classList.add('hidden');
             document.getElementById('view-landing').classList.remove('hidden');
+            updateAdminControls();
         }
 
         function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
@@ -1014,7 +1419,7 @@
             });
 
             if(results.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4 text-gray-500">لا توجد نتائج مطابقة للبحث.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="9" class="text-center py-4 text-gray-500">لا توجد نتائج مطابقة للبحث.</td></tr>`;
                 return;
             }
 
@@ -1033,6 +1438,7 @@
                     <td class="p-3 font-bold text-blue-400">${accName}</td>
                     <td class="p-3 text-gray-300 max-w-xs break-words">${t.note || '-'}</td>
                     <td class="p-3 font-mono font-bold text-white">${t.finalTotal.toLocaleString(undefined,{minimumFractionDigits:2})} ${curr}</td>
+                    <td class="p-3 font-bold text-purple-300">${employeeLabel(t)}</td>
                     <td class="p-3 text-center flex justify-center gap-2">
                         <button onclick="editSwftTransaction('${t.id}')" class="text-amber-400 hover:underline font-bold cursor-pointer">تعديل</button>
                         <button onclick="deleteSwftTransaction('${t.id}')" class="text-red-400 hover:underline font-bold cursor-pointer">حذف</button>
@@ -1237,6 +1643,7 @@
                     appDb.transactions[idx].currency = currency;
                     appDb.transactions[idx].account = account;
                     appDb.transactions[idx].note = note;
+                    appDb.transactions[idx].updatedByName = currentUser ? currentUser.name : appDb.transactions[idx].updatedByName;
                     appDb.transactions[idx].c1CalculatedAmount = c1Calc;
                     appDb.transactions[idx].c2CalculatedAmount = c2Calc;
                     appDb.transactions[idx].finalTotal = amount + c1Calc + c2Calc;
@@ -1249,6 +1656,8 @@
                     c1CalculatedAmount: c1Calc,
                     c2CalculatedAmount: c2Calc,
                     finalTotal: amount + c1Calc + c2Calc,
+                    employeeName: currentUser ? currentUser.name : 'غير محدد',
+                    createdById: currentUser ? currentUser.id : null,
                     initialChecked: false,
                     finalChecked: false
                 });
@@ -1279,7 +1688,7 @@
             });
 
             if(compTrans.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-gray-500">لا توجد معاملات مطابقة.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-6 text-gray-500">لا توجد معاملات مطابقة.</td></tr>`;
                 return;
             }
 
@@ -1295,6 +1704,7 @@
                     <td class="p-4 font-bold text-blue-400">${accName}</td>
                     <td class="p-4 text-xs text-gray-300 max-w-xs break-words">${t.note || '-'}</td>
                     <td class="p-4 font-mono font-bold text-white">${t.finalTotal.toLocaleString(undefined,{minimumFractionDigits:2})} ${curr}</td>
+                    <td class="p-4 font-bold text-purple-300">${employeeLabel(t)}</td>
                     <td class="p-4 text-center flex justify-center gap-2">
                         <button onclick="editSwftTransaction('${t.id}')" class="text-amber-400 hover:text-amber-300 font-bold text-xs cursor-pointer">تعديل</button>
                         <button onclick="deleteSwftTransaction('${t.id}')" class="text-red-400 hover:text-red-300 font-bold text-xs cursor-pointer">حذف</button>
@@ -1329,7 +1739,7 @@
             tbody.innerHTML = '';
 
             if(!appDb.transactions || appDb.transactions.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-gray-500">لا توجد معاملات حالية.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-gray-500">لا توجد معاملات حالية.</td></tr>`;
                 return;
             }
 
@@ -1353,6 +1763,7 @@
                     <td class="p-4 font-mono font-bold text-white">${t.amount.toLocaleString(undefined,{minimumFractionDigits:2})} ${curr}</td>
                     <td class="p-4 font-bold text-blue-400">${accName}</td>
                     <td class="p-4 text-xs text-gray-300 max-w-xs break-words">${t.note || '-'}</td>
+                    <td class="p-4 font-bold text-purple-300">${employeeLabel(t)}</td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -1361,7 +1772,6 @@
         function prepareSwftStatementView() {
             let select = document.getElementById('statementSwftCompany');
             select.innerHTML = '';
-            // يعرض كافة الحسابات والشركات بما فيها الشركات التي في سلة المحذوفات
             appDb.companies.forEach(c => {
                 let tag = c.isDeleted ? ' [سلة المحذوفات]' : '';
                 select.innerHTML += `<option value="${c.id}">${c.name} (${c.code})${tag}</option>`;
@@ -1369,7 +1779,6 @@
             renderSwftStatement();
         }
 
-        /* --- تحديث عرض وتنسيق كشف SWFT ليكون طابق PDF --- */
         function renderSwftStatement() {
             let compId = document.getElementById('statementSwftCompany').value;
             let comp = appDb.companies.find(c => c.id === compId);
@@ -1386,7 +1795,7 @@
             let currencyUsed = "$";
 
             if(trans.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-gray-500">لا توجد معاملات لهذه الشركة.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-gray-500">لا توجد معاملات لهذه الشركة.</td></tr>`;
             } else {
                 trans.forEach(t => {
                     let curr = t.currency || '$';
@@ -1402,6 +1811,7 @@
                         <td class="p-3 font-bold">${accName}</td>
                         <td class="p-3">${t.note || '-'}</td>
                         <td class="p-3 font-mono font-bold">${t.finalTotal.toLocaleString(undefined,{minimumFractionDigits:2})} ${curr}</td>
+                        <td class="p-3 font-bold text-purple-300">${employeeLabel(t)}</td>
                     `;
                     tbody.appendChild(tr);
                 });
@@ -1604,18 +2014,18 @@
             let list = appDb.rmbCompanies.filter(c => !c.isDeleted);
 
             if(list.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="2" class="text-center py-6 text-gray-500">لا توجد شركات مسجلة.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="2" class="text-center py-6 text-gray-500">لا يوجد شركات مسجلة.</td></tr>`;
                 return;
             }
-            list.forEach(comp => {
+            list.forEach(c => {
                 let tr = document.createElement('tr');
                 tr.className = "hover:bg-white/5 transition";
                 tr.innerHTML = `
-                    <td class="p-4 font-bold text-white">${comp.name}</td>
+                    <td class="p-4 font-bold text-white">${c.name}</td>
                     <td class="p-4 text-center flex justify-center gap-2">
-                        <button onclick="filterRmbContext('COMPANY', '${comp.id}', '${comp.name}')" class="bg-red-500/20 text-red-400 hover:bg-red-600 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer">عرض المعاملات</button>
-                        <button onclick="openEditRmbCompanyModal('${comp.id}')" class="bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer">تعديل</button>
-                        <button onclick="deleteRmbCompany('${comp.id}')" class="bg-red-600/20 text-red-400 hover:bg-red-600 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer">حذف</button>
+                        <button onclick="filterRmbContext('COMPANY', '${c.id}', '${c.name}')" class="bg-red-500/20 text-red-400 hover:bg-red-600 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer">عرض المعاملات</button>
+                        <button onclick="openEditRmbCompanyModal('${c.id}')" class="bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer">تعديل</button>
+                        <button onclick="deleteRmbCompany('${c.id}')" class="bg-red-600/20 text-red-400 hover:bg-red-600 hover:text-white px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer">حذف</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -1639,9 +2049,9 @@
                 tr.className = "hover:bg-white/5 transition";
                 tr.innerHTML = `
                     <td class="p-4 font-bold text-amber-400">زبون</td>
-                    <td class="p-4 font-bold text-white">${c.name}</td>
+                    <td class="p-4 text-white">${c.name}</td>
                     <td class="p-4 text-center">
-                        <button onclick="restoreRmbClient('${c.id}')" class="bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer">استعادة ↩</button>
+                        <button onclick="restoreRmbClient('${c.id}')" class="bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white px-3 py-1 rounded-lg text-xs font-bold cursor-pointer">استعادة ↩</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -1651,10 +2061,10 @@
                 let tr = document.createElement('tr');
                 tr.className = "hover:bg-white/5 transition";
                 tr.innerHTML = `
-                    <td class="p-4 font-bold text-blue-400">شركة</td>
-                    <td class="p-4 font-bold text-white">${c.name}</td>
+                    <td class="p-4 font-bold text-red-400">شركة</td>
+                    <td class="p-4 text-white">${c.name}</td>
                     <td class="p-4 text-center">
-                        <button onclick="restoreRmbCompany('${c.id}')" class="bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer">استعادة ↩</button>
+                        <button onclick="restoreRmbCompany('${c.id}')" class="bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white px-3 py-1 rounded-lg text-xs font-bold cursor-pointer">استعادة ↩</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -1663,51 +2073,38 @@
 
         function filterRmbContext(type, id, name) {
             currentRmbContext = { type, id };
+            document.getElementById('rmbTransTitle').innerText = `معاملات (${name})`;
             document.getElementById('btnBackFromContext').classList.remove('hidden');
-            document.getElementById('rmbTransTitle').innerText = type === 'CLIENT' ? `معاملات الزبون: ${name}` : `معاملات الشركة: ${name}`;
             switchRmbTab('transactions');
         }
 
         function clearRmbContextFilter() {
             currentRmbContext = { type: 'ALL', id: null };
+            document.getElementById('rmbTransTitle').innerText = `معاملات RMB ¥`;
             document.getElementById('btnBackFromContext').classList.add('hidden');
-            document.getElementById('rmbTransTitle').innerText = "معاملات RMB ¥";
             renderRmbTransactions();
         }
 
         function openRmbTransModal() {
-            let activeClients = appDb.rmbClients.filter(c => !c.isDeleted);
-            let activeCompanies = appDb.rmbCompanies.filter(c => !c.isDeleted);
+            let clientSel = document.getElementById('rmbTransClientSelect');
+            let compSel = document.getElementById('rmbTransCompanySelect');
+            clientSel.innerHTML = '';
+            compSel.innerHTML = '';
 
-            if(activeClients.length === 0 || activeCompanies.length === 0) {
-                return alert('يرجى إضافة زبون وشركة واحدة على الأقل قبل إضافة معاملة.');
+            appDb.rmbClients.filter(c => !c.isDeleted).forEach(c => {
+                clientSel.innerHTML += `<option value="${c.id}">${c.name}</option>`;
+            });
+            appDb.rmbCompanies.filter(c => !c.isDeleted).forEach(c => {
+                compSel.innerHTML += `<option value="${c.id}">${c.name}</option>`;
+            });
+
+            if(clientSel.options.length === 0 || compSel.options.length === 0) {
+                return alert('يرجى إضافة زبون وشركة واحدة على الأقل قبل إضافة معاملة RMB.');
             }
 
             document.getElementById('rmbTransDate').value = getTodayDateString();
             document.getElementById('rmbTransAmount').value = '';
             document.getElementById('rmbTransAccountDetails').value = '';
-
-            let clientSelect = document.getElementById('rmbTransClientSelect');
-            clientSelect.innerHTML = '';
-            activeClients.forEach(c => clientSelect.innerHTML += `<option value="${c.id}">${c.name}</option>`);
-
-            let compSelect = document.getElementById('rmbTransCompanySelect');
-            compSelect.innerHTML = '';
-            activeCompanies.forEach(c => compSelect.innerHTML += `<option value="${c.id}">${c.name}</option>`);
-
-            if(currentRmbContext.type === 'CLIENT') {
-                clientSelect.value = currentRmbContext.id;
-                clientSelect.disabled = true;
-                compSelect.disabled = false;
-            } else if(currentRmbContext.type === 'COMPANY') {
-                compSelect.value = currentRmbContext.id;
-                compSelect.disabled = true;
-                clientSelect.disabled = false;
-            } else {
-                clientSelect.disabled = false;
-                compSelect.disabled = false;
-            }
-
             openModal('addRmbTransactionModal');
         }
 
@@ -1716,18 +2113,30 @@
             let clientId = document.getElementById('rmbTransClientSelect').value;
             let companyId = document.getElementById('rmbTransCompanySelect').value;
             let amount = parseNumber(document.getElementById('rmbTransAmount').value);
-            let accountDetails = document.getElementById('rmbTransAccountDetails').value.trim();
+            let details = document.getElementById('rmbTransAccountDetails').value.trim();
 
-            if(!date || !clientId || !companyId || amount <= 0) {
-                return alert('يرجى إدخال كافة البيانات بشكل صحيح.');
-            }
+            if(!date || amount <= 0) return alert('الرجاء إدخال بيانات معاملة صحيحة.');
 
-            appDb.rmbTransactions.push({ id: Date.now().toString(), date, clientId, companyId, amount, accountDetails });
+            appDb.rmbTransactions.push({
+                id: Date.now().toString(),
+                date, clientId, companyId, amount, details,
+                employeeName: currentUser ? currentUser.name : 'غير محدد',
+                createdById: currentUser ? currentUser.id : null
+            });
 
             saveData();
             closeModal('addRmbTransactionModal');
             renderRmbTransactions();
-            showToast('تمت إضافة معاملة RMB بنجاح!');
+            showToast('تم حفظ معاملة RMB بنجاح!');
+        }
+
+        function deleteRmbTrans(id) {
+            if(confirm('هل انت متاكد من حذف هذه المعاملة؟')) {
+                appDb.rmbTransactions = appDb.rmbTransactions.filter(t => t.id !== id);
+                saveData();
+                renderRmbTransactions();
+                showToast('تم حذف المعاملة.');
+            }
         }
 
         function renderRmbTransactions() {
@@ -1735,18 +2144,18 @@
             tbody.innerHTML = '';
 
             let searchAmount = parseNumber(document.getElementById('rmbSearchAmount').value);
-            let searchDetails = document.getElementById('rmbSearchDetails').value.toLowerCase().trim();
+            let searchDetails = document.getElementById('rmbSearchDetails').value.trim().toLowerCase();
 
             let list = appDb.rmbTransactions.filter(t => {
                 if(currentRmbContext.type === 'CLIENT' && t.clientId !== currentRmbContext.id) return false;
                 if(currentRmbContext.type === 'COMPANY' && t.companyId !== currentRmbContext.id) return false;
                 if(searchAmount > 0 && !t.amount.toString().includes(searchAmount.toString())) return false;
-                if(searchDetails && !t.accountDetails.toLowerCase().includes(searchDetails)) return false;
+                if(searchDetails && !t.details.toLowerCase().includes(searchDetails)) return false;
                 return true;
             });
 
             if(list.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-gray-500">لا توجد معاملات مطابقة للبحث.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-gray-500">لا توجد معاملات مسجلة.</td></tr>`;
                 return;
             }
 
@@ -1758,24 +2167,17 @@
                 tr.className = "hover:bg-white/5 transition";
                 tr.innerHTML = `
                     <td class="p-4 font-mono text-gray-300">${t.date}</td>
-                    <td class="p-4 font-bold text-white">${client ? client.name : 'غير محدد'} ${client && client.isDeleted ? '<span class="text-red-400 text-xs">(محدوف)</span>' : ''}</td>
-                    <td class="p-4 font-bold text-amber-400">${company ? company.name : 'غير محدد'} ${company && company.isDeleted ? '<span class="text-red-400 text-xs">(محدوفة)</span>' : ''}</td>
-                    <td class="p-4 font-mono font-bold text-red-400 text-base">${t.amount.toLocaleString(undefined,{minimumFractionDigits:2})} ¥</td>
-                    <td class="p-4 text-xs text-gray-300 max-w-xs break-words">${t.accountDetails || '-'}</td>
+                    <td class="p-4 font-bold text-white">${client ? client.name : 'زبون محذوف'}</td>
+                    <td class="p-4 font-bold text-amber-400">${company ? company.name : 'شركة محذوفة'}</td>
+                    <td class="p-4 font-mono font-bold text-red-400">${t.amount.toLocaleString(undefined,{minimumFractionDigits:2})} ¥</td>
+                    <td class="p-4 text-xs text-gray-300 max-w-xs break-words">${t.details || '-'}</td>
+                    <td class="p-4 font-bold text-purple-300">${employeeLabel(t)}</td>
                     <td class="p-4 text-center">
-                        <button onclick="deleteRmbTransaction('${t.id}')" class="text-red-500 hover:text-red-400 font-bold text-xs cursor-pointer">حذف</button>
+                        <button onclick="deleteRmbTrans('${t.id}')" class="text-red-400 hover:text-red-300 font-bold text-xs cursor-pointer">حذف</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
             });
-        }
-
-        function deleteRmbTransaction(id) {
-            if(confirm('هل أنت تأكد من حذف هذه المعاملة؟')) {
-                appDb.rmbTransactions = appDb.rmbTransactions.filter(t => t.id !== id);
-                saveData();
-                renderRmbTransactions();
-            }
         }
 
         function prepareRmbStatementView() {
@@ -1789,45 +2191,37 @@
 
             if(type === 'CLIENT') {
                 appDb.rmbClients.forEach(c => {
-                    let tag = c.isDeleted ? ' [محدوف]' : '';
+                    let tag = c.isDeleted ? ' [مخفي/سلة]' : '';
                     select.innerHTML += `<option value="${c.id}">${c.name}${tag}</option>`;
                 });
             } else {
                 appDb.rmbCompanies.forEach(c => {
-                    let tag = c.isDeleted ? ' [محدوف]' : '';
+                    let tag = c.isDeleted ? ' [مخفي/سلة]' : '';
                     select.innerHTML += `<option value="${c.id}">${c.name}${tag}</option>`;
                 });
             }
             renderRmbStatementTable();
         }
 
-        /* --- تحديث عرض وتنسيق كشف RMB ليكون طابق PDF --- */
         function renderRmbStatementTable() {
             let type = document.getElementById('rmbStatementType').value;
             let targetId = document.getElementById('rmbStatementTargetSelect').value;
             let tbody = document.getElementById('rmbStatementTableBody');
             tbody.innerHTML = '';
 
-            let targetName = "--";
-            if(type === 'CLIENT') {
-                let cl = appDb.rmbClients.find(c => c.id === targetId);
-                if(cl) targetName = cl.name + (cl.isDeleted ? ' (محدوف)' : '');
-            } else {
-                let comp = appDb.rmbCompanies.find(c => c.id === targetId);
-                if(comp) targetName = comp.name + (comp.isDeleted ? ' (محدوف)' : '');
-            }
+            let targetObj = type === 'CLIENT' ? appDb.rmbClients.find(c => c.id === targetId) : appDb.rmbCompanies.find(c => c.id === targetId);
 
-            document.getElementById('rmbPdfTargetName').innerText = targetName;
-            document.getElementById('rmbPdfTargetType').innerText = type === 'CLIENT' ? "كشف حساب زبون" : "كشف حساب شركة";
+            document.getElementById('rmbPdfTargetName').innerText = targetObj ? targetObj.name : '--';
+            document.getElementById('rmbPdfTargetType').innerText = type === 'CLIENT' ? 'كشف حساب زبون' : 'كشف حساب شركة';
             document.getElementById('rmbPdfStatementDate').innerText = getTodayDateString();
 
-            let list = appDb.rmbTransactions.filter(t => type === 'CLIENT' ? t.clientId === targetId : t.companyId === targetId);
-
+            let trans = appDb.rmbTransactions.filter(t => type === 'CLIENT' ? t.clientId === targetId : t.companyId === targetId);
             let total = 0;
-            if(list.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-gray-500">لا توجد معاملات مسجلة.</td></tr>`;
+
+            if(trans.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-gray-500">لا توجد معاملات مسجلة الكشف.</td></tr>`;
             } else {
-                list.forEach(t => {
+                trans.forEach(t => {
                     let client = appDb.rmbClients.find(c => c.id === t.clientId);
                     let company = appDb.rmbCompanies.find(c => c.id === t.companyId);
                     total += t.amount;
@@ -1838,7 +2232,8 @@
                         <td class="p-3 font-bold">${client ? client.name : '-'}</td>
                         <td class="p-3 font-bold">${company ? company.name : '-'}</td>
                         <td class="p-3 font-mono font-bold">${t.amount.toLocaleString(undefined,{minimumFractionDigits:2})} ¥</td>
-                        <td class="p-3">${t.accountDetails || '-'}</td>
+                        <td class="p-3 text-xs">${t.details || '-'}</td>
+                        <td class="p-3 font-bold text-purple-300">${employeeLabel(t)}</td>
                     `;
                     tbody.appendChild(tr);
                 });
@@ -1847,105 +2242,70 @@
             document.getElementById('rmbStatementTotal').innerText = `${total.toLocaleString(undefined,{minimumFractionDigits:2})} ¥`;
         }
 
-        function exportRmbData() {
-            let rmbData = { rmbClients: appDb.rmbClients, rmbCompanies: appDb.rmbCompanies, rmbTransactions: appDb.rmbTransactions };
-            let blob = new Blob([JSON.stringify(rmbData, null, 2)], { type: 'application/json' });
-            let a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = `RMB_Data_${getTodayDateString()}.json`;
-            a.click();
-        }
-
-        function importRmbData(e) {
-            let file = e.target.files[0];
-            if(!file) return;
-            let reader = new FileReader();
-            reader.onload = function(evt) {
-                try {
-                    let imported = JSON.parse(evt.target.result);
-                    if(imported.rmbClients) appDb.rmbClients = imported.rmbClients;
-                    if(imported.rmbCompanies) appDb.rmbCompanies = imported.rmbCompanies;
-                    if(imported.rmbTransactions) appDb.rmbTransactions = imported.rmbTransactions;
-                    saveData();
-                    showToast('تم استيراد بيانات RMB بنجاح!');
-                    renderRmbTransactions();
-                } catch(err) {
-                    alert('ملف غير صالح.');
-                }
-            }
-            reader.readAsText(file);
-        }
-
         function exportFullBackup() {
-            let blob = new Blob([JSON.stringify(appDb, null, 2)], { type: 'application/json' });
-            let a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = `FULL_SYSTEM_BACKUP_${getTodayDateString()}.json`;
-            a.click();
+            let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appDb, null, 2));
+            let downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `AL_ANHAR_BACKUP_${getTodayDateString()}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            showToast('تم تصدير النسخة الاحتياطية بنجاح!');
         }
 
-        function importFullBackup(e) {
-            let file = e.target.files[0];
+        function importFullBackup(event) {
+            let file = event.target.files[0];
             if(!file) return;
             let reader = new FileReader();
-            reader.onload = function(evt) {
+            reader.onload = function(e) {
                 try {
-                    appDb = JSON.parse(evt.target.result);
-                    saveData();
-                    showToast('تم استعادة النسخة الاحتياطية الشاملة بنجاح!');
-                    refreshActiveUI();
+                    let importedDb = JSON.parse(e.target.result);
+                    if(importedDb.companies || importedDb.rmbClients) {
+                        appDb = importedDb;
+                        saveData();
+                        location.reload();
+                    } else {
+                        alert('الملف غير مطابق لبنية البرنامج.');
+                    }
                 } catch(err) {
-                    alert('ملف النسخة الاحتياطية غير صالح.');
+                    alert('حدث خطأ أثناء قراءة الملف.');
                 }
-            }
+            };
             reader.readAsText(file);
         }
-    </script>
 
-    <!-- تهيئة Firebase وتفعيل الحفظ والمزامنة المباشرة -->
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-      import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-      const firebaseConfig = {
-        apiKey: "AIzaSyCruQTijtvF5HqGaSvKoAyCeLwWyyLiDd0",
-        authDomain: "tarek88-5691c.firebaseapp.com",
-        projectId: "tarek88-5691c",
-        storageBucket: "tarek88-5691c.appspot.com",
-        messagingSenderId: "1032977435671",
-        appId: "1:632977435671:web:f11e2346ffb44b9f560052"
-      };
-
-      const app = initializeApp(firebaseConfig);
-      const firebaseDb = getFirestore(app);
-
-      // دالة الحفظ السحابي أونلاين
-      window.saveToFirebase = async function(data) {
-        try {
-          await setDoc(doc(firebaseDb, "appData", "currentData"), {
-            payload: JSON.stringify(data),
-            updatedAt: new Date()
-          });
-          console.log("تم الحفظ أونلاين في Firebase!");
-        } catch (e) {
-          console.error("خطأ أثناء الحفظ في Firebase:", e);
-        }
-      };
-
-      // المزامنة الفورية أونلاين مجرد فتح الصفحة أو تعديل البيانات من أي جهاز
-      onSnapshot(doc(firebaseDb, "appData", "currentData"), (docSnap) => {
-        if (docSnap.exists()) {
-          const liveData = JSON.parse(docSnap.data().payload);
-          if (liveData) {
-            window.appDb = liveData;
-            localStorage.setItem('alanhar_db', JSON.stringify(liveData));
-            if (typeof window.refreshActiveUI === 'function') {
-              window.refreshActiveUI();
+        // إطلاق التهيئة المبدئية عند التحميل
+        window.onload = function() {
+            setupOtpInputs();
+            updateAdminControls();
+            document.getElementById('auth-screen').classList.remove('hidden');
+            document.getElementById('view-landing').classList.add('hidden');
+            renderCompanies();
+            /* دعم أي مزامنة سحابية موجودة مسبقاً في بيئة المستخدم */
+            if(typeof window.loadFromFirebase === 'function') {
+                try {
+                    const result = window.loadFromFirebase();
+                    if(result && typeof result.then === 'function') {
+                        result.then(cloudDb => {
+                            if(cloudDb && typeof cloudDb === 'object') {
+                                appDb = cloudDb;
+                                if(!appDb.companies) appDb.companies = [];
+                                if(!appDb.transactions) appDb.transactions = [];
+                                if(!appDb.rmbClients) appDb.rmbClients = [];
+                                if(!appDb.rmbCompanies) appDb.rmbCompanies = [];
+                                if(!appDb.rmbTransactions) appDb.rmbTransactions = [];
+                                if(!appDb.users) appDb.users = [];
+                                if(!appDb.accessRequests) appDb.accessRequests = [];
+                                if(!appDb.users.some(u => u.id === ADMIN_USER.id)) appDb.users.unshift({...ADMIN_USER});
+                                localStorage.setItem('alanhar_db', JSON.stringify(appDb));
+                                updateAdminControls();
+                                renderCompanies();
+                            }
+                        }).catch(()=>{});
+                    }
+                } catch(e) {}
             }
-          }
-          console.log("تم تحديث البيانات أونلاين بصلة حية:", liveData);
-        }
-      });
+        };
     </script>
 </body>
 </html>
