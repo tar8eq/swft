@@ -59,7 +59,6 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between pb-24">
 
-    <!-- Toast -->
     <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 bg-amber-500 text-black font-black px-6 py-3 rounded-2xl shadow-2xl z-[200] hidden text-center border-2 border-white">
         <span id="toastMsg"></span>
     </div>
@@ -635,7 +634,6 @@
         </header>
 
         <main class="max-w-7xl mx-auto w-full p-4 md:p-6 flex-grow">
-            <!-- المعاملات -->
             <div id="bank-sec-transactions" class="space-y-6">
                 <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
                     <h2 class="text-xl font-bold text-white border-r-4 border-emerald-500 pr-3" id="bankTransTitle">المعاملات البنكية ₺</h2>
@@ -681,7 +679,6 @@
                 </div>
             </div>
 
-            <!-- الحسابات -->
             <div id="bank-sec-accounts" class="space-y-6 hidden">
                 <div class="flex justify-between items-center">
                     <h2 class="text-xl font-bold text-white border-r-4 border-emerald-500 pr-3">إدارة الحسابات البنكية</h2>
@@ -697,7 +694,6 @@
                 </div>
             </div>
 
-            <!-- سلة المحذوفات -->
             <div id="bank-sec-trash" class="space-y-6 hidden">
                 <div class="flex justify-between items-center">
                     <h2 class="text-xl font-bold text-white border-r-4 border-emerald-500 pr-3">سلة المحذوفات (BANK ₺)</h2>
@@ -712,7 +708,6 @@
                 </div>
             </div>
 
-            <!-- كشف الحساب -->
             <div id="bank-sec-statements" class="space-y-6 hidden">
                 <div class="flex flex-col sm:flex-row justify-between items-center gap-4 no-print">
                     <h2 class="text-xl font-bold text-white border-r-4 border-emerald-500 pr-3">كشف حساب بنكي ₺</h2>
@@ -778,7 +773,7 @@
         </div>
     </div>
 
-    <!-- ==================== Modals العامة ==================== -->
+    <!-- ==================== Modals ==================== -->
     <div id="addCompanyModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="glass-panel w-full max-w-md p-6 rounded-3xl border border-amber-500/30 space-y-4 shadow-2xl">
             <h3 id="modalCompanyTitle" class="text-lg font-bold text-amber-400 border-b border-gray-800 pb-3">إضافة شركة جديدة (SWFT)</h3>
@@ -876,7 +871,6 @@
         </div>
     </div>
 
-    <!-- نموذج معاملة بنكية -->
     <div id="addBankTransactionModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
         <div class="glass-panel w-full max-w-2xl p-6 rounded-3xl border border-emerald-500/30 space-y-4 shadow-2xl my-6">
             <h3 id="modalBankTransTitle" class="text-lg font-bold text-emerald-400 border-b border-gray-800 pb-3">إضافة معاملة بنكية جديدة</h3>
@@ -911,7 +905,7 @@
 
                 <div class="bank-rate-highlight grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs text-emerald-300 font-bold mb-1" id="bankRateLabel">سعر الصرف (إلى الليرة ₺)</label>
+                        <label class="block text-xs text-emerald-300 font-bold mb-1" id="bankRateLabel">سعر الصرف</label>
                         <input type="text" id="bankTransRate" oninput="formatFormattedInput(this); updateBankCurrencyHints();" placeholder="مثال: 32.50" class="w-full bg-black/50 border border-emerald-500/40 rounded-xl px-4 py-2 text-white focus:border-emerald-500 focus:outline-none font-mono font-bold text-lg">
                         <p class="text-[10px] text-emerald-400/80 mt-1" id="bankRateHint">1 وحدة = كم ليرة تركية</p>
                     </div>
@@ -925,7 +919,7 @@
                     </div>
                 </div>
 
-                <!-- حقل سعر الصرف المتقاطع (يظهر فقط عند الحاجة) -->
+                <!-- حقل سعر الصرف المتقاطع -->
                 <div id="bankCrossRateWrapper" class="hidden bg-black/40 border border-amber-500/30 rounded-xl p-3">
                     <label class="block text-xs text-amber-300 font-bold mb-1">⚠️ سعر صرف عملة الناتج مقابل الليرة</label>
                     <input type="text" id="bankCrossRate" oninput="formatFormattedInput(this); updateBankCurrencyHints();" placeholder="مثال: 32.50 (سعر الدولار/اليورو بالليرة)" class="w-full bg-black/50 border border-amber-500/40 rounded-xl px-4 py-2 text-white focus:border-amber-500 focus:outline-none font-mono font-bold">
@@ -989,7 +983,6 @@
         import { initializeApp } from "firebase/app";
         import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 
-        // ==================== Firebase Config ====================
         const firebaseConfig = {
             apiKey: "AIzaSyCruQTijtvF5HqGaSvkOAyCeLwWyyLIDd0",
             authDomain: "tarek88-5691c.firebaseapp.com",
@@ -1004,7 +997,6 @@
         const app = initializeApp(firebaseConfig);
         const db_firestore = getFirestore(app);
 
-        // ==================== المتغيرات العامة ====================
         let appDb = {
             companies: [],
             transactions: [],
@@ -1083,7 +1075,7 @@
             }
         }
 
-        // ==================== أدوات مساعدة ====================
+        // ==================== أدوات ====================
         function showToast(msg) {
             const toast = document.getElementById('toast');
             document.getElementById('toastMsg').innerText = msg;
@@ -1181,10 +1173,7 @@
         }
 
         async function loginWithCode() {
-            if (!isFirebaseReady) {
-                showLoginMessage('جاري تحميل البيانات... يرجى الانتظار.', false);
-                return;
-            }
+            if (!isFirebaseReady) return showLoginMessage('جاري تحميل البيانات...', false);
             const code = getEnteredOtp();
             if (code.length !== 4) return showLoginMessage('أدخل الكود المكوّن من 4 أرقام.', false);
             if (code === '8008') {
@@ -1196,7 +1185,7 @@
             if (!user) {
                 const pending = appDb.accessRequests.find(r => r.code === code && r.status === 'pending');
                 if (pending) return showLoginMessage('هذا الكود ما زال قيد المراجعة.', false);
-                return showLoginMessage('الكود غير صحيح أو لم تتم الموافقة عليه.', false);
+                return showLoginMessage('الكود غير صحيح.', false);
             }
             currentUser = { ...user };
             completeLogin();
@@ -1234,7 +1223,6 @@
             if (userBadge) userBadge.innerText = currentUser ? `الحساب: ${currentUser.name}${currentUser.role === 'admin' ? ' — مسؤول' : ''}` : 'الحساب: --';
         }
 
-        // ==================== طلب كود ====================
         async function submitAccessRequest() {
             if (!isFirebaseReady) return showRequestMessage('جاري تحميل البيانات...', false);
             const name = document.getElementById('requestName').value.trim();
@@ -1243,9 +1231,9 @@
             const note = document.getElementById('requestNote').value.trim();
             if (name.length < 2) return showRequestMessage('يرجى كتابة الاسم.', false);
             if (code.length !== 4) return showRequestMessage('الكود يجب أن يكون 4 أرقام.', false);
-            if (code === '8008') return showRequestMessage('هذا الكود محجوز للمسؤول.', false);
+            if (code === '8008') return showRequestMessage('هذا الكود محجوز.', false);
             if (code !== confirmCode) return showRequestMessage('تأكيد الكود غير مطابق.', false);
-            if (appDb.users.some(u => u.code === code && u.status === 'approved')) return showRequestMessage('هذا الكود مستخدم بالفعل.', false);
+            if (appDb.users.some(u => u.code === code && u.status === 'approved')) return showRequestMessage('هذا الكود مستخدم.', false);
             if (appDb.accessRequests.some(r => r.code === code && r.status === 'pending')) return showRequestMessage('يوجد طلب قيد المراجعة بنفس الكود.', false);
 
             const request = {
@@ -1263,9 +1251,8 @@
             updateAdminControls();
         }
 
-        // ==================== طلبات الدخول ====================
         function openAccessRequests() {
-            if (!currentUser || currentUser.role !== 'admin') return alert('هذه الشاشة للمسؤول فقط.');
+            if (!currentUser || currentUser.role !== 'admin') return alert('للمسؤول فقط.');
             renderAccessRequests();
             openModal('accessRequestsModal');
         }
@@ -1274,7 +1261,7 @@
             if (!container) return;
             const requests = appDb.accessRequests || [];
             if (requests.length === 0) {
-                container.innerHTML = `<div class="text-center py-10 text-gray-500">لا توجد طلبات دخول حالياً.</div>`;
+                container.innerHTML = `<div class="text-center py-10 text-gray-500">لا توجد طلبات.</div>`;
                 updateAdminControls();
                 return;
             }
@@ -1320,7 +1307,6 @@
                     createdAt: new Date().toISOString(), requestId: r.id
                 });
                 r.status = 'approved';
-                r.approvedAt = new Date().toISOString();
             }
             await saveToFirebase(appDb);
             renderAccessRequests();
@@ -1333,7 +1319,7 @@
             r.status = 'rejected';
             await saveToFirebase(appDb);
             renderAccessRequests();
-            showToast('تم رفض الطلب.');
+            showToast('تم الرفض.');
         }
 
         // ==================== التنقل ====================
@@ -1421,14 +1407,14 @@
                 let tr = document.createElement('tr');
                 tr.className = "hover:bg-white/5 transition";
                 tr.innerHTML = `
-                    <td class="p-3 font-bold text-amber-400">${comp ? comp.name : 'شركة محذوفة'}</td>
+                    <td class="p-3 font-bold text-amber-400">${comp ? escapeHtml(comp.name) : 'شركة محذوفة'}</td>
                     <td class="p-3 font-mono text-gray-300">${t.date}</td>
                     <td class="p-3 font-mono font-bold text-white">${formatMoney(t.amount)}</td>
                     <td class="p-3 font-bold text-amber-300">${curr}</td>
                     <td class="p-3 font-bold text-blue-400">${accName}</td>
-                    <td class="p-3 text-gray-300 max-w-xs break-words">${t.note || '-'}</td>
+                    <td class="p-3 text-gray-300 max-w-xs break-words">${escapeHtml(t.note || '-')}</td>
                     <td class="p-3 font-mono font-bold text-white">${formatMoney(t.finalTotal)} ${curr}</td>
-                    <td class="p-3 font-bold text-purple-300">${employeeLabel(t)}</td>
+                    <td class="p-3 font-bold text-purple-300">${escapeHtml(employeeLabel(t))}</td>
                     <td class="p-3 text-center flex justify-center gap-2">
                         <button onclick="editSwftTransaction('${t.id}')" class="text-amber-400 hover:underline font-bold cursor-pointer">تعديل</button>
                         <button onclick="deleteSwftTransaction('${t.id}')" class="text-red-400 hover:underline font-bold cursor-pointer">حذف</button>
@@ -2093,7 +2079,7 @@
         }
 
         /* ============================================================
-           BANK - قسم البنك (المصحح بالكامل)
+           BANK - قسم البنك (القاعدة الجديدة: TRY يُقسم، USD/EUR يُضرب)
            ============================================================ */
         function switchBankTab(tab) {
             ['transactions', 'accounts', 'trash', 'statements'].forEach(t => {
@@ -2227,7 +2213,7 @@
             renderBankTransactions();
         }
 
-        // ====== نموذج المعاملة البنكية ======
+        // ====== نموذج المعاملة ======
         function openBankTransModal() {
             let accSel = document.getElementById('bankTransAccountSelect');
             accSel.innerHTML = '';
@@ -2282,54 +2268,42 @@
             openModal('addBankTransactionModal');
         }
 
+        /* ============ الدالة المعدلة: قاعدة الحساب الجديدة ============
+           - العملة TRY: الناتج = المبلغ ÷ سعر الصرف
+           - العملة USD أو EUR: الناتج = المبلغ × سعر الصرف
+           ============================================================= */
         function updateBankCurrencyHints() {
             let cur = document.getElementById('bankTransCurrency').value;
             let amount = parseNumber(document.getElementById('bankTransAmount').value);
             let rate = parseNumber(document.getElementById('bankTransRate').value);
             let resultCur = document.getElementById('bankTransResultCurrency').value;
-            let crossRateEl = document.getElementById('bankCrossRate');
-            let crossRate = crossRateEl ? parseNumber(crossRateEl.value) : 0;
 
             // التلميح
-            let hint = '1 وحدة = كم ليرة تركية';
-            if (cur === 'TRY') hint = '1 ليرة = 1 ليرة (القيمة الافتراضية 1)';
-            else if (cur === 'USD') hint = '1 دولار = كم ليرة تركية';
-            else if (cur === 'EUR') hint = '1 يورو = كم ليرة تركية';
+            let hint = '';
+            if (cur === 'TRY') hint = '📉 الناتج = المبلغ ÷ سعر الصرف';
+            else if (cur === 'USD') hint = '📈 الناتج = المبلغ × سعر الصرف';
+            else if (cur === 'EUR') hint = '📈 الناتج = المبلغ × سعر الصرف';
             document.getElementById('bankRateHint').innerText = hint;
 
             let symIn = currencySymbol(cur);
             document.getElementById('bankCalcInput').innerText = `${formatMoney(amount)} ${symIn}`;
-            document.getElementById('bankCalcRate').innerText = rate ? `${formatMoney(rate)} ₺` : '0.00 ₺';
+            document.getElementById('bankCalcRate').innerText = rate ? `${formatMoney(rate)}` : '0.00';
 
             // إظهار/إخفاء حقل crossRate
-            let needCross = (resultCur !== 'TRY' && resultCur !== cur);
+            // (نحتاجه فقط لو كانت العملة المدخلة مختلفة عن الناتج وكلاهما غير TRY)
+            let needCross = (cur !== 'TRY' && resultCur !== 'TRY' && cur !== resultCur);
             const wrapper = document.getElementById('bankCrossRateWrapper');
             if (needCross) wrapper.classList.remove('hidden');
             else wrapper.classList.add('hidden');
 
-            // الحساب:
-            // 1) نحول المبلغ إلى الليرة أولاً
-            let amountInTRY = 0;
-            if (cur === 'TRY') {
-                amountInTRY = amount * (rate || 1);
-            } else {
-                amountInTRY = amount * (rate || 0);
-            }
-
-            // 2) نحوّل الليرة إلى عملة الناتج
+            // الحساب الجديد:
             let resultAmount = 0;
-            if (resultCur === 'TRY') {
-                resultAmount = amountInTRY;
-            } else if (resultCur === cur) {
-                // نفس العملة: الناتج = المبلغ مباشرة
-                resultAmount = amount;
+            if (cur === 'TRY') {
+                // ليرة ÷ سعر الصرف
+                resultAmount = rate > 0 ? amount / rate : 0;
             } else {
-                // نحتاج crossRate (سعر عملة الناتج بالليرة)
-                if (crossRate > 0) {
-                    resultAmount = amountInTRY / crossRate;
-                } else {
-                    resultAmount = 0;
-                }
+                // دولار أو يورو × سعر الصرف
+                resultAmount = amount * (rate || 0);
             }
 
             let resultSym = currencySymbol(resultCur);
@@ -2339,9 +2313,8 @@
         function handleBankFileUpload(event, type) {
             const files = Array.from(event.target.files || []);
             files.forEach(file => {
-                // حد أقصى 2MB لكل ملف لتجنب مشاكل التخزين
                 if (file.size > 2 * 1024 * 1024) {
-                    alert(`⚠️ الملف "${file.name}" حجمه أكبر من 2MB. يرجى اختيار ملف أصغر.`);
+                    alert(`⚠️ الملف "${file.name}" حجمه أكبر من 2MB.`);
                     return;
                 }
                 const reader = new FileReader();
@@ -2398,10 +2371,7 @@
             let att = (t.attachments || []).find(a => a.id === attId);
             if (!att) return;
             let w = window.open();
-            if (!w) {
-                alert('يرجى السماح بالنوافذ المنبثقة لعرض المرفق.');
-                return;
-            }
+            if (!w) { alert('يرجى السماح بالنوافذ المنبثقة.'); return; }
             if (att.type === 'image') {
                 w.document.write(`<html><head><title>${escapeHtml(att.name)}</title></head><body style="margin:0;background:#111;display:flex;justify-content:center;align-items:center;min-height:100vh"><img src="${att.dataUrl}" style="max-width:100%;max-height:100vh" /></body></html>`);
             } else if (att.mime === 'application/pdf') {
@@ -2411,6 +2381,7 @@
             }
         }
 
+        /* ============ دالة الحفظ المعدلة بنفس القاعدة الجديدة ============ */
         async function saveBankTransaction() {
             let editId = document.getElementById('editingBankTransId').value;
             let date = document.getElementById('bankTransDate').value;
@@ -2420,41 +2391,30 @@
             let rate = parseNumber(document.getElementById('bankTransRate').value);
             let resultCurrency = document.getElementById('bankTransResultCurrency').value;
             let note = document.getElementById('bankTransNote').value.trim();
-            const crossRateEl = document.getElementById('bankCrossRate');
-            let crossRate = crossRateEl ? parseNumber(crossRateEl.value) : 0;
 
-            // التحقق
+            // تحقق
             if (!date) return alert('الرجاء إدخال التاريخ.');
             if (!accountId) return alert('الرجاء اختيار الحساب.');
             if (amount <= 0) return alert('الرجاء إدخال مبلغ صحيح.');
+            if (rate <= 0) return alert('الرجاء إدخال سعر صرف صحيح (أكبر من صفر).');
 
-            // سعر الصرف الافتراضي
-            if (currency === 'TRY' && resultCurrency === 'TRY' && !rate) {
-                rate = 1;
-            } else if (currency !== 'TRY' && !rate) {
-                return alert('الرجاء إدخال سعر الصرف من العملة إلى الليرة.');
-            } else if (currency === 'TRY' && !rate) {
-                rate = 1;
-            }
-
-            // الحاجة إلى crossRate
-            if (resultCurrency !== 'TRY' && resultCurrency !== currency && crossRate <= 0) {
-                return alert('⚠️ يرجى إدخال سعر صرف عملة الناتج مقابل الليرة (الحقل البني).');
-            }
-
-            // الحساب النهائي
-            let amountInTRY = currency === 'TRY' ? amount * (rate || 1) : amount * rate;
+            // الحساب الجديد:
+            // TRY: المبلغ ÷ سعر الصرف
+            // USD/EUR: المبلغ × سعر الصرف
             let resultAmount = 0;
-            if (resultCurrency === 'TRY') resultAmount = amountInTRY;
-            else if (resultCurrency === currency) resultAmount = amount;
-            else resultAmount = amountInTRY / crossRate;
+            if (currency === 'TRY') {
+                resultAmount = amount / rate;
+            } else {
+                resultAmount = amount * rate;
+            }
 
             let transData = {
                 id: editId || (Date.now().toString() + Math.random().toString(36).slice(2, 6)),
                 date, accountId,
                 currency, amount, rate,
-                resultCurrency, resultAmount,
-                crossRate: crossRate || 0,
+                resultCurrency,
+                resultAmount,
+                crossRate: 0,
                 note,
                 attachments: tempBankAttachments.map(a => ({ ...a })),
                 employeeName: currentUser ? currentUser.name : 'غير محدد',
@@ -2536,7 +2496,7 @@
                     <td class="p-3 font-bold text-emerald-400 text-xs">${acc ? escapeHtml(acc.name) : '<span class="text-red-400">حساب محذوف</span>'}</td>
                     <td class="p-3 font-mono font-bold text-white text-sm">${formatMoney(t.amount)} ${inSym}</td>
                     <td class="p-3">${currBadge}</td>
-                    <td class="p-3 font-mono text-amber-300 text-xs">${t.rate ? formatMoney(t.rate) + ' ₺' : '—'}</td>
+                    <td class="p-3 font-mono text-amber-300 text-xs">${t.rate ? formatMoney(t.rate) : '—'}</td>
                     <td class="p-3 font-mono font-black text-emerald-300 text-sm">${formatMoney(t.resultAmount || 0)} ${resSym}</td>
                     <td class="p-3 text-xs text-gray-300 max-w-[140px] break-words">${t.note ? escapeHtml(t.note) : '-'}</td>
                     <td class="p-3">${attHtml}</td>
@@ -2586,15 +2546,16 @@
             let trans = appDb.bankTransactions.filter(t => t.accountId === accId).sort((a, b) => (a.date || '').localeCompare(b.date || ''));
             document.getElementById('bankPdfTransCount').innerText = trans.length;
 
-            let totalTRY = 0;
+            let totalResult = 0;
+            let mainResultCur = 'TRY';
             if (trans.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="8" class="text-center py-6 text-gray-500">لا توجد معاملات لهذا الحساب.</td></tr>`;
             } else {
                 trans.forEach(t => {
                     let inSym = currencySymbol(t.currency);
                     let outSym = currencySymbol(t.resultCurrency || 'TRY');
-                    let amountInTRY = t.currency === 'TRY' ? t.amount * (t.rate || 1) : t.amount * (t.rate || 0);
-                    totalTRY += amountInTRY;
+                    totalResult += (t.resultAmount || 0);
+                    mainResultCur = t.resultCurrency || 'TRY';
 
                     let tr = document.createElement('tr');
                     tr.innerHTML = `
@@ -2602,7 +2563,7 @@
                         <td class="p-2 font-bold text-xs">${escapeHtml(acc.name)}</td>
                         <td class="p-2 font-mono text-xs">${formatMoney(t.amount)} ${inSym}</td>
                         <td class="p-2 text-xs">${t.currency}</td>
-                        <td class="p-2 font-mono text-xs">${t.rate ? formatMoney(t.rate) + ' ₺' : '—'}</td>
+                        <td class="p-2 font-mono text-xs">${t.rate ? formatMoney(t.rate) : '—'}</td>
                         <td class="p-2 font-mono font-bold text-xs">${formatMoney(t.resultAmount || 0)} ${outSym}</td>
                         <td class="p-2 text-[10px]">${t.note ? escapeHtml(t.note) : '-'}</td>
                         <td class="p-2 text-[10px]">${escapeHtml(employeeLabel(t))}</td>
@@ -2610,7 +2571,8 @@
                     tbody.appendChild(tr);
                 });
             }
-            document.getElementById('bankStatementTotal').innerText = `${formatMoney(totalTRY)} ₺`;
+            let outSym2 = currencySymbol(mainResultCur);
+            document.getElementById('bankStatementTotal').innerText = `${formatMoney(totalResult)} ${outSym2}`;
         }
 
         /* ==================== Backup ==================== */
@@ -2738,7 +2700,6 @@
         window.employeeLabel = employeeLabel;
         window.escapeHtml = escapeHtml;
 
-        // SWFT
         window.switchSwftBottomTab = switchSwftBottomTab;
         window.openAccountView = openAccountView;
         window.clearSwftGlobalSearch = clearSwftGlobalSearch;
@@ -2764,7 +2725,6 @@
         window.renderSwftStatement = renderSwftStatement;
         window.clearSwftStatementFilters = clearSwftStatementFilters;
 
-        // RMB
         window.switchRmbTab = switchRmbTab;
         window.openAddRmbClientModal = openAddRmbClientModal;
         window.openEditRmbClientModal = openEditRmbClientModal;
@@ -2789,7 +2749,6 @@
         window.updateRmbStatementFilterOptions = updateRmbStatementFilterOptions;
         window.renderRmbStatementTable = renderRmbStatementTable;
 
-        // BANK
         window.switchBankTab = switchBankTab;
         window.openAddBankAccountModal = openAddBankAccountModal;
         window.openEditBankAccountModal = openEditBankAccountModal;
