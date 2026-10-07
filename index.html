@@ -767,7 +767,7 @@
         </main>
     </div>
 
-    <!-- ==================== قسم WESTRIN (الجديد) ==================== -->
+    <!-- ==================== قسم WESTRIN (متصل بقاعدة البيانات) ==================== -->
     <div id="module-westrin" class="hidden" style="background: linear-gradient(135deg, #000 0%, #1a1a1a 50%, #000 100%); min-height: 100vh;">
         <header class="sticky top-0 z-40 px-4 md:px-6 py-4 shadow-2xl no-print" style="background: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(20,20,20,0.95)); border-bottom: 2px solid #facc15;">
             <div class="max-w-7xl mx-auto flex justify-between items-center flex-wrap gap-3">
@@ -781,7 +781,7 @@
                         </div>
                         <div>
                             <h1 class="text-lg font-black tracking-wider text-white">AL ANHAR <span class="font-light text-xs" style="color: #facc15;">WESTRIN</span></h1>
-                            <p class="text-[10px] text-yellow-400/70 font-bold">نظام إدارة الحسابات والمعاملات</p>
+                            <p class="text-[10px] text-yellow-400/70 font-bold">متصل بقاعدة البيانات السحابية</p>
                         </div>
                     </div>
                 </div>
@@ -1036,7 +1036,10 @@
             bankAccounts: [],
             bankTransactions: [],
             users: [],
-            accessRequests: []
+            accessRequests: [],
+            westrinAccounts: [],
+            westrinTransactions: [],
+            westrinTrash: []
         };
 
         let currentUser = null;
@@ -1062,7 +1065,10 @@
                         bankAccounts: data.bankAccounts || [],
                         bankTransactions: data.bankTransactions || [],
                         users: data.users || [],
-                        accessRequests: data.accessRequests || []
+                        accessRequests: data.accessRequests || [],
+                        westrinAccounts: data.westrinAccounts || [],
+                        westrinTransactions: data.westrinTransactions || [],
+                        westrinTrash: data.westrinTrash || []
                     };
                     const adminExists = appDb.users.some(u => u.id === 'admin-tarek');
                     if (!adminExists) {
@@ -1083,6 +1089,9 @@
                 if (localData) {
                     try {
                         appDb = JSON.parse(localData);
+                        if (!appDb.westrinAccounts) appDb.westrinAccounts = [];
+                        if (!appDb.westrinTransactions) appDb.westrinTransactions = [];
+                        if (!appDb.westrinTrash) appDb.westrinTrash = [];
                         isFirebaseReady = true;
                         return appDb;
                     } catch(e) {}
@@ -2115,7 +2124,7 @@
         }
 
         /* ============================================================
-           BANK - قسم البنك (القاعدة الجديدة: TRY يُقسم، USD/EUR يُضرب)
+           BANK - قسم البنك
            ============================================================ */
         function switchBankTab(tab) {
             ['transactions', 'accounts', 'trash', 'statements'].forEach(t => {
@@ -2134,7 +2143,6 @@
             else if (tab === 'statements') prepareBankStatementView();
         }
 
-        // ====== الحسابات ======
         function openAddBankAccountModal() {
             document.getElementById('editingBankAccountId').value = '';
             document.getElementById('modalBankAccountTitle').innerText = 'إضافة حساب بنكي جديد';
@@ -2235,7 +2243,6 @@
             });
         }
 
-        // ====== سياق ======
         function filterBankContext(type, id, name) {
             currentBankContext = { type, id };
             document.getElementById('bankTransTitle').innerText = `معاملات الحساب (${name})`;
@@ -2249,7 +2256,6 @@
             renderBankTransactions();
         }
 
-        // ====== نموذج المعاملة ======
         function openBankTransModal() {
             let accSel = document.getElementById('bankTransAccountSelect');
             accSel.innerHTML = '';
@@ -2533,7 +2539,6 @@
             });
         }
 
-        // ====== كشف الحساب ======
         function prepareBankStatementView() {
             let select = document.getElementById('bankStatementAccountSelect');
             select.innerHTML = '';
@@ -2614,7 +2619,7 @@
             reader.onload = async function(e) {
                 try {
                     let importedDb = JSON.parse(e.target.result);
-                    if (importedDb.companies || importedDb.rmbClients || importedDb.bankAccounts) {
+                    if (importedDb.companies || importedDb.rmbClients || importedDb.bankAccounts || importedDb.westrinAccounts) {
                         appDb = {
                             companies: importedDb.companies || [],
                             transactions: importedDb.transactions || [],
@@ -2624,7 +2629,10 @@
                             bankAccounts: importedDb.bankAccounts || [],
                             bankTransactions: importedDb.bankTransactions || [],
                             users: importedDb.users || [],
-                            accessRequests: importedDb.accessRequests || []
+                            accessRequests: importedDb.accessRequests || [],
+                            westrinAccounts: importedDb.westrinAccounts || [],
+                            westrinTransactions: importedDb.westrinTransactions || [],
+                            westrinTrash: importedDb.westrinTrash || []
                         };
                         await saveToFirebase(appDb);
                         location.reload();
@@ -2686,6 +2694,9 @@
                 if (localData) {
                     try {
                         appDb = JSON.parse(localData);
+                        if (!appDb.westrinAccounts) appDb.westrinAccounts = [];
+                        if (!appDb.westrinTransactions) appDb.westrinTransactions = [];
+                        if (!appDb.westrinTrash) appDb.westrinTrash = [];
                         isFirebaseReady = true;
                         updateAdminControls();
                         renderCompanies();
@@ -2696,23 +2707,36 @@
             document.getElementById('auth-screen').classList.remove('hidden');
             document.getElementById('view-landing').classList.add('hidden');
             document.getElementById('view-landing').classList.remove('flex');
-
-            // تحميل تطبيق ويسترن تلقائياً بمجرد جاهزية الصفحة
-            initWestrinApp();
         };
 
         /* ============================================================
-           WESTRIN APP - تطبيق إدارة الحسابات المستقل
+           WESTRIN APP - متصل بـ Firebase
            ============================================================ */
         let westrinInitialized = false;
 
+        // ربط مباشر ببيانات appDb السحابية
+        function wrGetAccounts() { return appDb.westrinAccounts || []; }
+        function wrSetAccounts(v) { appDb.westrinAccounts = v; }
+        function wrGetTransactions() { return appDb.westrinTransactions || []; }
+        function wrSetTransactions(v) { appDb.westrinTransactions = v; }
+        function wrGetTrash() { return appDb.westrinTrash || []; }
+        function wrSetTrash(v) { appDb.westrinTrash = v; }
+
+        async function wrSave() {
+            await saveToFirebase(appDb);
+        }
+
         function initWestrinApp() {
-            if (westrinInitialized) return;
+            if (westrinInitialized) {
+                // إعادة الرسم فقط
+                westrinRenderAccounts();
+                westrinRenderTrash();
+                return;
+            }
             westrinInitialized = true;
             const container = document.getElementById('westrin-app-container');
             if (!container) return;
 
-            // نضيف الستايل الخاص بتطبيق ويسترن داخل الكونتينر
             const westrinStyles = document.createElement('style');
             westrinStyles.id = 'westrin-styles';
             westrinStyles.innerHTML = `
@@ -3150,7 +3174,6 @@
             `;
             document.head.appendChild(westrinStyles);
 
-            // HTML الخاص بتطبيق ويسترن
             container.innerHTML = `
               <div class="wr-container">
                 <div class="topbar">
@@ -3158,7 +3181,7 @@
                     <div class="brand-logo">W</div>
                     <div class="brand-text">
                       <h1>WESTRIN</h1>
-                      <p>نظام إدارة الحسابات والمعاملات</p>
+                      <p>متصل بقاعدة البيانات السحابية ☁️</p>
                     </div>
                   </div>
                   <div class="topbar-btns">
@@ -3323,12 +3346,9 @@
               </div>
             `;
 
-            // JS الخاص بتطبيق ويسترن
-            westrinLoadData();
             westrinRenderAccounts();
             westrinRenderTrash();
 
-            // ربط الأحداث
             document.getElementById('wrEditModal').addEventListener('click', (e) => {
                 if (e.target.id === 'wrEditModal') westrinCloseEditModal();
             });
@@ -3346,37 +3366,22 @@
             });
         }
 
-        // ============ دوال تطبيق WESTRIN ============
-        let wrData = { accounts: [], transactions: [], trash: [] };
+        // ============ دوال WESTRIN (متصل بـ Firebase) ============
         let wrCurrentAccountId = null;
         let wrEditingTxId = null;
         let wrEditingAccountId = null;
 
-        function westrinLoadData() {
-            const saved = localStorage.getItem('alanharData_westrin');
-            if (saved) {
-                try {
-                    const parsed = JSON.parse(saved);
-                    wrData = {
-                        accounts: parsed.accounts || [],
-                        transactions: parsed.transactions || [],
-                        trash: parsed.trash || []
-                    };
-                } catch(e) { console.error(e); }
-            }
-        }
-        function westrinSaveData() {
-            localStorage.setItem('alanharData_westrin', JSON.stringify(wrData));
-        }
-
-        function westrinClearAllData() {
+        async function westrinClearAllData() {
             if (confirm('⚠️ هل أنت متأكد من حذف كل البيانات نهائياً؟ لا يمكن التراجع!')) {
                 if (confirm('⚠️ تأكيد أخير: سيتم حذف كل الحسابات والمعاملات والسلة!')) {
-                    wrData = { accounts: [], transactions: [], trash: [] };
-                    westrinSaveData();
+                    wrSetAccounts([]);
+                    wrSetTransactions([]);
+                    wrSetTrash([]);
+                    await wrSave();
                     westrinRenderAccounts();
                     westrinRenderTrash();
                     westrinBackToAccounts();
+                    showToast('تم حذف كل البيانات ☁️');
                 }
             }
         }
@@ -3410,7 +3415,7 @@
             const noteInput = document.getElementById('wrAccountModalNote');
             const title = document.getElementById('wrAccountModalTitle');
             if (editId) {
-                const acc = wrData.accounts.find(a => a.id === editId);
+                const acc = wrGetAccounts().find(a => a.id === editId);
                 if (!acc) return;
                 title.textContent = '✏️ تعديل الحساب';
                 nameInput.value = acc.name;
@@ -3427,44 +3432,51 @@
             document.getElementById('wrAccountModal').classList.remove('active');
             wrEditingAccountId = null;
         }
-        function westrinSaveAccount() {
+        async function westrinSaveAccount() {
             const name = document.getElementById('wrAccountModalName').value.trim();
             const note = document.getElementById('wrAccountModalNote').value.trim();
             if (!name) { alert('اكتب اسم الحساب'); return; }
+            const accounts = wrGetAccounts();
             if (wrEditingAccountId) {
-                const acc = wrData.accounts.find(a => a.id === wrEditingAccountId);
+                const acc = accounts.find(a => a.id === wrEditingAccountId);
                 if (acc) { acc.name = name; acc.note = note; }
             } else {
-                wrData.accounts.push({ id: Date.now(), name: name, note: note, createdAt: new Date().toISOString() });
+                accounts.push({ id: Date.now(), name: name, note: note, createdAt: new Date().toISOString() });
             }
-            westrinSaveData();
+            wrSetAccounts(accounts);
+            await wrSave();
             westrinCloseAccountModal();
             westrinRenderAccounts();
+            showToast('تم الحفظ ☁️');
         }
-        function westrinDeleteAccount(id, e) {
+        async function westrinDeleteAccount(id, e) {
             e.stopPropagation();
-            const acc = wrData.accounts.find(a => a.id === id);
+            const accounts = wrGetAccounts();
+            const acc = accounts.find(a => a.id === id);
             if (!acc) return;
-            const txs = wrData.transactions.filter(t => t.accountId === id);
+            const txs = wrGetTransactions().filter(t => t.accountId === id);
             if (txs.length === 0) {
                 if (!confirm(`حذف الحساب "${acc.name}" نهائياً؟`)) return;
-                wrData.accounts = wrData.accounts.filter(a => a.id !== id);
+                wrSetAccounts(accounts.filter(a => a.id !== id));
             } else {
                 if (!confirm(`الحساب "${acc.name}" يحتوي على ${txs.length} معاملة.\nسيتم نقله إلى سلة المحذوفات. متابعة؟`)) return;
-                wrData.trash.push({ account: acc, transactions: txs, deletedAt: new Date().toISOString() });
-                wrData.accounts = wrData.accounts.filter(a => a.id !== id);
-                wrData.transactions = wrData.transactions.filter(t => t.accountId !== id);
+                const trash = wrGetTrash();
+                trash.push({ account: acc, transactions: txs, deletedAt: new Date().toISOString() });
+                wrSetTrash(trash);
+                wrSetAccounts(accounts.filter(a => a.id !== id));
+                wrSetTransactions(wrGetTransactions().filter(t => t.accountId !== id));
             }
-            westrinSaveData();
+            await wrSave();
             westrinRenderAccounts();
             westrinRenderTrash();
+            showToast('تم الحفظ ☁️');
         }
         function westrinOpenAccount(id) {
             wrCurrentAccountId = id;
             document.getElementById('wrAccountsView').classList.add('hidden');
             document.getElementById('wrTrashView').classList.remove('active');
             document.getElementById('wrAccountView').classList.add('active');
-            const acc = wrData.accounts.find(a => a.id === id);
+            const acc = wrGetAccounts().find(a => a.id === id);
             document.getElementById('wrAccountTitle').textContent = acc.name;
             document.getElementById('wrAccountNote').textContent = acc.note || 'إدارة المعاملات والكشف';
             document.getElementById('wrTxDate').value = westrinGetCurrentDate();
@@ -3492,16 +3504,18 @@
         function westrinRenderAccounts() {
             const grid = document.getElementById('wrAccountsGrid');
             if (!grid) return;
-            document.getElementById('wrAccountsCount').textContent = wrData.accounts.length;
-            if (wrData.accounts.length === 0) {
+            const accounts = wrGetAccounts();
+            document.getElementById('wrAccountsCount').textContent = accounts.length;
+            if (accounts.length === 0) {
                 grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
                   <div class="icon">📂</div>
                   <p>لا توجد حسابات بعد، اضغط "إضافة حساب" للبدء</p>
                 </div>`;
                 return;
             }
-            grid.innerHTML = wrData.accounts.map(acc => {
-                const txs = wrData.transactions.filter(t => t.accountId === acc.id);
+            const allTxs = wrGetTransactions();
+            grid.innerHTML = accounts.map(acc => {
+                const txs = allTxs.filter(t => t.accountId === acc.id);
                 const pending = txs.filter(t => t.status === 'pending').length;
                 const withdrawn = txs.filter(t => t.status === 'withdrawn').length;
                 const total = txs.reduce((s,t) => s + Number(t.amount), 0);
@@ -3512,8 +3526,8 @@
                       <button class="del-btn" onclick="westrinDeleteAccount(${acc.id}, event)" title="حذف">🗑️</button>
                     </div>
                     <div class="icon-wrap">📁</div>
-                    <h3>${acc.name}</h3>
-                    ${acc.note ? `<div class="note">${acc.note}</div>` : ''}
+                    <h3>${escapeHtml(acc.name)}</h3>
+                    ${acc.note ? `<div class="note">${escapeHtml(acc.note)}</div>` : ''}
                     <div class="stats">
                       <div class="stat-row"><span>🟡 تحت السحب</span><span class="val warn">${pending}</span></div>
                       <div class="stat-row"><span>🟢 تم السحب</span><span class="val pos">${withdrawn}</span></div>
@@ -3528,24 +3542,25 @@
         function westrinRenderTrash() {
             const grid = document.getElementById('wrTrashGrid');
             if (!grid) return;
-            document.getElementById('wrTrashCount').textContent = wrData.trash.length;
-            document.getElementById('wrTrashCountView').textContent = wrData.trash.length;
-            if (wrData.trash.length === 0) {
+            const trash = wrGetTrash();
+            document.getElementById('wrTrashCount').textContent = trash.length;
+            document.getElementById('wrTrashCountView').textContent = trash.length;
+            if (trash.length === 0) {
                 grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
                   <div class="icon">🗑️</div>
                   <p>سلة المحذوفات فارغة</p>
                 </div>`;
                 return;
             }
-            grid.innerHTML = wrData.trash.map((item, i) => {
+            grid.innerHTML = trash.map((item, i) => {
                 const acc = item.account;
                 const txs = item.transactions || [];
                 const total = txs.reduce((s,t) => s + Number(t.amount), 0);
                 const deletedDate = item.deletedAt ? item.deletedAt.split('T')[0] : '';
                 return `
                   <div class="trash-card">
-                    <h3>📁 ${acc.name}</h3>
-                    ${acc.note ? `<div class="note">${acc.note}</div>` : ''}
+                    <h3>📁 ${escapeHtml(acc.name)}</h3>
+                    ${acc.note ? `<div class="note">${escapeHtml(acc.note)}</div>` : ''}
                     <div class="info">
                       <span>المعاملات: <b>${txs.length}</b></span>
                       <span>المجموع: <b>${westrinFmtMoney(total)}</b></span>
@@ -3559,24 +3574,34 @@
                 `;
             }).join('');
         }
-        function westrinRestoreAccount(index) {
-            const item = wrData.trash[index];
+        async function westrinRestoreAccount(index) {
+            const trash = wrGetTrash();
+            const item = trash[index];
             if (!item) return;
             if (!confirm(`استرجاع الحساب "${item.account.name}" مع ${item.transactions.length} معاملة؟`)) return;
-            wrData.accounts.push(item.account);
-            wrData.transactions.push(...item.transactions);
-            wrData.trash.splice(index, 1);
-            westrinSaveData();
+            const accounts = wrGetAccounts();
+            accounts.push(item.account);
+            wrSetAccounts(accounts);
+            const txs = wrGetTransactions();
+            txs.push(...item.transactions);
+            wrSetTransactions(txs);
+            trash.splice(index, 1);
+            wrSetTrash(trash);
+            await wrSave();
             westrinRenderTrash();
             westrinRenderAccounts();
+            showToast('تم الاسترجاع ☁️');
         }
-        function westrinDeleteForever(index) {
-            const item = wrData.trash[index];
+        async function westrinDeleteForever(index) {
+            const trash = wrGetTrash();
+            const item = trash[index];
             if (!item) return;
             if (!confirm(`⚠️ حذف نهائي للحساب "${item.account.name}" وكل معاملاته؟ لا يمكن التراجع!`)) return;
-            wrData.trash.splice(index, 1);
-            westrinSaveData();
+            trash.splice(index, 1);
+            wrSetTrash(trash);
+            await wrSave();
             westrinRenderTrash();
+            showToast('تم الحذف النهائي ☁️');
         }
         function westrinSwitchTab(tab) {
             document.querySelectorAll('#westrin-app-container .tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
@@ -3585,7 +3610,7 @@
             if (tab === 'pending') westrinRenderPending();
             if (tab === 'withdrawn') westrinRenderWithdrawn();
         }
-        function westrinAddTransaction() {
+        async function westrinAddTransaction() {
             const name = document.getElementById('wrTxName').value.trim();
             const amount = parseFloat(document.getElementById('wrTxAmount').value);
             const date = document.getElementById('wrTxDate').value;
@@ -3593,7 +3618,8 @@
             if (!name) { alert('اكتب اسم المعاملة'); return; }
             if (isNaN(amount)) { alert('اكتب القيمة بشكل صحيح'); return; }
             if (!date) { alert('حدد التاريخ'); return; }
-            wrData.transactions.push({
+            const txs = wrGetTransactions();
+            txs.push({
                 id: Date.now(),
                 accountId: wrCurrentAccountId,
                 name: name,
@@ -3602,19 +3628,23 @@
                 time: time,
                 status: 'pending'
             });
-            westrinSaveData();
+            wrSetTransactions(txs);
+            await wrSave();
             document.getElementById('wrTxName').value = '';
             document.getElementById('wrTxAmount').value = '';
             document.getElementById('wrTxDate').value = westrinGetCurrentDate();
             document.getElementById('wrTxTime').value = westrinGetCurrentTime();
             document.getElementById('wrTxName').focus();
             westrinRenderAll();
+            showToast('تم الحفظ ☁️');
         }
-        function westrinToggleWithdraw(txId) {
-            const tx = wrData.transactions.find(t => t.id === txId);
+        async function westrinToggleWithdraw(txId) {
+            const txs = wrGetTransactions();
+            const tx = txs.find(t => t.id === txId);
             if (!tx) return;
             tx.status = tx.status === 'pending' ? 'withdrawn' : 'pending';
-            westrinSaveData();
+            wrSetTransactions(txs);
+            await wrSave();
             westrinRenderAll();
         }
         function westrinEnableEdit(txId) {
@@ -3626,7 +3656,7 @@
             }
         }
         function westrinOpenEditModal(txId) {
-            const tx = wrData.transactions.find(t => t.id === txId);
+            const tx = wrGetTransactions().find(t => t.id === txId);
             if (!tx) return;
             wrEditingTxId = txId;
             document.getElementById('wrEditName').value = tx.name;
@@ -3640,8 +3670,9 @@
             wrEditingTxId = null;
             westrinRenderAll();
         }
-        function westrinSaveEdit() {
-            const tx = wrData.transactions.find(t => t.id === wrEditingTxId);
+        async function westrinSaveEdit() {
+            const txs = wrGetTransactions();
+            const tx = txs.find(t => t.id === wrEditingTxId);
             if (!tx) return;
             const name = document.getElementById('wrEditName').value.trim();
             const amount = parseFloat(document.getElementById('wrEditAmount').value);
@@ -3652,17 +3683,20 @@
             tx.amount = amount;
             tx.date = date;
             tx.time = time;
-            westrinSaveData();
+            wrSetTransactions(txs);
+            await wrSave();
             westrinCloseEditModal();
+            showToast('تم التعديل ☁️');
         }
-        function westrinDeleteTransaction(txId) {
+        async function westrinDeleteTransaction(txId) {
             if (!confirm('حذف هذه المعاملة؟')) return;
-            wrData.transactions = wrData.transactions.filter(t => t.id !== txId);
-            westrinSaveData();
+            wrSetTransactions(wrGetTransactions().filter(t => t.id !== txId));
+            await wrSave();
             westrinRenderAll();
+            showToast('تم الحذف ☁️');
         }
         function westrinGetAccountTransactions() {
-            return wrData.transactions.filter(t => t.accountId === wrCurrentAccountId);
+            return wrGetTransactions().filter(t => t.accountId === wrCurrentAccountId);
         }
         function westrinSortByDateTime(a, b) {
             const da = `${a.date} ${a.time || '00:00'}`;
@@ -3698,7 +3732,7 @@
                             <span>تم السحب</span>
                           </label>
                         </td>
-                        <td><span class="tx-name">${tx.name}</span></td>
+                        <td><span class="tx-name">${escapeHtml(tx.name)}</span></td>
                         <td><span class="amount ${tx.amount >= 0 ? 'pos' : 'neg'}">${westrinFmtMoney(tx.amount)}</span></td>
                         <td><span class="tx-date">${westrinFmtDateTime(tx.date, tx.time)}</span></td>
                         <td>
@@ -3741,7 +3775,7 @@
                             <span>تم السحب ✓</span>
                           </label>
                         </td>
-                        <td><span class="tx-name">${tx.name}</span></td>
+                        <td><span class="tx-name">${escapeHtml(tx.name)}</span></td>
                         <td><span class="amount ${tx.amount >= 0 ? 'pos' : 'neg'}">${westrinFmtMoney(tx.amount)}</span></td>
                         <td><span class="tx-date">${westrinFmtDateTime(tx.date, tx.time)}</span></td>
                         <td class="action-cell">
@@ -3764,7 +3798,7 @@
             const fromTime = document.getElementById('wrReportFromTime').value;
             const toDate = document.getElementById('wrReportTo').value;
             const toTime = document.getElementById('wrReportToTime').value;
-            const acc = wrData.accounts.find(a => a.id === wrCurrentAccountId);
+            const acc = wrGetAccounts().find(a => a.id === wrCurrentAccountId);
             if (!acc) return;
             let txs = westrinGetAccountTransactions();
             if (fromDate) {
@@ -3803,7 +3837,7 @@
                 paper.innerHTML = `
                   <div class="report-brand">WESTRIN</div>
                   <div class="report-title">
-                    <h2>كشف حساب: ${acc.name}</h2>
+                    <h2>كشف حساب: ${escapeHtml(acc.name)}</h2>
                     <div class="period">${periodText}</div>
                   </div>
                   <div class="empty-state" style="color:#78350f">
@@ -3816,7 +3850,7 @@
             paper.innerHTML = `
               <div class="report-brand">WESTRIN</div>
               <div class="report-title">
-                <h2>كشف حساب: ${acc.name}</h2>
+                <h2>كشف حساب: ${escapeHtml(acc.name)}</h2>
                 <div class="period">${periodText}</div>
               </div>
               <div class="report-summary">
@@ -3845,7 +3879,7 @@
                   ${txs.map((tx, i) => `
                     <tr>
                       <td class="num">${i+1}</td>
-                      <td><b>${tx.name}</b></td>
+                      <td><b>${escapeHtml(tx.name)}</b></td>
                       <td class="num">${westrinFmtDateTime(tx.date, tx.time)}</td>
                       <td class="num ${tx.amount >= 0 ? 'pos' : 'neg'}">${westrinFmtMoney(tx.amount)}</td>
                       <td>${tx.status === 'withdrawn' ? '<span class="badge-done">✓ تم السحب</span>' : '<span class="badge-done" style="background:rgba(245,158,11,0.15);border-color:rgba(245,158,11,0.4);color:#b45309">⏳ تحت السحب</span>'}</td>
