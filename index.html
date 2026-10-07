@@ -55,6 +55,18 @@
         .file-chip.img:hover { background: rgba(59,130,246,.25); }
         .file-chip.pdf { background: rgba(239,68,68,.12); border-color: rgba(239,68,68,.35); color: #fca5a5; }
         .file-chip.pdf:hover { background: rgba(239,68,68,.25); }
+
+        /* ===== Loading overlay ===== */
+        #cloud-loading {
+            position: fixed; bottom: 20px; right: 20px; z-index: 150;
+            background: rgba(30,30,35,.95); border: 1px solid rgba(245,158,11,.4);
+            border-radius: 14px; padding: 10px 16px; font-size: 12px; font-weight: 700;
+            color: #f59e0b; display: flex; align-items: center; gap: 8px;
+            box-shadow: 0 8px 24px rgba(0,0,0,.5); transition: all .3s;
+        }
+        #cloud-loading.hidden { opacity: 0; pointer-events: none; transform: translateY(20px); }
+        .cloud-spinner { width: 14px; height: 14px; border: 2px solid rgba(245,158,11,.2); border-top-color: #f59e0b; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between pb-24">
@@ -63,7 +75,7 @@
         <span id="toastMsg"></span>
     </div>
 
-    <!-- ==================== شاشة الدخول ==================== -->
+    <!-- شاشة الدخول -->
     <div id="auth-screen" class="fixed inset-0 bg-[#121212] z-[100] flex items-center justify-center p-4">
         <div class="w-full max-w-md otp-request-card">
             <div class="text-center mb-7">
@@ -133,7 +145,7 @@
         </div>
     </div>
 
-    <!-- ==================== شاشة Landing ==================== -->
+    <!-- شاشة Landing -->
     <div id="view-landing" class="fixed inset-0 bg-[#121212] z-50 hidden flex-col items-center justify-center p-6 text-center overflow-y-auto">
         <div class="absolute top-6 left-6 flex items-center gap-3 flex-wrap z-10">
             <button id="adminRequestsBtn" onclick="openAccessRequests()" class="hidden bg-gray-800 hover:bg-gray-700 text-purple-300 border border-purple-500/40 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-lg cursor-pointer">
@@ -194,7 +206,7 @@
         </div>
     </div>
 
-    <!-- ==================== قسم SWFT ==================== -->
+    <!-- قسم SWFT -->
     <div id="module-swft" class="hidden">
         <header class="glass-panel border-b border-amber-500/20 sticky top-0 z-40 px-6 py-4 shadow-xl no-print">
             <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
@@ -455,7 +467,7 @@
         </nav>
     </div>
 
-    <!-- ==================== قسم RMB ==================== -->
+    <!-- قسم RMB -->
     <div id="module-rmb" class="hidden">
         <header class="glass-panel border-b border-red-500/20 sticky top-0 z-40 px-6 py-4 shadow-xl no-print">
             <div class="max-w-7xl mx-auto flex justify-between items-center flex-wrap gap-2">
@@ -619,7 +631,7 @@
         </main>
     </div>
 
-    <!-- ==================== قسم BANK ==================== -->
+    <!-- قسم BANK -->
     <div id="module-bank" class="hidden">
         <header class="glass-panel border-b border-emerald-500/20 sticky top-0 z-40 px-6 py-4 shadow-xl no-print">
             <div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-3">
@@ -767,7 +779,7 @@
         </main>
     </div>
 
-    <!-- ==================== قسم WESTRIN (متصل بقاعدة البيانات) ==================== -->
+    <!-- قسم WESTRIN -->
     <div id="module-westrin" class="hidden" style="background: linear-gradient(135deg, #000 0%, #1a1a1a 50%, #000 100%); min-height: 100vh;">
         <header class="sticky top-0 z-40 px-4 md:px-6 py-4 shadow-2xl no-print" style="background: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(20,20,20,0.95)); border-bottom: 2px solid #facc15;">
             <div class="max-w-7xl mx-auto flex justify-between items-center flex-wrap gap-3">
@@ -790,7 +802,7 @@
         <div id="westrin-app-container"></div>
     </div>
 
-    <!-- ==================== طلبات الدخول ==================== -->
+    <!-- طلبات الدخول -->
     <div id="accessRequestsModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-[90] hidden flex items-center justify-center p-4">
         <div class="glass-panel w-full max-w-3xl p-6 rounded-3xl border border-purple-500/30 shadow-2xl max-h-[88vh] overflow-y-auto">
             <div class="flex items-center justify-between border-b border-gray-800 pb-4 mb-4">
@@ -804,7 +816,7 @@
         </div>
     </div>
 
-    <!-- ==================== Modals ==================== -->
+    <!-- Modals -->
     <div id="addCompanyModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="glass-panel w-full max-w-md p-6 rounded-3xl border border-amber-500/30 space-y-4 shadow-2xl">
             <h3 id="modalCompanyTitle" class="text-lg font-bold text-amber-400 border-b border-gray-800 pb-3">إضافة شركة جديدة (SWFT)</h3>
@@ -889,7 +901,6 @@
         </div>
     </div>
 
-    <!-- ==================== نماذج قسم البنك ==================== -->
     <div id="addBankAccountModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="glass-panel w-full max-w-md p-6 rounded-3xl border border-emerald-500/30 space-y-4 shadow-2xl">
             <h3 id="modalBankAccountTitle" class="text-lg font-bold text-emerald-400 border-b border-gray-800 pb-3">إضافة حساب بنكي جديد</h3>
@@ -999,7 +1010,13 @@
         </div>
     </div>
 
-    <!-- ==================== Firebase SDK و JavaScript ==================== -->
+    <!-- Loading indicator -->
+    <div id="cloud-loading" class="hidden">
+        <div class="cloud-spinner"></div>
+        <span>جاري المزامنة السحابية...</span>
+    </div>
+
+    <!-- Firebase SDK -->
     <script type="importmap">
         {
             "imports": {
@@ -1011,7 +1028,7 @@
 
     <script type="module">
         import { initializeApp } from "firebase/app";
-        import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+        import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "firebase/firestore";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCruQTijtvF5HqGaSvkOAyCeLwWyyLIDd0",
@@ -1048,14 +1065,55 @@
         let currentBankContext = { type: 'ALL', id: null };
         let isFirebaseReady = false;
         let tempBankAttachments = [];
+        let isCloudSync = false; // هل البيانات قادمة من السحابة الآن
+        let pendingSaveTimer = null;
+        let lastLocalSaveTime = 0;
 
-        // ==================== Firebase ====================
-        async function loadFromFirebase() {
+        // ==================== تحميل سريع ====================
+        function loadFromLocalStorage() {
             try {
+                const raw = localStorage.getItem('alanhar_db');
+                if (!raw) return null;
+                const data = JSON.parse(raw);
+                if (!data.westrinAccounts) data.westrinAccounts = [];
+                if (!data.westrinTransactions) data.westrinTransactions = [];
+                if (!data.westrinTrash) data.westrinTrash = [];
+                return data;
+            } catch(e) { return null; }
+        }
+
+        function showCloudLoading(show) {
+            const el = document.getElementById('cloud-loading');
+            if (!el) return;
+            el.classList.toggle('hidden', !show);
+        }
+
+        // تحميل أولي: من localStorage فوراً، ثم من Firebase بالخلفية
+        async function bootstrapData() {
+            // 1) تحميل فوري من localStorage
+            const local = loadFromLocalStorage();
+            if (local) {
+                appDb = local;
+                isFirebaseReady = true;
+                updateAdminControls();
+                renderCompanies();
+                renderGlobalSwftTransactions();
+                console.log('⚡ تم التحميل من localStorage فوراً');
+            }
+
+            // 2) محاولة جلب أحدث نسخة من Firebase (بدون حجب الواجهة)
+            fetchFromCloud();
+        }
+
+        async function fetchFromCloud() {
+            try {
+                showCloudLoading(true);
                 const docRef = doc(db_firestore, "system", "alanhar_db");
-                const docSnap = await getDoc(docRef);
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
+                const snap = await getDoc(docRef);
+
+                if (snap.exists()) {
+                    const data = snap.data();
+                    isCloudSync = true;
                     appDb = {
                         companies: data.companies || [],
                         transactions: data.transactions || [],
@@ -1070,48 +1128,106 @@
                         westrinTransactions: data.westrinTransactions || [],
                         westrinTrash: data.westrinTrash || []
                     };
+
+                    // ضمان وجود الأدمن
                     const adminExists = appDb.users.some(u => u.id === 'admin-tarek');
                     if (!adminExists) {
                         appDb.users.unshift({ id: 'admin-tarek', name: 'TAREK', code: '8008', role: 'admin', status: 'approved' });
+                        scheduleCloudSave();
                     }
+
+                    // تحديث localStorage
                     localStorage.setItem('alanhar_db', JSON.stringify(appDb));
-                    isFirebaseReady = true;
-                    return appDb;
+
+                    // إعادة الرسم إذا كنا في صفحة داخلية
+                    refreshCurrentView();
                 } else {
+                    // لا يوجد مستند - أنشئه لأول مرة
                     appDb.users = [{ id: 'admin-tarek', name: 'TAREK', code: '8008', role: 'admin', status: 'approved' }];
-                    await saveToFirebase(appDb);
-                    isFirebaseReady = true;
-                    return appDb;
+                    await saveToCloud(appDb);
                 }
+
+                isFirebaseReady = true;
+                updateAdminControls();
+                showToast('✅ تم التحديث من السحابة');
             } catch (error) {
-                console.error("خطأ في تحميل البيانات من Firebase:", error);
-                const localData = localStorage.getItem('alanhar_db');
-                if (localData) {
-                    try {
-                        appDb = JSON.parse(localData);
-                        if (!appDb.westrinAccounts) appDb.westrinAccounts = [];
-                        if (!appDb.westrinTransactions) appDb.westrinTransactions = [];
-                        if (!appDb.westrinTrash) appDb.westrinTrash = [];
-                        isFirebaseReady = true;
-                        return appDb;
-                    } catch(e) {}
-                }
-                return null;
+                console.error("خطأ في جلب البيانات من Firebase:", error);
+                isFirebaseReady = true;
+                showToast('⚠️ العمل في الوضع المحلي');
+            } finally {
+                showCloudLoading(false);
             }
         }
 
-        async function saveToFirebase(data) {
+        // حفظ فوري محلي + حفظ سحابي مؤجل (Debounced)
+        function scheduleCloudSave() {
+            const now = Date.now();
+            lastLocalSaveTime = now;
+
+            // حفظ فوري في localStorage
             try {
+                localStorage.setItem('alanhar_db', JSON.stringify(appDb));
+            } catch(e) {
+                console.warn('localStorage ممتلئ', e);
+            }
+
+            // Debounce للإرسال للسحابة (500ms)
+            if (pendingSaveTimer) clearTimeout(pendingSaveTimer);
+            pendingSaveTimer = setTimeout(() => {
+                saveToCloud(appDb);
+            }, 500);
+        }
+
+        // حفظ في Firebase (في الخلفية - بدون await)
+        async function saveToCloud(data) {
+            try {
+                showCloudLoading(true);
                 const docRef = doc(db_firestore, "system", "alanhar_db");
                 await setDoc(docRef, data);
                 isFirebaseReady = true;
-                localStorage.setItem('alanhar_db', JSON.stringify(data));
-                return true;
             } catch (error) {
-                console.error("خطأ في حفظ البيانات:", error);
-                localStorage.setItem('alanhar_db', JSON.stringify(data));
-                return false;
+                console.error("خطأ في الحفظ السحابي:", error);
+            } finally {
+                showCloudLoading(false);
             }
+        }
+
+        // للتوافق مع الكود القديم - تستدعي الحفظ المجدول
+        async function saveToFirebase(data) {
+            scheduleCloudSave();
+            return true;
+        }
+
+        function refreshCurrentView() {
+            // إذا كانت إحدى الوحدات مفتوحة، أعد رسم الجداول
+            if (!document.getElementById('module-swft').classList.contains('hidden')) {
+                if (!document.getElementById('swft-tab-home').classList.contains('hidden')) renderCompanies();
+                if (!document.getElementById('swft-tab-preview').classList.contains('hidden')) renderSwftPreview();
+                if (!document.getElementById('swft-tab-statements').classList.contains('hidden')) {
+                    prepareSwftStatementView();
+                }
+                if (!document.getElementById('swft-tab-trash').classList.contains('hidden')) renderSwftTrash();
+            }
+            if (!document.getElementById('module-rmb').classList.contains('hidden')) {
+                if (!document.getElementById('rmb-sec-transactions').classList.contains('hidden')) renderRmbTransactions();
+                if (!document.getElementById('rmb-sec-clients').classList.contains('hidden')) renderRmbClients();
+                if (!document.getElementById('rmb-sec-companies').classList.contains('hidden')) renderRmbCompanies();
+                if (!document.getElementById('rmb-sec-trash').classList.contains('hidden')) renderRmbTrash();
+            }
+            if (!document.getElementById('module-bank').classList.contains('hidden')) {
+                if (!document.getElementById('bank-sec-transactions').classList.contains('hidden')) renderBankTransactions();
+                if (!document.getElementById('bank-sec-accounts').classList.contains('hidden')) renderBankAccounts();
+                if (!document.getElementById('bank-sec-trash').classList.contains('hidden')) renderBankTrash();
+                if (!document.getElementById('bank-sec-statements').classList.contains('hidden')) prepareBankStatementView();
+            }
+            if (!document.getElementById('module-westrin').classList.contains('hidden')) {
+                westrinRenderAccounts();
+                westrinRenderTrash();
+                if (wrCurrentAccountId) {
+                    westrinRenderAll();
+                }
+            }
+            updateAdminControls();
         }
 
         // ==================== أدوات ====================
@@ -1119,7 +1235,8 @@
             const toast = document.getElementById('toast');
             document.getElementById('toastMsg').innerText = msg;
             toast.classList.remove('hidden');
-            setTimeout(() => toast.classList.add('hidden'), 3000);
+            clearTimeout(window.__toastTimer);
+            window.__toastTimer = setTimeout(() => toast.classList.add('hidden'), 2500);
         }
 
         function getTodayDateString() {
@@ -1433,6 +1550,7 @@
             let currency = document.getElementById('globalSwftSearchCurrency').value;
             let container = document.getElementById('globalSearchResultsContainer');
             let tbody = document.getElementById('globalSwftTableBody');
+            if (!tbody) return;
             tbody.innerHTML = '';
             if (amount === 0 && account === 'ALL' && currency === 'ALL') { container.classList.add('hidden'); return; }
             container.classList.remove('hidden');
@@ -1527,6 +1645,7 @@
         }
         function renderCompanies() {
             let tbody = document.getElementById('companiesTableBody');
+            if (!tbody) return;
             tbody.innerHTML = '';
             let activeCompanies = appDb.companies.filter(c => !c.isDeleted);
             if (activeCompanies.length === 0) {
@@ -1550,6 +1669,7 @@
         }
         function renderSwftTrash() {
             let tbody = document.getElementById('swftTrashTableBody');
+            if (!tbody) return;
             tbody.innerHTML = '';
             let deletedCompanies = appDb.companies.filter(c => c.isDeleted);
             if (deletedCompanies.length === 0) {
@@ -1655,6 +1775,7 @@
         }
         function renderTransactions() {
             let tbody = document.getElementById('transactionsTableBody');
+            if (!tbody) return;
             tbody.innerHTML = '';
             let searchAmount = parseNumber(document.getElementById('compSearchAmount').value);
             let searchCurr = document.getElementById('compSearchCurrency').value;
@@ -1712,6 +1833,7 @@
         }
         function renderSwftPreview() {
             let tbody = document.getElementById('swftPreviewUnifiedTableBody');
+            if (!tbody) return;
             tbody.innerHTML = '';
             if (!appDb.transactions || appDb.transactions.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-gray-500">لا توجد معاملات.</td></tr>`;
@@ -1742,6 +1864,7 @@
         }
         function prepareSwftStatementView() {
             let select = document.getElementById('statementSwftCompany');
+            if (!select) return;
             select.innerHTML = '';
             appDb.companies.forEach(c => {
                 let tag = c.isDeleted ? ' [سلة المحذوفات]' : '';
@@ -1753,6 +1876,7 @@
             let compId = document.getElementById('statementSwftCompany').value;
             let comp = appDb.companies.find(c => c.id === compId);
             let tbody = document.getElementById('swftStatementTableBody');
+            if (!tbody) return;
             tbody.innerHTML = '';
             if (!comp) return;
             document.getElementById('pdfCompName').innerText = comp.name + (comp.isDeleted ? ' (محذوفة)' : '');
@@ -1862,6 +1986,7 @@
         }
         function renderRmbClients() {
             let tbody = document.getElementById('rmbClientsTableBody');
+            if (!tbody) return;
             tbody.innerHTML = '';
             let list = appDb.rmbClients.filter(c => !c.isDeleted);
             if (list.length === 0) { tbody.innerHTML = `<tr><td colspan="2" class="text-center py-6 text-gray-500">لا يوجد زبائن.</td></tr>`; return; }
@@ -1930,6 +2055,7 @@
         }
         function renderRmbCompanies() {
             let tbody = document.getElementById('rmbCompaniesTableBody');
+            if (!tbody) return;
             tbody.innerHTML = '';
             let list = appDb.rmbCompanies.filter(c => !c.isDeleted);
             if (list.length === 0) { tbody.innerHTML = `<tr><td colspan="2" class="text-center py-6 text-gray-500">لا يوجد شركات.</td></tr>`; return; }
@@ -1949,6 +2075,7 @@
         }
         function renderRmbTrash() {
             let tbody = document.getElementById('rmbTrashTableBody');
+            if (!tbody) return;
             tbody.innerHTML = '';
             let delClients = appDb.rmbClients.filter(c => c.isDeleted);
             let delCompanies = appDb.rmbCompanies.filter(c => c.isDeleted);
@@ -2039,6 +2166,7 @@
         }
         function renderRmbTransactions() {
             let tbody = document.getElementById('rmbTransactionsTableBody');
+            if (!tbody) return;
             tbody.innerHTML = '';
             let searchAmount = parseNumber(document.getElementById('rmbSearchAmount').value);
             let searchDetails = document.getElementById('rmbSearchDetails').value.trim().toLowerCase();
@@ -2094,6 +2222,7 @@
             let type = document.getElementById('rmbStatementType').value;
             let targetId = document.getElementById('rmbStatementTargetSelect').value;
             let tbody = document.getElementById('rmbStatementTableBody');
+            if (!tbody) return;
             tbody.innerHTML = '';
             let targetObj = type === 'CLIENT' ? appDb.rmbClients.find(c => c.id === targetId) : appDb.rmbCompanies.find(c => c.id === targetId);
             document.getElementById('rmbPdfTargetName').innerText = targetObj ? targetObj.name : '--';
@@ -2123,9 +2252,7 @@
             document.getElementById('rmbStatementTotal').innerText = `${formatMoney(total)} ¥`;
         }
 
-        /* ============================================================
-           BANK - قسم البنك
-           ============================================================ */
+        /* ==================== BANK ==================== */
         function switchBankTab(tab) {
             ['transactions', 'accounts', 'trash', 'statements'].forEach(t => {
                 let sec = document.getElementById(`bank-sec-${t}`);
@@ -2201,6 +2328,7 @@
         }
         function renderBankAccounts() {
             let tbody = document.getElementById('bankAccountsTableBody');
+            if (!tbody) return;
             tbody.innerHTML = '';
             let list = appDb.bankAccounts.filter(a => !a.isDeleted);
             if (list.length === 0) {
@@ -2223,6 +2351,7 @@
         }
         function renderBankTrash() {
             let tbody = document.getElementById('bankTrashTableBody');
+            if (!tbody) return;
             tbody.innerHTML = '';
             let delAccounts = appDb.bankAccounts.filter(a => a.isDeleted);
             if (delAccounts.length === 0) {
@@ -2474,6 +2603,7 @@
 
         function renderBankTransactions() {
             let tbody = document.getElementById('bankTransactionsTableBody');
+            if (!tbody) return;
             tbody.innerHTML = '';
             let searchAmount = parseNumber(document.getElementById('bankSearchAmount').value);
             let searchDetails = document.getElementById('bankSearchDetails').value.trim().toLowerCase();
@@ -2541,6 +2671,7 @@
 
         function prepareBankStatementView() {
             let select = document.getElementById('bankStatementAccountSelect');
+            if (!select) return;
             select.innerHTML = '';
             if (appDb.bankAccounts.length === 0) {
                 select.innerHTML = `<option value="">— لا توجد حسابات —</option>`;
@@ -2558,6 +2689,7 @@
             let accId = document.getElementById('bankStatementAccountSelect').value;
             let acc = appDb.bankAccounts.find(a => a.id === accId);
             let tbody = document.getElementById('bankStatementTableBody');
+            if (!tbody) return;
             tbody.innerHTML = '';
             if (!acc) {
                 document.getElementById('bankPdfAccountName').innerText = '--';
@@ -2677,33 +2809,38 @@
         /* ==================== تشغيل ==================== */
         window.onload = async function() {
             setupOtpInputs();
-            const data = await loadFromFirebase();
-            if (data) {
-                appDb = data;
-                const adminExists = appDb.users.some(u => u.id === 'admin-tarek');
-                if (!adminExists) {
-                    appDb.users.unshift({ id: 'admin-tarek', name: 'TAREK', code: '8008', role: 'admin', status: 'approved' });
-                    await saveToFirebase(appDb);
-                }
-                isFirebaseReady = true;
-                updateAdminControls();
-                renderCompanies();
-                showToast('تم الاتصال بقاعدة البيانات ✅');
-            } else {
-                const localData = localStorage.getItem('alanhar_db');
-                if (localData) {
-                    try {
-                        appDb = JSON.parse(localData);
-                        if (!appDb.westrinAccounts) appDb.westrinAccounts = [];
-                        if (!appDb.westrinTransactions) appDb.westrinTransactions = [];
-                        if (!appDb.westrinTrash) appDb.westrinTrash = [];
-                        isFirebaseReady = true;
-                        updateAdminControls();
-                        renderCompanies();
-                        showToast('تم التحميل من التخزين المحلي');
-                    } catch (e) {}
-                }
-            }
+            await bootstrapData();
+
+            // إعداد المزامنة الحية مع Firebase
+            try {
+                const docRef = doc(db_firestore, "system", "alanhar_db");
+                onSnapshot(docRef, (snap) => {
+                    if (!snap.exists()) return;
+                    // لا تعيد الرسم إذا كنا نحن من حفظنا للتو (خلال 1.5 ثانية)
+                    if (Date.now() - lastLocalSaveTime < 1500) return;
+                    const data = snap.data();
+                    appDb = {
+                        companies: data.companies || [],
+                        transactions: data.transactions || [],
+                        rmbClients: data.rmbClients || [],
+                        rmbCompanies: data.rmbCompanies || [],
+                        rmbTransactions: data.rmbTransactions || [],
+                        bankAccounts: data.bankAccounts || [],
+                        bankTransactions: data.bankTransactions || [],
+                        users: data.users || [],
+                        accessRequests: data.accessRequests || [],
+                        westrinAccounts: data.westrinAccounts || [],
+                        westrinTransactions: data.westrinTransactions || [],
+                        westrinTrash: data.westrinTrash || []
+                    };
+                    localStorage.setItem('alanhar_db', JSON.stringify(appDb));
+                    updateAdminControls();
+                    refreshCurrentView();
+                }, (err) => {
+                    console.warn('مزامنة حية معطلة:', err);
+                });
+            } catch(e) { console.warn(e); }
+
             document.getElementById('auth-screen').classList.remove('hidden');
             document.getElementById('view-landing').classList.add('hidden');
             document.getElementById('view-landing').classList.remove('flex');
@@ -2714,7 +2851,6 @@
            ============================================================ */
         let westrinInitialized = false;
 
-        // ربط مباشر ببيانات appDb السحابية
         function wrGetAccounts() { return appDb.westrinAccounts || []; }
         function wrSetAccounts(v) { appDb.westrinAccounts = v; }
         function wrGetTransactions() { return appDb.westrinTransactions || []; }
@@ -2728,7 +2864,6 @@
 
         function initWestrinApp() {
             if (westrinInitialized) {
-                // إعادة الرسم فقط
                 westrinRenderAccounts();
                 westrinRenderTrash();
                 return;
@@ -3366,7 +3501,7 @@
             });
         }
 
-        // ============ دوال WESTRIN (متصل بـ Firebase) ============
+        // ============ دوال WESTRIN ============
         let wrCurrentAccountId = null;
         let wrEditingTxId = null;
         let wrEditingAccountId = null;
@@ -4005,7 +4140,6 @@
         window.prepareBankStatementView = prepareBankStatementView;
         window.renderBankStatementTable = renderBankStatementTable;
 
-        // ربط دوال WESTRIN
         window.initWestrinApp = initWestrinApp;
         window.westrinOpenTrash = westrinOpenTrash;
         window.westrinClearAllData = westrinClearAllData;
