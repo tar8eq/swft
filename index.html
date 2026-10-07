@@ -20,6 +20,7 @@
         .account-btn-tab { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(245, 158, 11, 0.3); color: #f59e0b; padding: 10px 20px; border-radius: 12px; font-weight: 800; font-size: 0.85rem; cursor: pointer; white-space: nowrap; transition: all 0.25s ease-in-out; outline: none; }
         .account-btn-tab:hover { background: rgba(245, 158, 11, 0.15); border-color: #f59e0b; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(245, 158, 11, 0.25); }
 
+        /* ==================== أنماط الطباعة العامة ==================== */
         @media print {
             body { background: white !important; color: black !important; padding: 0 !important; margin: 0 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             .no-print { display: none !important; }
@@ -56,7 +57,6 @@
         .file-chip.pdf { background: rgba(239,68,68,.12); border-color: rgba(239,68,68,.35); color: #fca5a5; }
         .file-chip.pdf:hover { background: rgba(239,68,68,.25); }
 
-        /* ===== Loading overlay ===== */
         #cloud-loading {
             position: fixed; bottom: 20px; right: 20px; z-index: 150;
             background: rgba(30,30,35,.95); border: 1px solid rgba(245,158,11,.4);
@@ -67,6 +67,351 @@
         #cloud-loading.hidden { opacity: 0; pointer-events: none; transform: translateY(20px); }
         .cloud-spinner { width: 14px; height: 14px; border: 2px solid rgba(245,158,11,.2); border-top-color: #f59e0b; border-radius: 50%; animation: spin 0.8s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ============================================================
+           🎨 قالب الطباعة الاحترافي (WESTRIN PRO REPORT)
+           ============================================================ */
+        @media print {
+            body > *:not(#wrPrintRoot) { display: none !important; }
+            #wrPrintRoot {
+                display: block !important;
+                position: absolute !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: #ffffff !important;
+                color: #0f172a !important;
+                font-family: 'Cairo', sans-serif !important;
+                direction: rtl !important;
+            }
+            #wrPrintRoot .wr-pro-report {
+                padding: 0 !important;
+                background: #ffffff !important;
+            }
+            /* الرأس الاحترافي */
+            #wrPrintRoot .pro-header {
+                background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #000 100%) !important;
+                color: #ffffff !important;
+                padding: 22px 30px !important;
+                display: flex !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                border-bottom: 5px solid #facc15 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            #wrPrintRoot .pro-header .brand-box {
+                display: flex !important;
+                align-items: center !important;
+                gap: 15px !important;
+            }
+            #wrPrintRoot .pro-header .brand-logo {
+                width: 55px !important;
+                height: 55px !important;
+                border-radius: 14px !important;
+                background: linear-gradient(135deg, #facc15 0%, #eab308 100%) !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                color: #000 !important;
+                font-size: 26px !important;
+                font-weight: 900 !important;
+                font-family: 'Inter', sans-serif !important;
+                box-shadow: 0 6px 18px rgba(250,204,21,0.5) !important;
+            }
+            #wrPrintRoot .pro-header .brand-text h1 {
+                font-size: 22px !important;
+                font-weight: 900 !important;
+                color: #ffffff !important;
+                margin: 0 !important;
+                letter-spacing: 0.5px !important;
+            }
+            #wrPrintRoot .pro-header .brand-text h1 .gold {
+                color: #facc15 !important;
+            }
+            #wrPrintRoot .pro-header .brand-text p {
+                font-size: 11px !important;
+                color: #facc15 !important;
+                margin: 4px 0 0 0 !important;
+                letter-spacing: 2px !important;
+                font-weight: 700 !important;
+            }
+            #wrPrintRoot .pro-header .report-info {
+                text-align: left !important;
+                direction: ltr !important;
+            }
+            #wrPrintRoot .pro-header .report-info .label {
+                font-size: 10px !important;
+                color: #94a3b8 !important;
+                letter-spacing: 1.5px !important;
+                font-weight: 700 !important;
+            }
+            #wrPrintRoot .pro-header .report-info .value {
+                font-size: 14px !important;
+                color: #ffffff !important;
+                font-weight: 800 !important;
+                font-family: 'Inter', sans-serif !important;
+                margin-top: 2px !important;
+            }
+            /* شريط العنوان الأصفر */
+            #wrPrintRoot .pro-title-bar {
+                background: linear-gradient(90deg, #facc15 0%, #f59e0b 100%) !important;
+                color: #000 !important;
+                padding: 14px 30px !important;
+                text-align: center !important;
+                font-weight: 900 !important;
+                font-size: 18px !important;
+                letter-spacing: 1px !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            #wrPrintRoot .pro-title-bar .sub {
+                font-size: 12px !important;
+                font-weight: 700 !important;
+                color: #1e293b !important;
+                margin-top: 2px !important;
+                letter-spacing: 0 !important;
+            }
+            /* محتوى التقرير */
+            #wrPrintRoot .pro-body {
+                padding: 20px 30px !important;
+            }
+            /* بطاقة معلومات الحساب */
+            #wrPrintRoot .pro-info-card {
+                display: grid !important;
+                grid-template-columns: repeat(3, 1fr) !important;
+                gap: 12px !important;
+                margin-bottom: 20px !important;
+            }
+            #wrPrintRoot .pro-info-item {
+                background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+                border: 1px solid #cbd5e1 !important;
+                border-right: 4px solid #facc15 !important;
+                border-radius: 8px !important;
+                padding: 10px 14px !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            #wrPrintRoot .pro-info-item .label {
+                font-size: 10px !important;
+                color: #64748b !important;
+                letter-spacing: 1px !important;
+                font-weight: 700 !important;
+                margin-bottom: 3px !important;
+            }
+            #wrPrintRoot .pro-info-item .value {
+                font-size: 13px !important;
+                color: #0f172a !important;
+                font-weight: 800 !important;
+            }
+            /* بطاقات الإحصائيات */
+            #wrPrintRoot .pro-stats-grid {
+                display: grid !important;
+                grid-template-columns: repeat(3, 1fr) !important;
+                gap: 12px !important;
+                margin-bottom: 20px !important;
+            }
+            #wrPrintRoot .pro-stat-card {
+                border-radius: 10px !important;
+                padding: 14px !important;
+                text-align: center !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                border: 1px solid !important;
+            }
+            #wrPrintRoot .pro-stat-card.gold {
+                background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%) !important;
+                border-color: #f59e0b !important;
+            }
+            #wrPrintRoot .pro-stat-card.green {
+                background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%) !important;
+                border-color: #10b981 !important;
+            }
+            #wrPrintRoot .pro-stat-card.amber {
+                background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%) !important;
+                border-color: #f97316 !important;
+            }
+            #wrPrintRoot .pro-stat-card .stat-label {
+                font-size: 11px !important;
+                color: #78350f !important;
+                font-weight: 800 !important;
+                letter-spacing: 1px !important;
+                margin-bottom: 6px !important;
+            }
+            #wrPrintRoot .pro-stat-card.green .stat-label { color: #065f46 !important; }
+            #wrPrintRoot .pro-stat-card.amber .stat-label { color: #9a3412 !important; }
+            #wrPrintRoot .pro-stat-card .stat-value {
+                font-size: 22px !important;
+                font-weight: 900 !important;
+                font-family: 'Inter', sans-serif !important;
+                color: #0f172a !important;
+                direction: ltr !important;
+            }
+            /* الجدول الاحترافي */
+            #wrPrintRoot .pro-table {
+                width: 100% !important;
+                border-collapse: collapse !important;
+                margin-bottom: 20px !important;
+                border-radius: 10px !important;
+                overflow: hidden !important;
+                box-shadow: 0 4px 14px rgba(0,0,0,0.08) !important;
+            }
+            #wrPrintRoot .pro-table thead th {
+                background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+                color: #facc15 !important;
+                font-size: 11px !important;
+                font-weight: 900 !important;
+                letter-spacing: 1px !important;
+                padding: 12px 10px !important;
+                text-align: right !important;
+                border-bottom: 3px solid #facc15 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            #wrPrintRoot .pro-table thead th.center {
+                text-align: center !important;
+            }
+            #wrPrintRoot .pro-table tbody td {
+                padding: 10px !important;
+                font-size: 11.5px !important;
+                color: #1e293b !important;
+                border-bottom: 1px solid #e2e8f0 !important;
+                text-align: right !important;
+                vertical-align: middle !important;
+                background: #ffffff !important;
+            }
+            #wrPrintRoot .pro-table tbody tr:nth-child(even) td {
+                background: #f8fafc !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            #wrPrintRoot .pro-table tbody tr:last-child td {
+                border-bottom: none !important;
+            }
+            #wrPrintRoot .pro-table .num {
+                font-family: 'Inter', sans-serif !important;
+                font-weight: 800 !important;
+                direction: ltr !important;
+                display: inline-block !important;
+            }
+            #wrPrintRoot .pro-table .row-index {
+                display: inline-block !important;
+                width: 22px !important;
+                height: 22px !important;
+                line-height: 22px !important;
+                text-align: center !important;
+                background: #facc15 !important;
+                color: #000 !important;
+                border-radius: 50% !important;
+                font-weight: 900 !important;
+                font-size: 10.5px !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            #wrPrintRoot .pro-table .tx-name {
+                font-weight: 800 !important;
+                color: #0f172a !important;
+            }
+            /* شارات الحالة */
+            #wrPrintRoot .status-badge {
+                display: inline-block !important;
+                padding: 4px 12px !important;
+                border-radius: 20px !important;
+                font-size: 10.5px !important;
+                font-weight: 900 !important;
+                letter-spacing: 0.3px !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            #wrPrintRoot .status-badge.done {
+                background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+                color: #ffffff !important;
+                box-shadow: 0 2px 6px rgba(16,185,129,0.4) !important;
+            }
+            #wrPrintRoot .status-badge.pending {
+                background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+                color: #ffffff !important;
+                box-shadow: 0 2px 6px rgba(245,158,11,0.4) !important;
+            }
+            /* صندوق الإجماليات */
+            #wrPrintRoot .pro-totals {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 14px !important;
+                margin-top: 8px !important;
+            }
+            #wrPrintRoot .pro-total-card {
+                border-radius: 12px !important;
+                padding: 16px 20px !important;
+                display: flex !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            #wrPrintRoot .pro-total-card.total {
+                background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+                color: #ffffff !important;
+                border: 2px solid #facc15 !important;
+            }
+            #wrPrintRoot .pro-total-card.withdrawn {
+                background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+                color: #ffffff !important;
+                border: 2px solid #047857 !important;
+            }
+            #wrPrintRoot .pro-total-card .label {
+                font-size: 12px !important;
+                font-weight: 800 !important;
+                letter-spacing: 0.5px !important;
+            }
+            #wrPrintRoot .pro-total-card .value {
+                font-size: 22px !important;
+                font-weight: 900 !important;
+                font-family: 'Inter', sans-serif !important;
+                direction: ltr !important;
+            }
+            #wrPrintRoot .pro-total-card.total .value {
+                color: #facc15 !important;
+            }
+            /* تذييل */
+            #wrPrintRoot .pro-footer {
+                margin-top: 24px !important;
+                padding-top: 14px !important;
+                border-top: 2px dashed #cbd5e1 !important;
+                display: flex !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                font-size: 10px !important;
+                color: #64748b !important;
+                letter-spacing: 0.5px !important;
+            }
+            #wrPrintRoot .pro-footer .stamp {
+                font-weight: 900 !important;
+                color: #f59e0b !important;
+                font-size: 12px !important;
+                letter-spacing: 2px !important;
+            }
+            /* لا توجد معاملات */
+            #wrPrintRoot .pro-empty {
+                text-align: center !important;
+                padding: 50px 20px !important;
+                color: #94a3b8 !important;
+                font-size: 14px !important;
+                font-weight: 700 !important;
+            }
+            #wrPrintRoot .pro-empty .icon {
+                font-size: 56px !important;
+                margin-bottom: 14px !important;
+                display: block !important;
+                opacity: 0.4 !important;
+            }
+            @page {
+                size: A4;
+                margin: 8mm;
+            }
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between pb-24">
@@ -74,6 +419,9 @@
     <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 bg-amber-500 text-black font-black px-6 py-3 rounded-2xl shadow-2xl z-[200] hidden text-center border-2 border-white">
         <span id="toastMsg"></span>
     </div>
+
+    <!-- حاوية الطباعة الاحترافية -->
+    <div id="wrPrintRoot" style="display:none;"></div>
 
     <!-- شاشة الدخول -->
     <div id="auth-screen" class="fixed inset-0 bg-[#121212] z-[100] flex items-center justify-center p-4">
@@ -1045,18 +1393,11 @@
         const db_firestore = getFirestore(app);
 
         let appDb = {
-            companies: [],
-            transactions: [],
-            rmbClients: [],
-            rmbCompanies: [],
-            rmbTransactions: [],
-            bankAccounts: [],
-            bankTransactions: [],
-            users: [],
-            accessRequests: [],
-            westrinAccounts: [],
-            westrinTransactions: [],
-            westrinTrash: []
+            companies: [], transactions: [],
+            rmbClients: [], rmbCompanies: [], rmbTransactions: [],
+            bankAccounts: [], bankTransactions: [],
+            users: [], accessRequests: [],
+            westrinAccounts: [], westrinTransactions: [], westrinTrash: []
         };
 
         let currentUser = null;
@@ -1065,11 +1406,10 @@
         let currentBankContext = { type: 'ALL', id: null };
         let isFirebaseReady = false;
         let tempBankAttachments = [];
-        let isCloudSync = false; // هل البيانات قادمة من السحابة الآن
+        let isCloudSync = false;
         let pendingSaveTimer = null;
         let lastLocalSaveTime = 0;
 
-        // ==================== تحميل سريع ====================
         function loadFromLocalStorage() {
             try {
                 const raw = localStorage.getItem('alanhar_db');
@@ -1088,9 +1428,7 @@
             el.classList.toggle('hidden', !show);
         }
 
-        // تحميل أولي: من localStorage فوراً، ثم من Firebase بالخلفية
         async function bootstrapData() {
-            // 1) تحميل فوري من localStorage
             const local = loadFromLocalStorage();
             if (local) {
                 appDb = local;
@@ -1098,10 +1436,7 @@
                 updateAdminControls();
                 renderCompanies();
                 renderGlobalSwftTransactions();
-                console.log('⚡ تم التحميل من localStorage فوراً');
             }
-
-            // 2) محاولة جلب أحدث نسخة من Firebase (بدون حجب الواجهة)
             fetchFromCloud();
         }
 
@@ -1110,127 +1445,83 @@
                 showCloudLoading(true);
                 const docRef = doc(db_firestore, "system", "alanhar_db");
                 const snap = await getDoc(docRef);
-
                 if (snap.exists()) {
                     const data = snap.data();
                     isCloudSync = true;
                     appDb = {
-                        companies: data.companies || [],
-                        transactions: data.transactions || [],
-                        rmbClients: data.rmbClients || [],
-                        rmbCompanies: data.rmbCompanies || [],
-                        rmbTransactions: data.rmbTransactions || [],
-                        bankAccounts: data.bankAccounts || [],
-                        bankTransactions: data.bankTransactions || [],
-                        users: data.users || [],
-                        accessRequests: data.accessRequests || [],
-                        westrinAccounts: data.westrinAccounts || [],
-                        westrinTransactions: data.westrinTransactions || [],
-                        westrinTrash: data.westrinTrash || []
+                        companies: data.companies || [], transactions: data.transactions || [],
+                        rmbClients: data.rmbClients || [], rmbCompanies: data.rmbCompanies || [], rmbTransactions: data.rmbTransactions || [],
+                        bankAccounts: data.bankAccounts || [], bankTransactions: data.bankTransactions || [],
+                        users: data.users || [], accessRequests: data.accessRequests || [],
+                        westrinAccounts: data.westrinAccounts || [], westrinTransactions: data.westrinTransactions || [], westrinTrash: data.westrinTrash || []
                     };
-
-                    // ضمان وجود الأدمن
                     const adminExists = appDb.users.some(u => u.id === 'admin-tarek');
                     if (!adminExists) {
                         appDb.users.unshift({ id: 'admin-tarek', name: 'TAREK', code: '8008', role: 'admin', status: 'approved' });
                         scheduleCloudSave();
                     }
-
-                    // تحديث localStorage
                     localStorage.setItem('alanhar_db', JSON.stringify(appDb));
-
-                    // إعادة الرسم إذا كنا في صفحة داخلية
                     refreshCurrentView();
                 } else {
-                    // لا يوجد مستند - أنشئه لأول مرة
                     appDb.users = [{ id: 'admin-tarek', name: 'TAREK', code: '8008', role: 'admin', status: 'approved' }];
                     await saveToCloud(appDb);
                 }
-
                 isFirebaseReady = true;
                 updateAdminControls();
-                showToast('✅ تم التحديث من السحابة');
             } catch (error) {
                 console.error("خطأ في جلب البيانات من Firebase:", error);
                 isFirebaseReady = true;
-                showToast('⚠️ العمل في الوضع المحلي');
-            } finally {
-                showCloudLoading(false);
-            }
+            } finally { showCloudLoading(false); }
         }
 
-        // حفظ فوري محلي + حفظ سحابي مؤجل (Debounced)
         function scheduleCloudSave() {
-            const now = Date.now();
-            lastLocalSaveTime = now;
-
-            // حفظ فوري في localStorage
-            try {
-                localStorage.setItem('alanhar_db', JSON.stringify(appDb));
-            } catch(e) {
-                console.warn('localStorage ممتلئ', e);
-            }
-
-            // Debounce للإرسال للسحابة (500ms)
+            lastLocalSaveTime = Date.now();
+            try { localStorage.setItem('alanhar_db', JSON.stringify(appDb)); }
+            catch(e) { console.warn('localStorage ممتلئ', e); }
             if (pendingSaveTimer) clearTimeout(pendingSaveTimer);
-            pendingSaveTimer = setTimeout(() => {
-                saveToCloud(appDb);
-            }, 500);
+            pendingSaveTimer = setTimeout(() => { saveToCloud(appDb); }, 500);
         }
 
-        // حفظ في Firebase (في الخلفية - بدون await)
         async function saveToCloud(data) {
             try {
                 showCloudLoading(true);
                 const docRef = doc(db_firestore, "system", "alanhar_db");
                 await setDoc(docRef, data);
                 isFirebaseReady = true;
-            } catch (error) {
-                console.error("خطأ في الحفظ السحابي:", error);
-            } finally {
-                showCloudLoading(false);
-            }
+            } catch (error) { console.error("خطأ في الحفظ السحابي:", error); }
+            finally { showCloudLoading(false); }
         }
 
-        // للتوافق مع الكود القديم - تستدعي الحفظ المجدول
-        async function saveToFirebase(data) {
-            scheduleCloudSave();
-            return true;
-        }
+        async function saveToFirebase(data) { scheduleCloudSave(); return true; }
 
         function refreshCurrentView() {
-            // إذا كانت إحدى الوحدات مفتوحة، أعد رسم الجداول
-            if (!document.getElementById('module-swft').classList.contains('hidden')) {
-                if (!document.getElementById('swft-tab-home').classList.contains('hidden')) renderCompanies();
-                if (!document.getElementById('swft-tab-preview').classList.contains('hidden')) renderSwftPreview();
-                if (!document.getElementById('swft-tab-statements').classList.contains('hidden')) {
-                    prepareSwftStatementView();
+            try {
+                if (!document.getElementById('module-swft').classList.contains('hidden')) {
+                    if (!document.getElementById('swft-tab-home').classList.contains('hidden')) renderCompanies();
+                    if (!document.getElementById('swft-tab-preview').classList.contains('hidden')) renderSwftPreview();
+                    if (!document.getElementById('swft-tab-statements').classList.contains('hidden')) prepareSwftStatementView();
+                    if (!document.getElementById('swft-tab-trash').classList.contains('hidden')) renderSwftTrash();
                 }
-                if (!document.getElementById('swft-tab-trash').classList.contains('hidden')) renderSwftTrash();
-            }
-            if (!document.getElementById('module-rmb').classList.contains('hidden')) {
-                if (!document.getElementById('rmb-sec-transactions').classList.contains('hidden')) renderRmbTransactions();
-                if (!document.getElementById('rmb-sec-clients').classList.contains('hidden')) renderRmbClients();
-                if (!document.getElementById('rmb-sec-companies').classList.contains('hidden')) renderRmbCompanies();
-                if (!document.getElementById('rmb-sec-trash').classList.contains('hidden')) renderRmbTrash();
-            }
-            if (!document.getElementById('module-bank').classList.contains('hidden')) {
-                if (!document.getElementById('bank-sec-transactions').classList.contains('hidden')) renderBankTransactions();
-                if (!document.getElementById('bank-sec-accounts').classList.contains('hidden')) renderBankAccounts();
-                if (!document.getElementById('bank-sec-trash').classList.contains('hidden')) renderBankTrash();
-                if (!document.getElementById('bank-sec-statements').classList.contains('hidden')) prepareBankStatementView();
-            }
-            if (!document.getElementById('module-westrin').classList.contains('hidden')) {
-                westrinRenderAccounts();
-                westrinRenderTrash();
-                if (wrCurrentAccountId) {
-                    westrinRenderAll();
+                if (!document.getElementById('module-rmb').classList.contains('hidden')) {
+                    if (!document.getElementById('rmb-sec-transactions').classList.contains('hidden')) renderRmbTransactions();
+                    if (!document.getElementById('rmb-sec-clients').classList.contains('hidden')) renderRmbClients();
+                    if (!document.getElementById('rmb-sec-companies').classList.contains('hidden')) renderRmbCompanies();
+                    if (!document.getElementById('rmb-sec-trash').classList.contains('hidden')) renderRmbTrash();
                 }
-            }
+                if (!document.getElementById('module-bank').classList.contains('hidden')) {
+                    if (!document.getElementById('bank-sec-transactions').classList.contains('hidden')) renderBankTransactions();
+                    if (!document.getElementById('bank-sec-accounts').classList.contains('hidden')) renderBankAccounts();
+                    if (!document.getElementById('bank-sec-trash').classList.contains('hidden')) renderBankTrash();
+                    if (!document.getElementById('bank-sec-statements').classList.contains('hidden')) prepareBankStatementView();
+                }
+                if (!document.getElementById('module-westrin').classList.contains('hidden')) {
+                    westrinRenderAccounts(); westrinRenderTrash();
+                    if (wrCurrentAccountId) westrinRenderAll();
+                }
+            } catch(e) { console.warn(e); }
             updateAdminControls();
         }
 
-        // ==================== أدوات ====================
         function showToast(msg) {
             const toast = document.getElementById('toast');
             document.getElementById('toastMsg').innerText = msg;
@@ -1241,10 +1532,7 @@
 
         function getTodayDateString() {
             const today = new Date();
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, '0');
-            const day = String(today.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
+            return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
         }
 
         function formatFormattedInput(input) {
@@ -1266,26 +1554,14 @@
             return Number(n).toLocaleString('en-US', { minimumFractionDigits: digits, maximumFractionDigits: digits });
         }
 
-        function normalizeCode(value) {
-            return String(value || '').replace(/\D/g, '').slice(0, 4);
-        }
-
+        function normalizeCode(value) { return String(value || '').replace(/\D/g, '').slice(0, 4); }
         function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-
-        function employeeLabel(t) {
-            return t.employeeName || t.createdByName || 'غير محدد';
-        }
-
+        function employeeLabel(t) { return t.employeeName || t.createdByName || 'غير محدد'; }
         function escapeHtml(value) {
-            return String(value ?? '').replace(/[&<>"']/g, c => ({
-                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
-            }[c]));
+            return String(value ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'}[c]));
         }
-
-        function currencySymbol(code) {
-            return code === 'USD' ? '$' : code === 'EUR' ? '€' : '₺';
-        }
+        function currencySymbol(code) { return code === 'USD' ? '$' : code === 'EUR' ? '€' : '₺'; }
 
         // ==================== Telegram ====================
         const TELEGRAM_BOT_TOKEN = "7860582198:AAHRrpCCr83B1X1O7BGHebRUc-5h9VaPDBk";
@@ -1299,7 +1575,6 @@
         // ==================== OTP ====================
         function getOtpInputs() { return Array.from(document.querySelectorAll('#otpInputs .otp-login-input')); }
         function getEnteredOtp() { return getOtpInputs().map(i => i.value).join(''); }
-
         function showLoginMessage(msg, ok = true) {
             const el = document.getElementById('loginMessage');
             if (!el) return;
@@ -1392,11 +1667,7 @@
             if (code !== confirmCode) return showRequestMessage('تأكيد الكود غير مطابق.', false);
             if (appDb.users.some(u => u.code === code && u.status === 'approved')) return showRequestMessage('هذا الكود مستخدم.', false);
             if (appDb.accessRequests.some(r => r.code === code && r.status === 'pending')) return showRequestMessage('يوجد طلب قيد المراجعة بنفس الكود.', false);
-
-            const request = {
-                id: 'REQ-' + Date.now().toString(36).toUpperCase(),
-                name, code, note, status: 'pending', createdAt: new Date().toISOString()
-            };
+            const request = { id: 'REQ-' + Date.now().toString(36).toUpperCase(), name, code, note, status: 'pending', createdAt: new Date().toISOString() };
             appDb.accessRequests.unshift(request);
             await saveToFirebase(appDb);
             sendTelegramMessage(`🔐 طلب كود دخول جديد\n👤 ${name}\n🔢 ${code}\n🆔 ${request.id}`);
@@ -1417,11 +1688,7 @@
             const container = document.getElementById('accessRequestsList');
             if (!container) return;
             const requests = appDb.accessRequests || [];
-            if (requests.length === 0) {
-                container.innerHTML = `<div class="text-center py-10 text-gray-500">لا توجد طلبات.</div>`;
-                updateAdminControls();
-                return;
-            }
+            if (requests.length === 0) { container.innerHTML = `<div class="text-center py-10 text-gray-500">لا توجد طلبات.</div>`; updateAdminControls(); return; }
             container.innerHTML = '';
             requests.forEach(r => {
                 const color = r.status === 'pending' ? 'yellow' : (r.status === 'approved' ? 'emerald' : 'red');
@@ -1455,14 +1722,9 @@
             if (!currentUser || currentUser.role !== 'admin') return;
             const r = appDb.accessRequests.find(x => x.id === id);
             if (!r || r.status !== 'pending') return;
-            if (appDb.users.some(u => u.code === r.code && u.status === 'approved')) {
-                r.status = 'rejected';
-            } else {
-                appDb.users.push({
-                    id: 'USR-' + Date.now().toString(36).toUpperCase(),
-                    name: r.name, code: r.code, role: 'user', status: 'approved',
-                    createdAt: new Date().toISOString(), requestId: r.id
-                });
+            if (appDb.users.some(u => u.code === r.code && u.status === 'approved')) { r.status = 'rejected'; }
+            else {
+                appDb.users.push({ id: 'USR-' + Date.now().toString(36).toUpperCase(), name: r.name, code: r.code, role: 'user', status: 'approved', createdAt: new Date().toISOString(), requestId: r.id });
                 r.status = 'approved';
             }
             await saveToFirebase(appDb);
@@ -1489,19 +1751,10 @@
             document.getElementById('module-bank').classList.add('hidden');
             document.getElementById('module-westrin').classList.add('hidden');
 
-            if (moduleName === 'SWFT') {
-                document.getElementById('module-swft').classList.remove('hidden');
-                switchSwftBottomTab('home');
-            } else if (moduleName === 'RMB') {
-                document.getElementById('module-rmb').classList.remove('hidden');
-                switchRmbTab('transactions');
-            } else if (moduleName === 'BANK') {
-                document.getElementById('module-bank').classList.remove('hidden');
-                switchBankTab('transactions');
-            } else if (moduleName === 'WESTRIN') {
-                document.getElementById('module-westrin').classList.remove('hidden');
-                initWestrinApp();
-            }
+            if (moduleName === 'SWFT') { document.getElementById('module-swft').classList.remove('hidden'); switchSwftBottomTab('home'); }
+            else if (moduleName === 'RMB') { document.getElementById('module-rmb').classList.remove('hidden'); switchRmbTab('transactions'); }
+            else if (moduleName === 'BANK') { document.getElementById('module-bank').classList.remove('hidden'); switchBankTab('transactions'); }
+            else if (moduleName === 'WESTRIN') { document.getElementById('module-westrin').classList.remove('hidden'); initWestrinApp(); }
         }
 
         function exitToLanding() {
@@ -1636,22 +1889,14 @@
         }
         async function restoreCompany(id) {
             let comp = appDb.companies.find(c => c.id === id);
-            if (comp) {
-                comp.isDeleted = false;
-                await saveToFirebase(appDb);
-                renderCompanies(); renderSwftTrash();
-                showToast('تم الاستعادة!');
-            }
+            if (comp) { comp.isDeleted = false; await saveToFirebase(appDb); renderCompanies(); renderSwftTrash(); showToast('تم الاستعادة!'); }
         }
         function renderCompanies() {
             let tbody = document.getElementById('companiesTableBody');
             if (!tbody) return;
             tbody.innerHTML = '';
             let activeCompanies = appDb.companies.filter(c => !c.isDeleted);
-            if (activeCompanies.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" class="text-center py-6 text-gray-500">لا توجد شركات مسجلة.</td></tr>`;
-                return;
-            }
+            if (activeCompanies.length === 0) { tbody.innerHTML = `<tr><td colspan="3" class="text-center py-6 text-gray-500">لا توجد شركات مسجلة.</td></tr>`; return; }
             activeCompanies.forEach(comp => {
                 let tr = document.createElement('tr');
                 tr.className = "hover:bg-white/5 transition";
@@ -1672,10 +1917,7 @@
             if (!tbody) return;
             tbody.innerHTML = '';
             let deletedCompanies = appDb.companies.filter(c => c.isDeleted);
-            if (deletedCompanies.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" class="text-center py-6 text-gray-500">سلة المحذوفات فارغة.</td></tr>`;
-                return;
-            }
+            if (deletedCompanies.length === 0) { tbody.innerHTML = `<tr><td colspan="3" class="text-center py-6 text-gray-500">سلة المحذوفات فارغة.</td></tr>`; return; }
             deletedCompanies.forEach(comp => {
                 let tr = document.createElement('tr');
                 tr.className = "hover:bg-white/5 transition";
@@ -1747,25 +1989,10 @@
             if (editId) {
                 let idx = appDb.transactions.findIndex(t => t.id === editId);
                 if (idx !== -1) {
-                    appDb.transactions[idx] = {
-                        ...appDb.transactions[idx],
-                        date, amount, currency, account, note,
-                        c1CalculatedAmount: c1Calc, c2CalculatedAmount: c2Calc,
-                        finalTotal: amount + c1Calc + c2Calc,
-                        updatedByName: currentUser ? currentUser.name : ''
-                    };
+                    appDb.transactions[idx] = { ...appDb.transactions[idx], date, amount, currency, account, note, c1CalculatedAmount: c1Calc, c2CalculatedAmount: c2Calc, finalTotal: amount + c1Calc + c2Calc, updatedByName: currentUser ? currentUser.name : '' };
                 }
             } else {
-                appDb.transactions.push({
-                    id: Date.now().toString() + Math.random().toString(36).slice(2, 6),
-                    companyId: currentActiveCompanyId,
-                    date, amount, currency, account, note,
-                    c1CalculatedAmount: c1Calc, c2CalculatedAmount: c2Calc,
-                    finalTotal: amount + c1Calc + c2Calc,
-                    employeeName: currentUser ? currentUser.name : 'غير محدد',
-                    createdById: currentUser ? currentUser.id : null,
-                    initialChecked: false, finalChecked: false
-                });
+                appDb.transactions.push({ id: Date.now().toString() + Math.random().toString(36).slice(2, 6), companyId: currentActiveCompanyId, date, amount, currency, account, note, c1CalculatedAmount: c1Calc, c2CalculatedAmount: c2Calc, finalTotal: amount + c1Calc + c2Calc, employeeName: currentUser ? currentUser.name : 'غير محدد', createdById: currentUser ? currentUser.id : null, initialChecked: false, finalChecked: false });
             }
             await saveToFirebase(appDb);
             closeModal('addTransactionModal');
@@ -1789,10 +2016,7 @@
                 if (toDate && t.date > toDate) return false;
                 return true;
             });
-            if (compTrans.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-6 text-gray-500">لا توجد معاملات مطابقة.</td></tr>`;
-                return;
-            }
+            if (compTrans.length === 0) { tbody.innerHTML = `<tr><td colspan="8" class="text-center py-6 text-gray-500">لا توجد معاملات مطابقة.</td></tr>`; return; }
             compTrans.forEach(t => {
                 let curr = t.currency || '$';
                 let accName = t.account === 'Dubai' ? 'DXB - Dubai Main' : 'TR - Turkey Main';
@@ -1835,10 +2059,7 @@
             let tbody = document.getElementById('swftPreviewUnifiedTableBody');
             if (!tbody) return;
             tbody.innerHTML = '';
-            if (!appDb.transactions || appDb.transactions.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-gray-500">لا توجد معاملات.</td></tr>`;
-                return;
-            }
+            if (!appDb.transactions || appDb.transactions.length === 0) { tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-gray-500">لا توجد معاملات.</td></tr>`; return; }
             appDb.transactions.forEach(t => {
                 let comp = appDb.companies.find(c => c.id === t.companyId);
                 let curr = t.currency || '$';
@@ -1847,12 +2068,8 @@
                 let tr = document.createElement('tr');
                 tr.className = isFullyCompleted ? "bg-emerald-950/20 opacity-60" : "hover:bg-white/5 transition";
                 tr.innerHTML = `
-                    <td class="p-4 text-center">
-                        <input type="checkbox" ${t.initialChecked ? 'checked' : ''} onchange="toggleTransactionStatus('${t.id}', 'initial')" class="w-5 h-5 accent-amber-500 rounded cursor-pointer">
-                    </td>
-                    <td class="p-4 text-center">
-                        <input type="checkbox" ${t.finalChecked ? 'checked' : ''} onchange="toggleTransactionStatus('${t.id}', 'final')" class="w-5 h-5 accent-emerald-500 rounded cursor-pointer">
-                    </td>
+                    <td class="p-4 text-center"><input type="checkbox" ${t.initialChecked ? 'checked' : ''} onchange="toggleTransactionStatus('${t.id}', 'initial')" class="w-5 h-5 accent-amber-500 rounded cursor-pointer"></td>
+                    <td class="p-4 text-center"><input type="checkbox" ${t.finalChecked ? 'checked' : ''} onchange="toggleTransactionStatus('${t.id}', 'final')" class="w-5 h-5 accent-emerald-500 rounded cursor-pointer"></td>
                     <td class="p-4 font-bold text-amber-400">${comp ? escapeHtml(comp.name) : 'شركة غير محددة'} ${comp && comp.isDeleted ? '<span class="text-red-400 text-xs">(محذوفة)</span>' : ''}</td>
                     <td class="p-4 font-mono font-bold text-white">${formatMoney(t.amount)} ${curr}</td>
                     <td class="p-4 font-bold text-blue-400">${accName}</td>
@@ -2079,19 +2296,14 @@
             tbody.innerHTML = '';
             let delClients = appDb.rmbClients.filter(c => c.isDeleted);
             let delCompanies = appDb.rmbCompanies.filter(c => c.isDeleted);
-            if (delClients.length === 0 && delCompanies.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" class="text-center py-6 text-gray-500">سلة المحذوفات فارغة.</td></tr>`;
-                return;
-            }
+            if (delClients.length === 0 && delCompanies.length === 0) { tbody.innerHTML = `<tr><td colspan="3" class="text-center py-6 text-gray-500">سلة المحذوفات فارغة.</td></tr>`; return; }
             delClients.forEach(c => {
                 let tr = document.createElement('tr');
                 tr.className = "hover:bg-white/5 transition";
                 tr.innerHTML = `
                     <td class="p-4 font-bold text-amber-400">زبون</td>
                     <td class="p-4 text-white">${escapeHtml(c.name)}</td>
-                    <td class="p-4 text-center">
-                        <button onclick="restoreRmbClient('${c.id}')" class="bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white px-3 py-1 rounded-lg text-xs font-bold cursor-pointer">استعادة ↩</button>
-                    </td>
+                    <td class="p-4 text-center"><button onclick="restoreRmbClient('${c.id}')" class="bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white px-3 py-1 rounded-lg text-xs font-bold cursor-pointer">استعادة ↩</button></td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -2101,9 +2313,7 @@
                 tr.innerHTML = `
                     <td class="p-4 font-bold text-red-400">شركة</td>
                     <td class="p-4 text-white">${escapeHtml(c.name)}</td>
-                    <td class="p-4 text-center">
-                        <button onclick="restoreRmbCompany('${c.id}')" class="bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white px-3 py-1 rounded-lg text-xs font-bold cursor-pointer">استعادة ↩</button>
-                    </td>
+                    <td class="p-4 text-center"><button onclick="restoreRmbCompany('${c.id}')" class="bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white px-3 py-1 rounded-lg text-xs font-bold cursor-pointer">استعادة ↩</button></td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -2124,15 +2334,9 @@
             let clientSel = document.getElementById('rmbTransClientSelect');
             let compSel = document.getElementById('rmbTransCompanySelect');
             clientSel.innerHTML = ''; compSel.innerHTML = '';
-            appDb.rmbClients.filter(c => !c.isDeleted).forEach(c => {
-                clientSel.innerHTML += `<option value="${c.id}">${escapeHtml(c.name)}</option>`;
-            });
-            appDb.rmbCompanies.filter(c => !c.isDeleted).forEach(c => {
-                compSel.innerHTML += `<option value="${c.id}">${escapeHtml(c.name)}</option>`;
-            });
-            if (clientSel.options.length === 0 || compSel.options.length === 0) {
-                return alert('يرجى إضافة زبون وشركة واحدة على الأقل.');
-            }
+            appDb.rmbClients.filter(c => !c.isDeleted).forEach(c => { clientSel.innerHTML += `<option value="${c.id}">${escapeHtml(c.name)}</option>`; });
+            appDb.rmbCompanies.filter(c => !c.isDeleted).forEach(c => { compSel.innerHTML += `<option value="${c.id}">${escapeHtml(c.name)}</option>`; });
+            if (clientSel.options.length === 0 || compSel.options.length === 0) return alert('يرجى إضافة زبون وشركة واحدة على الأقل.');
             document.getElementById('rmbTransDate').value = getTodayDateString();
             document.getElementById('rmbTransAmount').value = '';
             document.getElementById('rmbTransAccountDetails').value = '';
@@ -2145,12 +2349,7 @@
             let amount = parseNumber(document.getElementById('rmbTransAmount').value);
             let details = document.getElementById('rmbTransAccountDetails').value.trim();
             if (!date || amount <= 0) return alert('الرجاء إدخال بيانات صالحة.');
-            appDb.rmbTransactions.push({
-                id: Date.now().toString() + Math.random().toString(36).slice(2, 6),
-                date, clientId, companyId, amount, details,
-                employeeName: currentUser ? currentUser.name : 'غير محدد',
-                createdById: currentUser ? currentUser.id : null
-            });
+            appDb.rmbTransactions.push({ id: Date.now().toString() + Math.random().toString(36).slice(2, 6), date, clientId, companyId, amount, details, employeeName: currentUser ? currentUser.name : 'غير محدد', createdById: currentUser ? currentUser.id : null });
             await saveToFirebase(appDb);
             closeModal('addRmbTransactionModal');
             renderRmbTransactions();
@@ -2177,10 +2376,7 @@
                 if (searchDetails && !(t.details || '').toLowerCase().includes(searchDetails)) return false;
                 return true;
             });
-            if (list.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-gray-500">لا توجد معاملات مسجلة.</td></tr>`;
-                return;
-            }
+            if (list.length === 0) { tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-gray-500">لا توجد معاملات مسجلة.</td></tr>`; return; }
             list.forEach(t => {
                 let client = appDb.rmbClients.find(c => c.id === t.clientId);
                 let company = appDb.rmbCompanies.find(c => c.id === t.companyId);
@@ -2193,9 +2389,7 @@
                     <td class="p-4 font-mono font-bold text-red-400">${formatMoney(t.amount)} ¥</td>
                     <td class="p-4 text-xs text-gray-300 max-w-xs break-words">${escapeHtml(t.details || '-')}</td>
                     <td class="p-4 font-bold text-purple-300">${escapeHtml(employeeLabel(t))}</td>
-                    <td class="p-4 text-center">
-                        <button onclick="deleteRmbTrans('${t.id}')" class="text-red-400 hover:text-red-300 font-bold text-xs cursor-pointer">حذف</button>
-                    </td>
+                    <td class="p-4 text-center"><button onclick="deleteRmbTrans('${t.id}')" class="text-red-400 hover:text-red-300 font-bold text-xs cursor-pointer">حذف</button></td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -2319,22 +2513,14 @@
         }
         async function restoreBankAccount(id) {
             let acc = appDb.bankAccounts.find(a => a.id === id);
-            if (acc) {
-                acc.isDeleted = false;
-                await saveToFirebase(appDb);
-                renderBankAccounts(); renderBankTrash();
-                showToast('تم الاستعادة!');
-            }
+            if (acc) { acc.isDeleted = false; await saveToFirebase(appDb); renderBankAccounts(); renderBankTrash(); showToast('تم الاستعادة!'); }
         }
         function renderBankAccounts() {
             let tbody = document.getElementById('bankAccountsTableBody');
             if (!tbody) return;
             tbody.innerHTML = '';
             let list = appDb.bankAccounts.filter(a => !a.isDeleted);
-            if (list.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="2" class="text-center py-6 text-gray-500">لا توجد حسابات بنكية مسجلة. أضف حساباً جديداً.</td></tr>`;
-                return;
-            }
+            if (list.length === 0) { tbody.innerHTML = `<tr><td colspan="2" class="text-center py-6 text-gray-500">لا توجد حسابات بنكية مسجلة. أضف حساباً جديداً.</td></tr>`; return; }
             list.forEach(a => {
                 let tr = document.createElement('tr');
                 tr.className = "hover:bg-white/5 transition";
@@ -2354,19 +2540,14 @@
             if (!tbody) return;
             tbody.innerHTML = '';
             let delAccounts = appDb.bankAccounts.filter(a => a.isDeleted);
-            if (delAccounts.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" class="text-center py-6 text-gray-500">سلة المحذوفات فارغة.</td></tr>`;
-                return;
-            }
+            if (delAccounts.length === 0) { tbody.innerHTML = `<tr><td colspan="3" class="text-center py-6 text-gray-500">سلة المحذوفات فارغة.</td></tr>`; return; }
             delAccounts.forEach(a => {
                 let tr = document.createElement('tr');
                 tr.className = "hover:bg-white/5 transition";
                 tr.innerHTML = `
                     <td class="p-4 font-bold text-emerald-400">حساب بنكي</td>
                     <td class="p-4 text-white">${escapeHtml(a.name)}</td>
-                    <td class="p-4 text-center">
-                        <button onclick="restoreBankAccount('${a.id}')" class="bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white px-3 py-1 rounded-lg text-xs font-bold cursor-pointer">استعادة ↩</button>
-                    </td>
+                    <td class="p-4 text-center"><button onclick="restoreBankAccount('${a.id}')" class="bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white px-3 py-1 rounded-lg text-xs font-bold cursor-pointer">استعادة ↩</button></td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -2394,9 +2575,7 @@
                 switchBankTab('accounts');
                 return;
             }
-            activeAccounts.forEach(a => {
-                accSel.innerHTML += `<option value="${a.id}">${escapeHtml(a.name)}</option>`;
-            });
+            activeAccounts.forEach(a => { accSel.innerHTML += `<option value="${a.id}">${escapeHtml(a.name)}</option>`; });
             document.getElementById('editingBankTransId').value = '';
             document.getElementById('modalBankTransTitle').innerText = 'إضافة معاملة بنكية جديدة';
             document.getElementById('bankTransDate').value = getTodayDateString();
@@ -2444,29 +2623,21 @@
             let amount = parseNumber(document.getElementById('bankTransAmount').value);
             let rate = parseNumber(document.getElementById('bankTransRate').value);
             let resultCur = document.getElementById('bankTransResultCurrency').value;
-
             let hint = '';
             if (cur === 'TRY') hint = '📉 الناتج = المبلغ ÷ سعر الصرف';
             else if (cur === 'USD') hint = '📈 الناتج = المبلغ × سعر الصرف';
             else if (cur === 'EUR') hint = '📈 الناتج = المبلغ × سعر الصرف';
             document.getElementById('bankRateHint').innerText = hint;
-
             let symIn = currencySymbol(cur);
             document.getElementById('bankCalcInput').innerText = `${formatMoney(amount)} ${symIn}`;
             document.getElementById('bankCalcRate').innerText = rate ? `${formatMoney(rate)}` : '0.00';
-
             let needCross = (cur !== 'TRY' && resultCur !== 'TRY' && cur !== resultCur);
             const wrapper = document.getElementById('bankCrossRateWrapper');
             if (needCross) wrapper.classList.remove('hidden');
             else wrapper.classList.add('hidden');
-
             let resultAmount = 0;
-            if (cur === 'TRY') {
-                resultAmount = rate > 0 ? amount / rate : 0;
-            } else {
-                resultAmount = amount * (rate || 0);
-            }
-
+            if (cur === 'TRY') resultAmount = rate > 0 ? amount / rate : 0;
+            else resultAmount = amount * (rate || 0);
             let resultSym = currencySymbol(resultCur);
             document.getElementById('bankCalcResult').innerText = `${formatMoney(resultAmount)} ${resultSym}`;
         }
@@ -2474,10 +2645,7 @@
         function handleBankFileUpload(event, type) {
             const files = Array.from(event.target.files || []);
             files.forEach(file => {
-                if (file.size > 2 * 1024 * 1024) {
-                    alert(`⚠️ الملف "${file.name}" حجمه أكبر من 2MB.`);
-                    return;
-                }
+                if (file.size > 2 * 1024 * 1024) { alert(`⚠️ الملف "${file.name}" حجمه أكبر من 2MB.`); return; }
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     const dataUrl = e.target.result;
@@ -2485,13 +2653,7 @@
                     if (file.type.startsWith('image/')) finalType = 'image';
                     else if (file.type === 'application/pdf') finalType = 'pdf';
                     else finalType = 'other';
-                    tempBankAttachments.push({
-                        id: 'ATT-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7),
-                        name: file.name,
-                        mime: file.type,
-                        type: finalType,
-                        dataUrl: dataUrl
-                    });
+                    tempBankAttachments.push({ id: 'ATT-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7), name: file.name, mime: file.type, type: finalType, dataUrl: dataUrl });
                     renderBankAttachmentsPreview();
                 };
                 reader.readAsDataURL(file);
@@ -2503,28 +2665,18 @@
             const wrap = document.getElementById('bankTransAttachmentsPreview');
             if (!wrap) return;
             wrap.innerHTML = '';
-            if (tempBankAttachments.length === 0) {
-                wrap.innerHTML = `<span class="text-[11px] text-gray-500 italic">لا توجد مرفقات بعد...</span>`;
-                return;
-            }
+            if (tempBankAttachments.length === 0) { wrap.innerHTML = `<span class="text-[11px] text-gray-500 italic">لا توجد مرفقات بعد...</span>`; return; }
             tempBankAttachments.forEach((att, idx) => {
                 let chip = document.createElement('div');
                 let cls = 'file-chip ' + (att.type === 'image' ? 'img' : att.type === 'pdf' ? 'pdf' : '');
                 chip.className = cls;
                 let icon = att.type === 'image' ? '🖼️' : att.type === 'pdf' ? '📄' : '📎';
-                chip.innerHTML = `
-                    <span>${icon}</span>
-                    <span class="max-w-[140px] truncate" title="${escapeHtml(att.name)}">${escapeHtml(att.name)}</span>
-                    <span class="text-red-400 hover:text-red-300 font-black cursor-pointer" onclick="removeBankAttachment(${idx})">×</span>
-                `;
+                chip.innerHTML = `<span>${icon}</span><span class="max-w-[140px] truncate" title="${escapeHtml(att.name)}">${escapeHtml(att.name)}</span><span class="text-red-400 hover:text-red-300 font-black cursor-pointer" onclick="removeBankAttachment(${idx})">×</span>`;
                 wrap.appendChild(chip);
             });
         }
 
-        function removeBankAttachment(idx) {
-            tempBankAttachments.splice(idx, 1);
-            renderBankAttachmentsPreview();
-        }
+        function removeBankAttachment(idx) { tempBankAttachments.splice(idx, 1); renderBankAttachmentsPreview(); }
 
         function openBankAttachmentInNewTab(transId, attId) {
             let t = appDb.bankTransactions.find(x => x.id === transId);
@@ -2533,13 +2685,9 @@
             if (!att) return;
             let w = window.open();
             if (!w) { alert('يرجى السماح بالنوافذ المنبثقة.'); return; }
-            if (att.type === 'image') {
-                w.document.write(`<html><head><title>${escapeHtml(att.name)}</title></head><body style="margin:0;background:#111;display:flex;justify-content:center;align-items:center;min-height:100vh"><img src="${att.dataUrl}" style="max-width:100%;max-height:100vh" /></body></html>`);
-            } else if (att.mime === 'application/pdf') {
-                w.document.write(`<html><head><title>${escapeHtml(att.name)}</title></head><body style="margin:0"><iframe src="${att.dataUrl}" style="width:100%;height:100vh;border:0"></iframe></body></html>`);
-            } else {
-                w.location.href = att.dataUrl;
-            }
+            if (att.type === 'image') { w.document.write(`<html><head><title>${escapeHtml(att.name)}</title></head><body style="margin:0;background:#111;display:flex;justify-content:center;align-items:center;min-height:100vh"><img src="${att.dataUrl}" style="max-width:100%;max-height:100vh" /></body></html>`); }
+            else if (att.mime === 'application/pdf') { w.document.write(`<html><head><title>${escapeHtml(att.name)}</title></head><body style="margin:0"><iframe src="${att.dataUrl}" style="width:100%;height:100vh;border:0"></iframe></body></html>`); }
+            else { w.location.href = att.dataUrl; }
         }
 
         async function saveBankTransaction() {
@@ -2551,41 +2699,26 @@
             let rate = parseNumber(document.getElementById('bankTransRate').value);
             let resultCurrency = document.getElementById('bankTransResultCurrency').value;
             let note = document.getElementById('bankTransNote').value.trim();
-
             if (!date) return alert('الرجاء إدخال التاريخ.');
             if (!accountId) return alert('الرجاء اختيار الحساب.');
             if (amount <= 0) return alert('الرجاء إدخال مبلغ صحيح.');
             if (rate <= 0) return alert('الرجاء إدخال سعر صرف صحيح (أكبر من صفر).');
-
             let resultAmount = 0;
-            if (currency === 'TRY') {
-                resultAmount = amount / rate;
-            } else {
-                resultAmount = amount * rate;
-            }
-
+            if (currency === 'TRY') resultAmount = amount / rate;
+            else resultAmount = amount * rate;
             let transData = {
                 id: editId || (Date.now().toString() + Math.random().toString(36).slice(2, 6)),
-                date, accountId,
-                currency, amount, rate,
-                resultCurrency,
-                resultAmount,
-                crossRate: 0,
-                note,
+                date, accountId, currency, amount, rate, resultCurrency, resultAmount, crossRate: 0, note,
                 attachments: tempBankAttachments.map(a => ({ ...a })),
                 employeeName: currentUser ? currentUser.name : 'غير محدد',
                 createdById: currentUser ? currentUser.id : null
             };
-
             if (editId) {
                 let idx = appDb.bankTransactions.findIndex(t => t.id === editId);
-                if (idx !== -1) {
-                    appDb.bankTransactions[idx] = { ...appDb.bankTransactions[idx], ...transData, updatedByName: currentUser ? currentUser.name : '' };
-                }
+                if (idx !== -1) appDb.bankTransactions[idx] = { ...appDb.bankTransactions[idx], ...transData, updatedByName: currentUser ? currentUser.name : '' };
             } else {
                 appDb.bankTransactions.push(transData);
             }
-
             await saveToFirebase(appDb);
             closeModal('addBankTransactionModal');
             renderBankTransactions();
@@ -2608,7 +2741,6 @@
             let searchAmount = parseNumber(document.getElementById('bankSearchAmount').value);
             let searchDetails = document.getElementById('bankSearchDetails').value.trim().toLowerCase();
             let searchAccount = document.getElementById('bankSearchAccount').value.trim().toLowerCase();
-
             let list = appDb.bankTransactions.filter(t => {
                 if (currentBankContext.type === 'ACCOUNT' && t.accountId !== currentBankContext.id) return false;
                 if (searchAmount > 0 && !t.amount.toString().includes(searchAmount.toString())) return false;
@@ -2620,14 +2752,8 @@
                 }
                 return true;
             });
-
-            if (list.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="10" class="text-center py-6 text-gray-500">لا توجد معاملات بنكية مسجلة.</td></tr>`;
-                return;
-            }
-
+            if (list.length === 0) { tbody.innerHTML = `<tr><td colspan="10" class="text-center py-6 text-gray-500">لا توجد معاملات بنكية مسجلة.</td></tr>`; return; }
             list.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
-
             list.forEach(t => {
                 let acc = appDb.bankAccounts.find(a => a.id === t.accountId);
                 let inSym = currencySymbol(t.currency);
@@ -2639,13 +2765,9 @@
                         let icon = a.type === 'image' ? '🖼️' : a.type === 'pdf' ? '📄' : '📎';
                         return `<button onclick="openBankAttachmentInNewTab('${t.id}','${a.id}')" class="file-chip ${a.type === 'image' ? 'img' : a.type === 'pdf' ? 'pdf' : ''}" title="${escapeHtml(a.name)}" style="font-size:10px;padding:2px 6px"><span>${icon}</span><span class="max-w-[50px] truncate">${escapeHtml(a.name)}</span></button>`;
                     }).join('') + `</div>`;
-                } else {
-                    attHtml = `<span class="text-[10px] text-gray-600">—</span>`;
-                }
-
+                } else { attHtml = `<span class="text-[10px] text-gray-600">—</span>`; }
                 let currBadge = `<span class="bank-currency-badge ${t.currency === 'USD' ? 'usd' : t.currency === 'EUR' ? 'eur' : 'try'}">${t.currency}</span>`;
                 let resSym = currencySymbol(t.resultCurrency || 'TRY');
-
                 let tr = document.createElement('tr');
                 tr.className = "hover:bg-white/5 transition";
                 tr.innerHTML = `
@@ -2700,10 +2822,8 @@
             }
             document.getElementById('bankPdfAccountName').innerText = acc.name + (acc.isDeleted ? ' (محذوف)' : '');
             document.getElementById('bankPdfStatementDate').innerText = getTodayDateString();
-
             let trans = appDb.bankTransactions.filter(t => t.accountId === accId).sort((a, b) => (a.date || '').localeCompare(b.date || ''));
             document.getElementById('bankPdfTransCount').innerText = trans.length;
-
             let totalResult = 0;
             let mainResultCur = 'TRY';
             if (trans.length === 0) {
@@ -2714,7 +2834,6 @@
                     let outSym = currencySymbol(t.resultCurrency || 'TRY');
                     totalResult += (t.resultAmount || 0);
                     mainResultCur = t.resultCurrency || 'TRY';
-
                     let tr = document.createElement('tr');
                     tr.innerHTML = `
                         <td class="p-2 font-mono text-xs">${t.date}</td>
@@ -2753,27 +2872,16 @@
                     let importedDb = JSON.parse(e.target.result);
                     if (importedDb.companies || importedDb.rmbClients || importedDb.bankAccounts || importedDb.westrinAccounts) {
                         appDb = {
-                            companies: importedDb.companies || [],
-                            transactions: importedDb.transactions || [],
-                            rmbClients: importedDb.rmbClients || [],
-                            rmbCompanies: importedDb.rmbCompanies || [],
-                            rmbTransactions: importedDb.rmbTransactions || [],
-                            bankAccounts: importedDb.bankAccounts || [],
-                            bankTransactions: importedDb.bankTransactions || [],
-                            users: importedDb.users || [],
-                            accessRequests: importedDb.accessRequests || [],
-                            westrinAccounts: importedDb.westrinAccounts || [],
-                            westrinTransactions: importedDb.westrinTransactions || [],
-                            westrinTrash: importedDb.westrinTrash || []
+                            companies: importedDb.companies || [], transactions: importedDb.transactions || [],
+                            rmbClients: importedDb.rmbClients || [], rmbCompanies: importedDb.rmbCompanies || [], rmbTransactions: importedDb.rmbTransactions || [],
+                            bankAccounts: importedDb.bankAccounts || [], bankTransactions: importedDb.bankTransactions || [],
+                            users: importedDb.users || [], accessRequests: importedDb.accessRequests || [],
+                            westrinAccounts: importedDb.westrinAccounts || [], westrinTransactions: importedDb.westrinTransactions || [], westrinTrash: importedDb.westrinTrash || []
                         };
                         await saveToFirebase(appDb);
                         location.reload();
-                    } else {
-                        alert('الملف غير مطابق.');
-                    }
-                } catch (err) {
-                    alert('حدث خطأ أثناء القراءة.');
-                }
+                    } else { alert('الملف غير مطابق.'); }
+                } catch (err) { alert('حدث خطأ أثناء القراءة.'); }
             };
             reader.readAsText(file);
         }
@@ -2796,9 +2904,7 @@
                 input.addEventListener('paste', e => {
                     e.preventDefault();
                     const pasted = normalizeCode((e.clipboardData || window.clipboardData).getData('text'));
-                    pasted.split('').forEach((digit, j) => {
-                        if (inputs[index + j]) inputs[index + j].value = digit;
-                    });
+                    pasted.split('').forEach((digit, j) => { if (inputs[index + j]) inputs[index + j].value = digit; });
                     const next = Math.min(index + pasted.length, inputs.length - 1);
                     inputs[next]?.focus();
                     if (getEnteredOtp().length === 4) loginWithCode();
@@ -2810,44 +2916,31 @@
         window.onload = async function() {
             setupOtpInputs();
             await bootstrapData();
-
-            // إعداد المزامنة الحية مع Firebase
             try {
                 const docRef = doc(db_firestore, "system", "alanhar_db");
                 onSnapshot(docRef, (snap) => {
                     if (!snap.exists()) return;
-                    // لا تعيد الرسم إذا كنا نحن من حفظنا للتو (خلال 1.5 ثانية)
                     if (Date.now() - lastLocalSaveTime < 1500) return;
                     const data = snap.data();
                     appDb = {
-                        companies: data.companies || [],
-                        transactions: data.transactions || [],
-                        rmbClients: data.rmbClients || [],
-                        rmbCompanies: data.rmbCompanies || [],
-                        rmbTransactions: data.rmbTransactions || [],
-                        bankAccounts: data.bankAccounts || [],
-                        bankTransactions: data.bankTransactions || [],
-                        users: data.users || [],
-                        accessRequests: data.accessRequests || [],
-                        westrinAccounts: data.westrinAccounts || [],
-                        westrinTransactions: data.westrinTransactions || [],
-                        westrinTrash: data.westrinTrash || []
+                        companies: data.companies || [], transactions: data.transactions || [],
+                        rmbClients: data.rmbClients || [], rmbCompanies: data.rmbCompanies || [], rmbTransactions: data.rmbTransactions || [],
+                        bankAccounts: data.bankAccounts || [], bankTransactions: data.bankTransactions || [],
+                        users: data.users || [], accessRequests: data.accessRequests || [],
+                        westrinAccounts: data.westrinAccounts || [], westrinTransactions: data.westrinTransactions || [], westrinTrash: data.westrinTrash || []
                     };
                     localStorage.setItem('alanhar_db', JSON.stringify(appDb));
                     updateAdminControls();
                     refreshCurrentView();
-                }, (err) => {
-                    console.warn('مزامنة حية معطلة:', err);
-                });
+                }, (err) => { console.warn('مزامنة حية معطلة:', err); });
             } catch(e) { console.warn(e); }
-
             document.getElementById('auth-screen').classList.remove('hidden');
             document.getElementById('view-landing').classList.add('hidden');
             document.getElementById('view-landing').classList.remove('flex');
         };
 
         /* ============================================================
-           WESTRIN APP - متصل بـ Firebase
+           WESTRIN APP
            ============================================================ */
         let westrinInitialized = false;
 
@@ -2857,10 +2950,7 @@
         function wrSetTransactions(v) { appDb.westrinTransactions = v; }
         function wrGetTrash() { return appDb.westrinTrash || []; }
         function wrSetTrash(v) { appDb.westrinTrash = v; }
-
-        async function wrSave() {
-            await saveToFirebase(appDb);
-        }
+        async function wrSave() { await saveToFirebase(appDb); }
 
         function initWestrinApp() {
             if (westrinInitialized) {
@@ -2895,8 +2985,7 @@
               }
               #westrin-app-container * { box-sizing: border-box; }
               #westrin-app-container .wr-container {
-                max-width: 1300px;
-                margin: 0 auto;
+                max-width: 1300px; margin: 0 auto;
                 background: linear-gradient(135deg, rgba(0,0,0,0.75), rgba(20,20,20,0.85));
                 backdrop-filter: blur(30px);
                 border: 1px solid var(--glass-border);
@@ -2907,48 +2996,36 @@
               #westrin-app-container .topbar {
                 padding: 22px 32px;
                 border-bottom: 1px solid var(--glass-border);
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
+                display: flex; justify-content: space-between; align-items: center;
                 background: linear-gradient(180deg, rgba(250,204,21,0.06), transparent);
-                flex-wrap: wrap;
-                gap: 12px;
+                flex-wrap: wrap; gap: 12px;
               }
               #westrin-app-container .brand { display: flex; align-items: center; gap: 14px; }
               #westrin-app-container .brand-logo {
-                width: 48px; height: 48px;
-                border-radius: 14px;
+                width: 48px; height: 48px; border-radius: 14px;
                 background: linear-gradient(135deg, #facc15, #000);
                 display: grid; place-items: center;
-                font-size: 20px; font-weight: 900;
-                color: #000;
+                font-size: 20px; font-weight: 900; color: #000;
                 box-shadow: 0 8px 24px rgba(250, 204, 21, 0.5);
-                font-family: 'Inter', sans-serif;
-                letter-spacing: -1px;
+                font-family: 'Inter', sans-serif; letter-spacing: -1px;
               }
               #westrin-app-container .brand-text h1 {
-                font-size: 22px; font-weight: 900;
-                letter-spacing: 1px;
+                font-size: 22px; font-weight: 900; letter-spacing: 1px;
                 background: linear-gradient(135deg, #fefce8, #facc15, #eab308);
                 -webkit-background-clip: text; background-clip: text; color: transparent;
                 font-family: 'Inter', sans-serif;
               }
-              #westrin-app-container .brand-text p {
-                font-size: 11px; color: var(--text-muted);
-                font-weight: 600; letter-spacing: 0.5px;
-              }
+              #westrin-app-container .brand-text p { font-size: 11px; color: var(--text-muted); font-weight: 600; letter-spacing: 0.5px; }
               #westrin-app-container .topbar-btns { display: flex; gap: 10px; flex-wrap: wrap; }
               #westrin-app-container .btn {
                 display: inline-flex; align-items: center; gap: 8px;
                 padding: 11px 20px;
                 border: 1px solid var(--glass-border-strong);
                 border-radius: 12px;
-                background: var(--glass-bg);
-                color: var(--text-primary);
+                background: var(--glass-bg); color: var(--text-primary);
                 font-family: 'Cairo', sans-serif;
                 font-size: 13.5px; font-weight: 700;
-                cursor: pointer; transition: all 0.25s;
-                white-space: nowrap;
+                cursor: pointer; transition: all 0.25s; white-space: nowrap;
               }
               #westrin-app-container .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(250,204,21,0.3); }
               #westrin-app-container .btn-primary { background: linear-gradient(135deg, #facc15, #eab308); border-color: transparent; color: #000; box-shadow: 0 8px 24px rgba(250, 204, 21, 0.4); }
@@ -2961,22 +3038,18 @@
               #westrin-app-container input,
               #westrin-app-container select,
               #westrin-app-container textarea {
-                width: 100%;
-                padding: 13px 18px;
+                width: 100%; padding: 13px 18px;
                 background: rgba(255, 255, 255, 0.04);
                 border: 1px solid var(--glass-border);
-                border-radius: 12px;
-                color: var(--text-primary);
+                border-radius: 12px; color: var(--text-primary);
                 font-family: 'Cairo', sans-serif;
-                font-size: 14px; font-weight: 500;
-                transition: all 0.25s;
+                font-size: 14px; font-weight: 500; transition: all 0.25s;
               }
               #westrin-app-container input::placeholder,
               #westrin-app-container textarea::placeholder { color: var(--text-muted); }
               #westrin-app-container input:focus,
               #westrin-app-container textarea:focus {
-                outline: none;
-                border-color: var(--accent-1);
+                outline: none; border-color: var(--accent-1);
                 background: rgba(250, 204, 21, 0.08);
                 box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.15);
               }
@@ -2991,8 +3064,7 @@
                 padding: 4px 12px;
                 background: rgba(250, 204, 21, 0.15);
                 border: 1px solid rgba(250, 204, 21, 0.35);
-                color: #fde047;
-                border-radius: 20px;
+                color: #fde047; border-radius: 20px;
                 font-size: 12px; font-weight: 700;
                 font-family: 'Inter', sans-serif;
               }
@@ -3005,10 +3077,8 @@
               #westrin-app-container .account-card {
                 background: var(--glass-bg);
                 border: 1px solid var(--glass-border);
-                border-radius: 20px;
-                padding: 22px;
-                cursor: pointer;
-                transition: all 0.3s;
+                border-radius: 20px; padding: 22px;
+                cursor: pointer; transition: all 0.3s;
                 position: relative; overflow: hidden;
               }
               #westrin-app-container .account-card::before {
@@ -3046,17 +3116,9 @@
                 cursor: pointer; font-size: 14px; font-weight: 700;
                 border: 1px solid; display: grid; place-items: center; transition: all 0.2s;
               }
-              #westrin-app-container .account-card .edit-btn {
-                background: rgba(250, 204, 21, 0.15);
-                border-color: rgba(250, 204, 21, 0.4);
-                color: #fde047;
-              }
+              #westrin-app-container .account-card .edit-btn { background: rgba(250, 204, 21, 0.15); border-color: rgba(250, 204, 21, 0.4); color: #fde047; }
               #westrin-app-container .account-card .edit-btn:hover { background: rgba(250, 204, 21, 0.35); transform: scale(1.1); }
-              #westrin-app-container .account-card .del-btn {
-                background: rgba(239, 68, 68, 0.15);
-                border-color: rgba(239, 68, 68, 0.35);
-                color: #fca5a5;
-              }
+              #westrin-app-container .account-card .del-btn { background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.35); color: #fca5a5; }
               #westrin-app-container .account-card .del-btn:hover { background: rgba(239, 68, 68, 0.35); transform: scale(1.1); }
               #westrin-app-container .account-view { display: none; }
               #westrin-app-container .account-view.active { display: block; animation: wrSlideIn 0.4s; }
@@ -3075,8 +3137,7 @@
               #westrin-app-container .account-header .acc-avatar {
                 width: 48px; height: 48px; border-radius: 14px;
                 background: linear-gradient(135deg, #facc15, #000);
-                display: grid; place-items: center;
-                font-size: 22px;
+                display: grid; place-items: center; font-size: 22px;
                 box-shadow: 0 8px 24px rgba(250, 204, 21, 0.5);
               }
               #westrin-app-container .account-header h2 { font-size: 20px; font-weight: 800; color: #fefce8; }
@@ -3089,16 +3150,12 @@
               }
               #westrin-app-container .tabs::-webkit-scrollbar { display: none; }
               #westrin-app-container .tab {
-                flex: 1;
-                padding: 12px 18px;
-                background: transparent;
-                border: 1px solid transparent;
-                border-radius: 12px;
-                cursor: pointer;
+                flex: 1; padding: 12px 18px;
+                background: transparent; border: 1px solid transparent;
+                border-radius: 12px; cursor: pointer;
                 font-family: 'Cairo', sans-serif;
                 font-size: 13.5px; font-weight: 700;
-                color: var(--text-muted);
-                transition: all 0.25s;
+                color: var(--text-muted); transition: all 0.25s;
                 white-space: nowrap; min-width: 130px;
                 display: flex; align-items: center; justify-content: center; gap: 8px;
               }
@@ -3155,8 +3212,7 @@
                 appearance: none; -webkit-appearance: none;
                 width: 26px; height: 26px;
                 border: 2px solid var(--glass-border-strong);
-                border-radius: 8px;
-                background: rgba(0,0,0,0.4);
+                border-radius: 8px; background: rgba(0,0,0,0.4);
                 cursor: pointer; transition: all 0.25s;
                 position: relative; flex-shrink: 0;
               }
@@ -3180,8 +3236,7 @@
                 padding: 5px 12px;
                 background: rgba(250, 204, 21, 0.15);
                 border: 1px solid rgba(250, 204, 21, 0.4);
-                color: #fde047;
-                border-radius: 20px;
+                color: #fde047; border-radius: 20px;
                 font-size: 11.5px; font-weight: 700;
               }
               #westrin-app-container .report-controls {
@@ -3198,25 +3253,19 @@
               #westrin-app-container .report-paper {
                 background: rgba(255, 255, 255, 0.97);
                 border: 1px solid rgba(250, 204, 21, 0.5);
-                border-radius: 20px;
-                padding: 40px;
+                border-radius: 20px; padding: 40px;
                 box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-                color: #1e293b;
-                position: relative;
+                color: #1e293b; position: relative;
               }
               #westrin-app-container .report-brand {
                 position: absolute; top: 20px; left: 20px;
                 font-family: 'Inter', sans-serif; font-weight: 900;
-                font-size: 14px; letter-spacing: 2px;
-                color: #000;
-                padding: 6px 14px;
-                border: 2px solid #000;
-                border-radius: 8px;
-                background: #facc15;
+                font-size: 14px; letter-spacing: 2px; color: #000;
+                padding: 6px 14px; border: 2px solid #000;
+                border-radius: 8px; background: #facc15;
               }
               #westrin-app-container .report-title {
-                text-align: center;
-                border-bottom: 2px solid #facc15;
+                text-align: center; border-bottom: 2px solid #facc15;
                 padding-bottom: 20px; margin-bottom: 24px; padding-top: 20px;
               }
               #westrin-app-container .report-title h2 { color: #0f172a; font-size: 26px; margin-bottom: 8px; font-weight: 800; }
@@ -3248,8 +3297,7 @@
               #westrin-app-container .totals-box {
                 margin-top: 24px; padding: 24px 28px;
                 background: linear-gradient(135deg, #000, #1a1a1a);
-                color: #fefce8;
-                border-radius: 16px;
+                color: #fefce8; border-radius: 16px;
                 display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
                 border: 2px solid #facc15;
               }
@@ -3261,8 +3309,7 @@
               #westrin-app-container .trash-card {
                 background: var(--glass-bg);
                 border: 1px solid var(--glass-border);
-                border-radius: 20px; padding: 22px;
-                transition: all 0.3s;
+                border-radius: 20px; padding: 22px; transition: all 0.3s;
               }
               #westrin-app-container .trash-card:hover { border-color: rgba(239, 68, 68, 0.5); background: rgba(239, 68, 68, 0.08); }
               #westrin-app-container .trash-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; color: #fefce8; }
@@ -3491,17 +3538,13 @@
                 if (e.target.id === 'wrAccountModal') westrinCloseAccountModal();
             });
             document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    westrinCloseEditModal();
-                    westrinCloseAccountModal();
-                }
+                if (e.key === 'Escape') { westrinCloseEditModal(); westrinCloseAccountModal(); }
             });
             document.getElementById('wrAccountModalName').addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') westrinSaveAccount();
             });
         }
 
-        // ============ دوال WESTRIN ============
         let wrCurrentAccountId = null;
         let wrEditingTxId = null;
         let wrEditingAccountId = null;
@@ -3509,13 +3552,9 @@
         async function westrinClearAllData() {
             if (confirm('⚠️ هل أنت متأكد من حذف كل البيانات نهائياً؟ لا يمكن التراجع!')) {
                 if (confirm('⚠️ تأكيد أخير: سيتم حذف كل الحسابات والمعاملات والسلة!')) {
-                    wrSetAccounts([]);
-                    wrSetTransactions([]);
-                    wrSetTrash([]);
+                    wrSetAccounts([]); wrSetTransactions([]); wrSetTrash([]);
                     await wrSave();
-                    westrinRenderAccounts();
-                    westrinRenderTrash();
-                    westrinBackToAccounts();
+                    westrinRenderAccounts(); westrinRenderTrash(); westrinBackToAccounts();
                     showToast('تم حذف كل البيانات ☁️');
                 }
             }
@@ -3532,16 +3571,11 @@
         }
         function westrinGetCurrentTime() {
             const now = new Date();
-            const hh = String(now.getHours()).padStart(2, '0');
-            const mm = String(now.getMinutes()).padStart(2, '0');
-            return `${hh}:${mm}`;
+            return `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
         }
         function westrinGetCurrentDate() {
             const now = new Date();
-            const yyyy = now.getFullYear();
-            const mm = String(now.getMonth() + 1).padStart(2, '0');
-            const dd = String(now.getDate()).padStart(2, '0');
-            return `${yyyy}-${mm}-${dd}`;
+            return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
         }
 
         function westrinOpenAccountModal(editId = null) {
@@ -3557,8 +3591,7 @@
                 noteInput.value = acc.note || '';
             } else {
                 title.textContent = '➕ إضافة حساب جديد';
-                nameInput.value = '';
-                noteInput.value = '';
+                nameInput.value = ''; noteInput.value = '';
             }
             document.getElementById('wrAccountModal').classList.add('active');
             setTimeout(() => nameInput.focus(), 100);
@@ -3602,8 +3635,7 @@
                 wrSetTransactions(wrGetTransactions().filter(t => t.accountId !== id));
             }
             await wrSave();
-            westrinRenderAccounts();
-            westrinRenderTrash();
+            westrinRenderAccounts(); westrinRenderTrash();
             showToast('تم الحفظ ☁️');
         }
         function westrinOpenAccount(id) {
@@ -3642,10 +3674,7 @@
             const accounts = wrGetAccounts();
             document.getElementById('wrAccountsCount').textContent = accounts.length;
             if (accounts.length === 0) {
-                grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
-                  <div class="icon">📂</div>
-                  <p>لا توجد حسابات بعد، اضغط "إضافة حساب" للبدء</p>
-                </div>`;
+                grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="icon">📂</div><p>لا توجد حسابات بعد، اضغط "إضافة حساب" للبدء</p></div>`;
                 return;
             }
             const allTxs = wrGetTransactions();
@@ -3681,10 +3710,7 @@
             document.getElementById('wrTrashCount').textContent = trash.length;
             document.getElementById('wrTrashCountView').textContent = trash.length;
             if (trash.length === 0) {
-                grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
-                  <div class="icon">🗑️</div>
-                  <p>سلة المحذوفات فارغة</p>
-                </div>`;
+                grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="icon">🗑️</div><p>سلة المحذوفات فارغة</p></div>`;
                 return;
             }
             grid.innerHTML = trash.map((item, i) => {
@@ -3723,8 +3749,7 @@
             trash.splice(index, 1);
             wrSetTrash(trash);
             await wrSave();
-            westrinRenderTrash();
-            westrinRenderAccounts();
+            westrinRenderTrash(); westrinRenderAccounts();
             showToast('تم الاسترجاع ☁️');
         }
         async function westrinDeleteForever(index) {
@@ -3754,15 +3779,7 @@
             if (isNaN(amount)) { alert('اكتب القيمة بشكل صحيح'); return; }
             if (!date) { alert('حدد التاريخ'); return; }
             const txs = wrGetTransactions();
-            txs.push({
-                id: Date.now(),
-                accountId: wrCurrentAccountId,
-                name: name,
-                amount: amount,
-                date: date,
-                time: time,
-                status: 'pending'
-            });
+            txs.push({ id: Date.now(), accountId: wrCurrentAccountId, name, amount, date, time, status: 'pending' });
             wrSetTransactions(txs);
             await wrSave();
             document.getElementById('wrTxName').value = '';
@@ -3814,10 +3831,7 @@
             const date = document.getElementById('wrEditDate').value;
             const time = document.getElementById('wrEditTime').value || '00:00';
             if (!name || isNaN(amount) || !date) { alert('أكمل البيانات'); return; }
-            tx.name = name;
-            tx.amount = amount;
-            tx.date = date;
-            tx.time = time;
+            tx.name = name; tx.amount = amount; tx.date = date; tx.time = time;
             wrSetTransactions(txs);
             await wrSave();
             westrinCloseEditModal();
@@ -3928,6 +3942,8 @@
             westrinRenderPending();
             westrinRenderWithdrawn();
         }
+
+        // ✅ عرض الكشف داخل الصفحة (للمعاينة)
         function westrinGenerateReport() {
             const fromDate = document.getElementById('wrReportFrom').value;
             const fromTime = document.getElementById('wrReportFromTime').value;
@@ -3957,17 +3973,14 @@
             }
             let fileName = acc.name;
             if (fromDate || toDate) {
-                if (fromDate && toDate) {
-                    fileName += `_${fromDate.split('-').join('')}_${toDate.split('-').join('')}`;
-                } else if (fromDate) {
-                    fileName += `_من_${fromDate.split('-').join('')}`;
-                } else {
-                    fileName += `_إلى_${toDate.split('-').join('')}`;
-                }
+                if (fromDate && toDate) fileName += `_${fromDate.split('-').join('')}_${toDate.split('-').join('')}`;
+                else if (fromDate) fileName += `_من_${fromDate.split('-').join('')}`;
+                else fileName += `_إلى_${toDate.split('-').join('')}`;
             } else {
                 fileName += `_${westrinGetCurrentDate().split('-').join('')}`;
             }
             window.wrCurrentReportFileName = fileName;
+
             if (txs.length === 0) {
                 paper.innerHTML = `
                   <div class="report-brand">WESTRIN</div>
@@ -4034,15 +4047,174 @@
               </div>
             `;
         }
+
+        // 🖨️ الطباعة الاحترافية — تبني قالب فاخر في حاوية الطباعة
         function westrinPrintReport() {
+            const fromDate = document.getElementById('wrReportFrom').value;
+            const fromTime = document.getElementById('wrReportFromTime').value;
+            const toDate = document.getElementById('wrReportTo').value;
+            const toTime = document.getElementById('wrReportToTime').value;
+            const acc = wrGetAccounts().find(a => a.id === wrCurrentAccountId);
+            if (!acc) { alert('يرجى اختيار حساب أولاً.'); return; }
+
+            let txs = westrinGetAccountTransactions();
+            if (fromDate) {
+                const fromDT = `${fromDate} ${fromTime || '00:00'}`;
+                txs = txs.filter(t => `${t.date} ${t.time || '00:00'}` >= fromDT);
+            }
+            if (toDate) {
+                const toDT = `${toDate} ${toTime || '23:59'}`;
+                txs = txs.filter(t => `${t.date} ${t.time || '00:00'}` <= toDT);
+            }
+            txs.sort(westrinSortByDateTime);
+
+            const total = txs.reduce((s,t) => s + Number(t.amount), 0);
+            const totalWithdrawn = txs.filter(t => t.status === 'withdrawn').reduce((s,t) => s + Number(t.amount), 0);
+            const totalPending = txs.filter(t => t.status === 'pending').reduce((s,t) => s + Number(t.amount), 0);
+
+            let periodText = 'كل الفترات';
+            if (fromDate || toDate) {
+                const fromPart = fromDate ? `من: ${fromDate.split('-').join('/')}${fromTime ? ' ' + fromTime : ''}` : '';
+                const toPart = toDate ? `إلى: ${toDate.split('-').join('/')}${toTime ? ' ' + toTime : ''}` : '';
+                periodText = `${fromPart} | ${toPart}`.trim();
+            }
+
+            const now = new Date();
+            const printDate = `${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()}`;
+            const printTime = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+            const reportId = `WR-${Date.now().toString(36).toUpperCase().slice(-8)}`;
+
+            const rowsHtml = txs.length === 0
+                ? `<tr><td colspan="5" class="pro-empty" style="text-align:center;padding:40px;color:#94a3b8;">لا توجد معاملات في هذه الفترة</td></tr>`
+                : txs.map((tx, i) => `
+                    <tr>
+                      <td style="text-align:center;"><span class="row-index">${i+1}</span></td>
+                      <td><span class="tx-name">${escapeHtml(tx.name)}</span></td>
+                      <td><span class="num">${westrinFmtDateTime(tx.date, tx.time)}</span></td>
+                      <td><span class="num ${tx.amount >= 0 ? '' : ''}" style="color:#0f172a;">${westrinFmtMoney(tx.amount)}</span></td>
+                      <td style="text-align:center;">
+                        ${tx.status === 'withdrawn'
+                            ? '<span class="status-badge done">✓ تم السحب</span>'
+                            : '<span class="status-badge pending">⏳ تحت السحب</span>'}
+                      </td>
+                    </tr>
+                `).join('');
+
+            const printRoot = document.getElementById('wrPrintRoot');
+            printRoot.innerHTML = `
+              <div class="wr-pro-report">
+                <!-- الرأس الاحترافي -->
+                <div class="pro-header">
+                  <div class="brand-box">
+                    <div class="brand-logo">W</div>
+                    <div class="brand-text">
+                      <h1>AL ANHAR <span class="gold">WESTRIN</span></h1>
+                      <p>FINANCIAL STATEMENT · كشف حساب مالي</p>
+                    </div>
+                  </div>
+                  <div class="report-info">
+                    <div>
+                      <div class="label">REPORT ID</div>
+                      <div class="value">${reportId}</div>
+                    </div>
+                    <div style="margin-top:8px;">
+                      <div class="label">ISSUE DATE</div>
+                      <div class="value">${printDate} · ${printTime}</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- شريط العنوان -->
+                <div class="pro-title-bar">
+                  كشف حساب رسمي — ${escapeHtml(acc.name)}
+                  <div class="sub">${periodText}</div>
+                </div>
+
+                <!-- محتوى التقرير -->
+                <div class="pro-body">
+                  <!-- معلومات الحساب -->
+                  <div class="pro-info-card">
+                    <div class="pro-info-item">
+                      <div class="label">ACCOUNT NAME</div>
+                      <div class="value">${escapeHtml(acc.name)}</div>
+                    </div>
+                    <div class="pro-info-item">
+                      <div class="label">NOTE / ملاحظة</div>
+                      <div class="value">${acc.note ? escapeHtml(acc.note) : '—'}</div>
+                    </div>
+                    <div class="pro-info-item">
+                      <div class="label">TOTAL TRANSACTIONS</div>
+                      <div class="value">${txs.length} معاملة</div>
+                    </div>
+                  </div>
+
+                  <!-- بطاقات الإحصائيات -->
+                  <div class="pro-stats-grid">
+                    <div class="pro-stat-card gold">
+                      <div class="stat-label">إجمالي المبالغ</div>
+                      <div class="stat-value">${westrinFmtMoney(total)}</div>
+                    </div>
+                    <div class="pro-stat-card green">
+                      <div class="stat-label">تم السحب</div>
+                      <div class="stat-value">${westrinFmtMoney(totalWithdrawn)}</div>
+                    </div>
+                    <div class="pro-stat-card amber">
+                      <div class="stat-label">تحت السحب</div>
+                      <div class="stat-value">${westrinFmtMoney(totalPending)}</div>
+                    </div>
+                  </div>
+
+                  <!-- الجدول الاحترافي -->
+                  <table class="pro-table">
+                    <thead>
+                      <tr>
+                        <th class="center" style="width:45px;">#</th>
+                        <th>اسم المعاملة</th>
+                        <th>التاريخ والوقت</th>
+                        <th>القيمة</th>
+                        <th class="center" style="width:130px;">الحالة</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${rowsHtml}
+                    </tbody>
+                  </table>
+
+                  <!-- صندوق الإجماليات -->
+                  <div class="pro-totals">
+                    <div class="pro-total-card total">
+                      <div class="label">المجموع الكلي</div>
+                      <div class="value">${westrinFmtMoney(total)}</div>
+                    </div>
+                    <div class="pro-total-card withdrawn">
+                      <div class="label">فرق الحساب (تم السحب)</div>
+                      <div class="value">${westrinFmtMoney(totalWithdrawn)}</div>
+                    </div>
+                  </div>
+
+                  <!-- تذييل -->
+                  <div class="pro-footer">
+                    <div>تم إنشاء هذا الكشف تلقائياً بواسطة نظام AL ANHAR WESTRIN</div>
+                    <div class="stamp">★ WESTRIN ★</div>
+                    <div>${printDate} ${printTime}</div>
+                  </div>
+                </div>
+              </div>
+            `;
+
             const originalTitle = document.title;
             if (window.wrCurrentReportFileName) {
-                document.title = window.wrCurrentReportFileName;
+                const fileName = acc.name + (fromDate ? `_${fromDate.split('-').join('')}` : '') + (toDate ? `_${toDate.split('-').join('')}` : '');
+                document.title = fileName;
             }
-            window.print();
+
             setTimeout(() => {
-                document.title = originalTitle;
-            }, 100);
+                window.print();
+                setTimeout(() => {
+                    document.title = originalTitle;
+                    printRoot.innerHTML = '';
+                }, 500);
+            }, 150);
         }
 
         /* ==================== ربط الدوال ==================== */
