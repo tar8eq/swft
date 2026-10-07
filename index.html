@@ -159,7 +159,7 @@
             <p id="currentUserBadge" class="text-amber-400 text-xs font-bold mt-2">الحساب: --</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl">
             <button onclick="enterModule('SWFT')" class="glass-panel p-8 rounded-3xl border-2 border-amber-500/40 hover:border-amber-400 hover:scale-105 transition-all shadow-2xl flex flex-col items-center justify-center group cursor-pointer">
                 <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-amber-500 to-blue-600 flex items-center justify-center mb-4 shadow-lg group-hover:rotate-6 transition">
                     <svg class="w-10 h-10 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 10h18M5 6l7-3 7 4M4 10v11m16-11v11"/></svg>
@@ -182,6 +182,14 @@
                 </div>
                 <h2 class="text-3xl font-black text-emerald-400 mb-2">BANK ₺</h2>
                 <p class="text-xs text-emerald-300">المعاملات البنكية (ليرة / دولار / يورو)</p>
+            </button>
+
+            <button onclick="enterModule('WESTRIN')" class="glass-panel p-8 rounded-3xl border-2 border-yellow-500/60 hover:border-yellow-400 hover:scale-105 transition-all shadow-2xl flex flex-col items-center justify-center group cursor-pointer" style="background: linear-gradient(135deg, rgba(0,0,0,0.85), rgba(20,20,20,0.9)); border-color: rgba(250, 204, 21, 0.5);">
+                <div class="w-20 h-20 rounded-2xl flex items-center justify-center mb-4 shadow-lg group-hover:rotate-6 transition" style="background: linear-gradient(135deg, #facc15 0%, #000 100%); box-shadow: 0 8px 32px rgba(250, 204, 21, 0.4);">
+                    <span class="text-3xl font-black text-black">W</span>
+                </div>
+                <h2 class="text-3xl font-black mb-2" style="background: linear-gradient(135deg, #facc15, #fbbf24); -webkit-background-clip: text; background-clip: text; color: transparent;">WESTRIN</h2>
+                <p class="text-xs" style="color: #fde047;">نظام إدارة الحسابات والمعاملات المستقل</p>
             </button>
         </div>
     </div>
@@ -759,6 +767,29 @@
         </main>
     </div>
 
+    <!-- ==================== قسم WESTRIN (الجديد) ==================== -->
+    <div id="module-westrin" class="hidden" style="background: linear-gradient(135deg, #000 0%, #1a1a1a 50%, #000 100%); min-height: 100vh;">
+        <header class="sticky top-0 z-40 px-4 md:px-6 py-4 shadow-2xl no-print" style="background: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(20,20,20,0.95)); border-bottom: 2px solid #facc15;">
+            <div class="max-w-7xl mx-auto flex justify-between items-center flex-wrap gap-3">
+                <div class="flex items-center gap-4">
+                    <button onclick="exitToLanding()" class="bg-black hover:bg-yellow-500 hover:text-black text-yellow-400 border border-yellow-500/50 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 cursor-pointer">
+                        ← الرئيسية الأساسية
+                    </button>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg" style="background: linear-gradient(135deg, #facc15 0%, #000 100%); box-shadow: 0 0 20px rgba(250, 204, 21, 0.5);">
+                            <span class="text-xl font-black text-black">W</span>
+                        </div>
+                        <div>
+                            <h1 class="text-lg font-black tracking-wider text-white">AL ANHAR <span class="font-light text-xs" style="color: #facc15;">WESTRIN</span></h1>
+                            <p class="text-[10px] text-yellow-400/70 font-bold">نظام إدارة الحسابات والمعاملات</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div id="westrin-app-container"></div>
+    </div>
+
     <!-- ==================== طلبات الدخول ==================== -->
     <div id="accessRequestsModal" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-[90] hidden flex items-center justify-center p-4">
         <div class="glass-panel w-full max-w-3xl p-6 rounded-3xl border border-purple-500/30 shadow-2xl max-h-[88vh] overflow-y-auto">
@@ -919,7 +950,6 @@
                     </div>
                 </div>
 
-                <!-- حقل سعر الصرف المتقاطع -->
                 <div id="bankCrossRateWrapper" class="hidden bg-black/40 border border-amber-500/30 rounded-xl p-3">
                     <label class="block text-xs text-amber-300 font-bold mb-1">⚠️ سعر صرف عملة الناتج مقابل الليرة</label>
                     <input type="text" id="bankCrossRate" oninput="formatFormattedInput(this); updateBankCurrencyHints();" placeholder="مثال: 32.50 (سعر الدولار/اليورو بالليرة)" class="w-full bg-black/50 border border-amber-500/40 rounded-xl px-4 py-2 text-white focus:border-amber-500 focus:outline-none font-mono font-bold">
@@ -1204,6 +1234,7 @@
             document.getElementById('module-swft').classList.add('hidden');
             document.getElementById('module-rmb').classList.add('hidden');
             document.getElementById('module-bank').classList.add('hidden');
+            document.getElementById('module-westrin').classList.add('hidden');
             document.getElementById('view-landing').classList.add('hidden');
             document.getElementById('view-landing').classList.remove('flex');
             document.getElementById('auth-screen').classList.remove('hidden');
@@ -1330,6 +1361,7 @@
             document.getElementById('module-swft').classList.add('hidden');
             document.getElementById('module-rmb').classList.add('hidden');
             document.getElementById('module-bank').classList.add('hidden');
+            document.getElementById('module-westrin').classList.add('hidden');
 
             if (moduleName === 'SWFT') {
                 document.getElementById('module-swft').classList.remove('hidden');
@@ -1340,6 +1372,9 @@
             } else if (moduleName === 'BANK') {
                 document.getElementById('module-bank').classList.remove('hidden');
                 switchBankTab('transactions');
+            } else if (moduleName === 'WESTRIN') {
+                document.getElementById('module-westrin').classList.remove('hidden');
+                initWestrinApp();
             }
         }
 
@@ -1347,6 +1382,7 @@
             document.getElementById('module-swft').classList.add('hidden');
             document.getElementById('module-rmb').classList.add('hidden');
             document.getElementById('module-bank').classList.add('hidden');
+            document.getElementById('module-westrin').classList.add('hidden');
             document.getElementById('view-landing').classList.remove('hidden');
             document.getElementById('view-landing').classList.add('flex');
             updateAdminControls();
@@ -2268,17 +2304,12 @@
             openModal('addBankTransactionModal');
         }
 
-        /* ============ الدالة المعدلة: قاعدة الحساب الجديدة ============
-           - العملة TRY: الناتج = المبلغ ÷ سعر الصرف
-           - العملة USD أو EUR: الناتج = المبلغ × سعر الصرف
-           ============================================================= */
         function updateBankCurrencyHints() {
             let cur = document.getElementById('bankTransCurrency').value;
             let amount = parseNumber(document.getElementById('bankTransAmount').value);
             let rate = parseNumber(document.getElementById('bankTransRate').value);
             let resultCur = document.getElementById('bankTransResultCurrency').value;
 
-            // التلميح
             let hint = '';
             if (cur === 'TRY') hint = '📉 الناتج = المبلغ ÷ سعر الصرف';
             else if (cur === 'USD') hint = '📈 الناتج = المبلغ × سعر الصرف';
@@ -2289,20 +2320,15 @@
             document.getElementById('bankCalcInput').innerText = `${formatMoney(amount)} ${symIn}`;
             document.getElementById('bankCalcRate').innerText = rate ? `${formatMoney(rate)}` : '0.00';
 
-            // إظهار/إخفاء حقل crossRate
-            // (نحتاجه فقط لو كانت العملة المدخلة مختلفة عن الناتج وكلاهما غير TRY)
             let needCross = (cur !== 'TRY' && resultCur !== 'TRY' && cur !== resultCur);
             const wrapper = document.getElementById('bankCrossRateWrapper');
             if (needCross) wrapper.classList.remove('hidden');
             else wrapper.classList.add('hidden');
 
-            // الحساب الجديد:
             let resultAmount = 0;
             if (cur === 'TRY') {
-                // ليرة ÷ سعر الصرف
                 resultAmount = rate > 0 ? amount / rate : 0;
             } else {
-                // دولار أو يورو × سعر الصرف
                 resultAmount = amount * (rate || 0);
             }
 
@@ -2381,7 +2407,6 @@
             }
         }
 
-        /* ============ دالة الحفظ المعدلة بنفس القاعدة الجديدة ============ */
         async function saveBankTransaction() {
             let editId = document.getElementById('editingBankTransId').value;
             let date = document.getElementById('bankTransDate').value;
@@ -2392,15 +2417,11 @@
             let resultCurrency = document.getElementById('bankTransResultCurrency').value;
             let note = document.getElementById('bankTransNote').value.trim();
 
-            // تحقق
             if (!date) return alert('الرجاء إدخال التاريخ.');
             if (!accountId) return alert('الرجاء اختيار الحساب.');
             if (amount <= 0) return alert('الرجاء إدخال مبلغ صحيح.');
             if (rate <= 0) return alert('الرجاء إدخال سعر صرف صحيح (أكبر من صفر).');
 
-            // الحساب الجديد:
-            // TRY: المبلغ ÷ سعر الصرف
-            // USD/EUR: المبلغ × سعر الصرف
             let resultAmount = 0;
             if (currency === 'TRY') {
                 resultAmount = amount / rate;
@@ -2675,7 +2696,1185 @@
             document.getElementById('auth-screen').classList.remove('hidden');
             document.getElementById('view-landing').classList.add('hidden');
             document.getElementById('view-landing').classList.remove('flex');
+
+            // تحميل تطبيق ويسترن تلقائياً بمجرد جاهزية الصفحة
+            initWestrinApp();
         };
+
+        /* ============================================================
+           WESTRIN APP - تطبيق إدارة الحسابات المستقل
+           ============================================================ */
+        let westrinInitialized = false;
+
+        function initWestrinApp() {
+            if (westrinInitialized) return;
+            westrinInitialized = true;
+            const container = document.getElementById('westrin-app-container');
+            if (!container) return;
+
+            // نضيف الستايل الخاص بتطبيق ويسترن داخل الكونتينر
+            const westrinStyles = document.createElement('style');
+            westrinStyles.id = 'westrin-styles';
+            westrinStyles.innerHTML = `
+              #westrin-app-container {
+                --glass-bg: rgba(255, 255, 255, 0.06);
+                --glass-bg-hover: rgba(255, 255, 255, 0.1);
+                --glass-border: rgba(250, 204, 21, 0.25);
+                --glass-border-strong: rgba(250, 204, 21, 0.5);
+                --text-primary: #fefce8;
+                --text-secondary: #fde68a;
+                --text-muted: #a16207;
+                --accent-1: #facc15;
+                --accent-2: #eab308;
+                --shadow-lg: 0 20px 60px rgba(0,0,0,0.6);
+                --shadow-glow: 0 0 40px rgba(250, 204, 21, 0.35);
+                font-family: 'Cairo', 'Inter', sans-serif;
+                color: var(--text-primary);
+                padding: 24px;
+                min-height: 100vh;
+                background: transparent;
+              }
+              #westrin-app-container * { box-sizing: border-box; }
+              #westrin-app-container .wr-container {
+                max-width: 1300px;
+                margin: 0 auto;
+                background: linear-gradient(135deg, rgba(0,0,0,0.75), rgba(20,20,20,0.85));
+                backdrop-filter: blur(30px);
+                border: 1px solid var(--glass-border);
+                border-radius: 28px;
+                box-shadow: var(--shadow-lg), var(--shadow-glow);
+                overflow: hidden;
+              }
+              #westrin-app-container .topbar {
+                padding: 22px 32px;
+                border-bottom: 1px solid var(--glass-border);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background: linear-gradient(180deg, rgba(250,204,21,0.06), transparent);
+                flex-wrap: wrap;
+                gap: 12px;
+              }
+              #westrin-app-container .brand { display: flex; align-items: center; gap: 14px; }
+              #westrin-app-container .brand-logo {
+                width: 48px; height: 48px;
+                border-radius: 14px;
+                background: linear-gradient(135deg, #facc15, #000);
+                display: grid; place-items: center;
+                font-size: 20px; font-weight: 900;
+                color: #000;
+                box-shadow: 0 8px 24px rgba(250, 204, 21, 0.5);
+                font-family: 'Inter', sans-serif;
+                letter-spacing: -1px;
+              }
+              #westrin-app-container .brand-text h1 {
+                font-size: 22px; font-weight: 900;
+                letter-spacing: 1px;
+                background: linear-gradient(135deg, #fefce8, #facc15, #eab308);
+                -webkit-background-clip: text; background-clip: text; color: transparent;
+                font-family: 'Inter', sans-serif;
+              }
+              #westrin-app-container .brand-text p {
+                font-size: 11px; color: var(--text-muted);
+                font-weight: 600; letter-spacing: 0.5px;
+              }
+              #westrin-app-container .topbar-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+              #westrin-app-container .btn {
+                display: inline-flex; align-items: center; gap: 8px;
+                padding: 11px 20px;
+                border: 1px solid var(--glass-border-strong);
+                border-radius: 12px;
+                background: var(--glass-bg);
+                color: var(--text-primary);
+                font-family: 'Cairo', sans-serif;
+                font-size: 13.5px; font-weight: 700;
+                cursor: pointer; transition: all 0.25s;
+                white-space: nowrap;
+              }
+              #westrin-app-container .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(250,204,21,0.3); }
+              #westrin-app-container .btn-primary { background: linear-gradient(135deg, #facc15, #eab308); border-color: transparent; color: #000; box-shadow: 0 8px 24px rgba(250, 204, 21, 0.4); }
+              #westrin-app-container .btn-success { background: linear-gradient(135deg, #10b981, #059669); border-color: transparent; color: #fff; }
+              #westrin-app-container .btn-info { background: linear-gradient(135deg, #06b6d4, #0891b2); border-color: transparent; color: #fff; }
+              #westrin-app-container .btn-warn { background: linear-gradient(135deg, #f59e0b, #d97706); border-color: transparent; color: #fff; }
+              #westrin-app-container .btn-danger { background: linear-gradient(135deg, #ef4444, #dc2626); border-color: transparent; color: #fff; }
+              #westrin-app-container .btn-ghost { background: transparent; border-color: var(--glass-border-strong); }
+              #westrin-app-container .btn-sm { padding: 7px 14px; font-size: 12px; border-radius: 10px; }
+              #westrin-app-container input,
+              #westrin-app-container select,
+              #westrin-app-container textarea {
+                width: 100%;
+                padding: 13px 18px;
+                background: rgba(255, 255, 255, 0.04);
+                border: 1px solid var(--glass-border);
+                border-radius: 12px;
+                color: var(--text-primary);
+                font-family: 'Cairo', sans-serif;
+                font-size: 14px; font-weight: 500;
+                transition: all 0.25s;
+              }
+              #westrin-app-container input::placeholder,
+              #westrin-app-container textarea::placeholder { color: var(--text-muted); }
+              #westrin-app-container input:focus,
+              #westrin-app-container textarea:focus {
+                outline: none;
+                border-color: var(--accent-1);
+                background: rgba(250, 204, 21, 0.08);
+                box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.15);
+              }
+              #westrin-app-container textarea { resize: vertical; min-height: 80px; }
+              #westrin-app-container .section-header {
+                display: flex; align-items: center; justify-content: space-between;
+                gap: 12px; margin-bottom: 24px; flex-wrap: wrap;
+              }
+              #westrin-app-container .section-header-left { display: flex; align-items: center; gap: 12px; }
+              #westrin-app-container .section-header h2 { font-size: 24px; font-weight: 800; color: #fefce8; }
+              #westrin-app-container .badge {
+                padding: 4px 12px;
+                background: rgba(250, 204, 21, 0.15);
+                border: 1px solid rgba(250, 204, 21, 0.35);
+                color: #fde047;
+                border-radius: 20px;
+                font-size: 12px; font-weight: 700;
+                font-family: 'Inter', sans-serif;
+              }
+              #westrin-app-container .accounts-view { padding: 40px 36px; }
+              #westrin-app-container .accounts-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 18px;
+              }
+              #westrin-app-container .account-card {
+                background: var(--glass-bg);
+                border: 1px solid var(--glass-border);
+                border-radius: 20px;
+                padding: 22px;
+                cursor: pointer;
+                transition: all 0.3s;
+                position: relative; overflow: hidden;
+              }
+              #westrin-app-container .account-card::before {
+                content: ''; position: absolute; top: 0; right: 0;
+                width: 4px; height: 100%;
+                background: linear-gradient(180deg, #facc15, #000);
+              }
+              #westrin-app-container .account-card:hover {
+                transform: translateY(-6px);
+                border-color: rgba(250, 204, 21, 0.7);
+                background: var(--glass-bg-hover);
+                box-shadow: 0 20px 50px rgba(250, 204, 21, 0.3);
+              }
+              #westrin-app-container .account-card .icon-wrap {
+                width: 48px; height: 48px; border-radius: 14px;
+                background: linear-gradient(135deg, rgba(250,204,21,0.25), rgba(0,0,0,0.6));
+                border: 1px solid rgba(250, 204, 21, 0.4);
+                display: grid; place-items: center;
+                font-size: 22px; margin-bottom: 14px;
+              }
+              #westrin-app-container .account-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; color: #fefce8; }
+              #westrin-app-container .account-card .note { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; font-style: italic; }
+              #westrin-app-container .account-card .stats { display: flex; flex-direction: column; gap: 8px; }
+              #westrin-app-container .stat-row { display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; color: var(--text-secondary); }
+              #westrin-app-container .stat-row .val { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 13px; color: #fefce8; }
+              #westrin-app-container .stat-row .val.pos { color: #6ee7b7; }
+              #westrin-app-container .stat-row .val.warn { color: #fcd34d; }
+              #westrin-app-container .account-card .card-actions {
+                position: absolute; top: 14px; left: 14px;
+                display: flex; gap: 6px; opacity: 0; transition: opacity 0.2s;
+              }
+              #westrin-app-container .account-card:hover .card-actions { opacity: 1; }
+              #westrin-app-container .account-card .card-actions button {
+                width: 30px; height: 30px; border-radius: 10px;
+                cursor: pointer; font-size: 14px; font-weight: 700;
+                border: 1px solid; display: grid; place-items: center; transition: all 0.2s;
+              }
+              #westrin-app-container .account-card .edit-btn {
+                background: rgba(250, 204, 21, 0.15);
+                border-color: rgba(250, 204, 21, 0.4);
+                color: #fde047;
+              }
+              #westrin-app-container .account-card .edit-btn:hover { background: rgba(250, 204, 21, 0.35); transform: scale(1.1); }
+              #westrin-app-container .account-card .del-btn {
+                background: rgba(239, 68, 68, 0.15);
+                border-color: rgba(239, 68, 68, 0.35);
+                color: #fca5a5;
+              }
+              #westrin-app-container .account-card .del-btn:hover { background: rgba(239, 68, 68, 0.35); transform: scale(1.1); }
+              #westrin-app-container .account-view { display: none; }
+              #westrin-app-container .account-view.active { display: block; animation: wrSlideIn 0.4s; }
+              #westrin-app-container .accounts-view.hidden { display: none; }
+              #westrin-app-container .trash-view { display: none; }
+              #westrin-app-container .trash-view.active { display: block; animation: wrSlideIn 0.4s; }
+              @keyframes wrSlideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+              #westrin-app-container .account-header {
+                padding: 22px 32px;
+                display: flex; justify-content: space-between; align-items: center;
+                border-bottom: 1px solid var(--glass-border);
+                background: linear-gradient(180deg, rgba(250,204,21,0.08), transparent);
+                flex-wrap: wrap; gap: 12px;
+              }
+              #westrin-app-container .account-header .title-wrap { display: flex; align-items: center; gap: 14px; }
+              #westrin-app-container .account-header .acc-avatar {
+                width: 48px; height: 48px; border-radius: 14px;
+                background: linear-gradient(135deg, #facc15, #000);
+                display: grid; place-items: center;
+                font-size: 22px;
+                box-shadow: 0 8px 24px rgba(250, 204, 21, 0.5);
+              }
+              #westrin-app-container .account-header h2 { font-size: 20px; font-weight: 800; color: #fefce8; }
+              #westrin-app-container .account-header .sub { font-size: 12px; color: var(--text-muted); font-weight: 500; margin-top: 2px; }
+              #westrin-app-container .tabs {
+                display: flex; gap: 6px; padding: 14px 20px;
+                background: rgba(0,0,0,0.3);
+                border-bottom: 1px solid var(--glass-border);
+                overflow-x: auto; scrollbar-width: none;
+              }
+              #westrin-app-container .tabs::-webkit-scrollbar { display: none; }
+              #westrin-app-container .tab {
+                flex: 1;
+                padding: 12px 18px;
+                background: transparent;
+                border: 1px solid transparent;
+                border-radius: 12px;
+                cursor: pointer;
+                font-family: 'Cairo', sans-serif;
+                font-size: 13.5px; font-weight: 700;
+                color: var(--text-muted);
+                transition: all 0.25s;
+                white-space: nowrap; min-width: 130px;
+                display: flex; align-items: center; justify-content: center; gap: 8px;
+              }
+              #westrin-app-container .tab .count {
+                background: rgba(250, 204, 21, 0.12);
+                padding: 2px 8px; border-radius: 10px;
+                font-size: 11px; font-family: 'Inter', sans-serif; font-weight: 700;
+              }
+              #westrin-app-container .tab:hover { color: var(--text-secondary); background: rgba(250,204,21,0.06); }
+              #westrin-app-container .tab.active {
+                color: #000;
+                background: linear-gradient(135deg, #facc15, #eab308);
+                border-color: transparent;
+                box-shadow: 0 6px 20px rgba(250, 204, 21, 0.4);
+              }
+              #westrin-app-container .tab.active .count { background: rgba(0,0,0,0.2); color: #000; }
+              #westrin-app-container .tab-content { padding: 28px 32px; display: none; }
+              #westrin-app-container .tab-content.active { display: block; animation: wrFadeIn 0.3s; }
+              @keyframes wrFadeIn { from {opacity:0; transform: translateY(6px);} to {opacity:1; transform: translateY(0);} }
+              #westrin-app-container .tx-form {
+                display: grid;
+                grid-template-columns: 2fr 1fr 1fr 1fr auto;
+                gap: 10px; margin-bottom: 24px; padding: 18px;
+                background: var(--glass-bg);
+                border: 1px solid var(--glass-border);
+                border-radius: 18px;
+              }
+              #westrin-app-container .table-wrap {
+                border-radius: 18px; overflow: hidden;
+                border: 1px solid var(--glass-border);
+                background: var(--glass-bg);
+              }
+              #westrin-app-container .tx-table { width: 100%; border-collapse: collapse; }
+              #westrin-app-container .tx-table thead th {
+                padding: 14px 18px; text-align: right;
+                font-size: 12px; font-weight: 700; color: #fde047;
+                letter-spacing: 0.5px;
+                background: rgba(0, 0, 0, 0.3);
+                border-bottom: 1px solid var(--glass-border);
+              }
+              #westrin-app-container .tx-table tbody td {
+                padding: 16px 18px; font-size: 14px;
+                border-bottom: 1px solid rgba(250, 204, 21, 0.08);
+                color: var(--text-secondary); vertical-align: middle;
+              }
+              #westrin-app-container .tx-table tbody tr:hover { background: rgba(250, 204, 21, 0.05); }
+              #westrin-app-container .tx-name { color: #fefce8; font-weight: 700; }
+              #westrin-app-container .tx-date { font-family: 'Inter', sans-serif; font-size: 12.5px; color: var(--text-muted); font-weight: 600; direction: ltr; display: inline-block; }
+              #westrin-app-container .amount { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 15px; }
+              #westrin-app-container .amount.pos { color: #6ee7b7; }
+              #westrin-app-container .amount.neg { color: #fca5a5; }
+              #westrin-app-container .withdraw-check { display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; user-select: none; width: fit-content; }
+              #westrin-app-container .withdraw-check input[type="checkbox"] {
+                appearance: none; -webkit-appearance: none;
+                width: 26px; height: 26px;
+                border: 2px solid var(--glass-border-strong);
+                border-radius: 8px;
+                background: rgba(0,0,0,0.4);
+                cursor: pointer; transition: all 0.25s;
+                position: relative; flex-shrink: 0;
+              }
+              #westrin-app-container .withdraw-check input[type="checkbox"]:hover { border-color: #facc15; background: rgba(250, 204, 21, 0.1); }
+              #westrin-app-container .withdraw-check input[type="checkbox"]:checked {
+                background: linear-gradient(135deg, #facc15, #eab308);
+                border-color: transparent;
+                box-shadow: 0 0 16px rgba(250, 204, 21, 0.6);
+              }
+              #westrin-app-container .withdraw-check input[type="checkbox"]:checked::after {
+                content: '✓'; position: absolute; inset: 0;
+                display: grid; place-items: center;
+                color: #000; font-size: 16px; font-weight: 900;
+              }
+              #westrin-app-container .withdraw-check span { font-size: 10.5px; color: var(--text-muted); font-weight: 700; white-space: nowrap; }
+              #westrin-app-container .withdrawn-row { background: linear-gradient(90deg, rgba(250, 204, 21, 0.06), transparent); opacity: 0.5; pointer-events: none; transition: all 0.3s; }
+              #westrin-app-container .withdrawn-row.editing { opacity: 1; pointer-events: auto; background: linear-gradient(90deg, rgba(250, 204, 21, 0.2), transparent); box-shadow: inset 0 0 0 2px rgba(250, 204, 21, 0.5); }
+              #westrin-app-container .withdrawn-row .action-cell { pointer-events: auto; }
+              #westrin-app-container .badge-done {
+                display: inline-flex; align-items: center; gap: 5px;
+                padding: 5px 12px;
+                background: rgba(250, 204, 21, 0.15);
+                border: 1px solid rgba(250, 204, 21, 0.4);
+                color: #fde047;
+                border-radius: 20px;
+                font-size: 11.5px; font-weight: 700;
+              }
+              #westrin-app-container .report-controls {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                gap: 12px; align-items: flex-end; margin-bottom: 24px; padding: 20px;
+                background: var(--glass-bg);
+                border: 1px solid var(--glass-border);
+                border-radius: 18px;
+              }
+              #westrin-app-container .report-controls .field { display: flex; flex-direction: column; gap: 6px; }
+              #westrin-app-container .report-controls label { font-size: 12px; font-weight: 700; color: #fde047; letter-spacing: 0.4px; }
+              #westrin-app-container .report-controls .actions { display: flex; gap: 10px; align-items: flex-end; }
+              #westrin-app-container .report-paper {
+                background: rgba(255, 255, 255, 0.97);
+                border: 1px solid rgba(250, 204, 21, 0.5);
+                border-radius: 20px;
+                padding: 40px;
+                box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+                color: #1e293b;
+                position: relative;
+              }
+              #westrin-app-container .report-brand {
+                position: absolute; top: 20px; left: 20px;
+                font-family: 'Inter', sans-serif; font-weight: 900;
+                font-size: 14px; letter-spacing: 2px;
+                color: #000;
+                padding: 6px 14px;
+                border: 2px solid #000;
+                border-radius: 8px;
+                background: #facc15;
+              }
+              #westrin-app-container .report-title {
+                text-align: center;
+                border-bottom: 2px solid #facc15;
+                padding-bottom: 20px; margin-bottom: 24px; padding-top: 20px;
+              }
+              #westrin-app-container .report-title h2 { color: #0f172a; font-size: 26px; margin-bottom: 8px; font-weight: 800; }
+              #westrin-app-container .report-title .period { color: #64748b; font-size: 13.5px; font-weight: 600; direction: ltr; display: inline-block; }
+              #westrin-app-container .report-summary {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                gap: 12px; margin-bottom: 24px;
+              }
+              #westrin-app-container .summary-card {
+                padding: 16px;
+                background: linear-gradient(135deg, #fefce8, #fef3c7);
+                border: 1px solid #facc15;
+                border-radius: 14px; text-align: center;
+              }
+              #westrin-app-container .summary-card .label { font-size: 11.5px; color: #78350f; font-weight: 700; margin-bottom: 8px; }
+              #westrin-app-container .summary-card .value { font-size: 20px; font-weight: 800; font-family: 'Inter', sans-serif; color: #0f172a; }
+              #westrin-app-container .report-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+              #westrin-app-container .report-table thead th {
+                background: #fef3c7; padding: 12px 14px;
+                text-align: right; font-size: 12px; font-weight: 700; color: #78350f;
+                border-bottom: 2px solid #facc15;
+              }
+              #westrin-app-container .report-table tbody td {
+                padding: 13px 14px; border-bottom: 1px solid #fef3c7;
+                font-size: 13.5px; color: #334155;
+              }
+              #westrin-app-container .report-table .num { font-family: 'Inter', sans-serif; font-weight: 700; direction: ltr; display: inline-block; }
+              #westrin-app-container .totals-box {
+                margin-top: 24px; padding: 24px 28px;
+                background: linear-gradient(135deg, #000, #1a1a1a);
+                color: #fefce8;
+                border-radius: 16px;
+                display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+                border: 2px solid #facc15;
+              }
+              #westrin-app-container .totals-box .item { text-align: center; }
+              #westrin-app-container .totals-box .item:first-child { border-left: 1px solid rgba(250, 204, 21, 0.3); }
+              #westrin-app-container .totals-box .label { font-size: 12px; opacity: 0.85; letter-spacing: 0.6px; font-weight: 700; margin-bottom: 8px; color: #fde047; }
+              #westrin-app-container .totals-box .value { font-size: 28px; font-weight: 800; font-family: 'Inter', sans-serif; }
+              #westrin-app-container .trash-view { padding: 40px 36px; }
+              #westrin-app-container .trash-card {
+                background: var(--glass-bg);
+                border: 1px solid var(--glass-border);
+                border-radius: 20px; padding: 22px;
+                transition: all 0.3s;
+              }
+              #westrin-app-container .trash-card:hover { border-color: rgba(239, 68, 68, 0.5); background: rgba(239, 68, 68, 0.08); }
+              #westrin-app-container .trash-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; color: #fefce8; }
+              #westrin-app-container .trash-card .note { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; font-style: italic; }
+              #westrin-app-container .trash-card .info { display: flex; gap: 14px; font-size: 12px; color: var(--text-secondary); margin-bottom: 16px; flex-wrap: wrap; }
+              #westrin-app-container .trash-card .info span b { font-family: 'Inter', sans-serif; color: #fefce8; }
+              #westrin-app-container .trash-card .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+              #westrin-app-container .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+              #westrin-app-container .empty-state .icon { font-size: 56px; margin-bottom: 16px; opacity: 0.4; }
+              #westrin-app-container .empty-state p { font-size: 15px; font-weight: 600; }
+              #westrin-app-container .modal-overlay {
+                position: fixed; inset: 0;
+                background: rgba(0, 0, 0, 0.8);
+                backdrop-filter: blur(8px);
+                display: none; align-items: center; justify-content: center;
+                z-index: 1000; padding: 20px; overflow-y: auto;
+              }
+              #westrin-app-container .modal-overlay.active { display: flex; animation: wrFadeIn 0.2s; }
+              #westrin-app-container .modal {
+                background: linear-gradient(135deg, rgba(0,0,0,0.98), rgba(30, 30, 30, 0.98));
+                border: 2px solid var(--glass-border-strong);
+                border-radius: 22px; padding: 28px;
+                max-width: 480px; width: 100%;
+                animation: wrSlideUp 0.3s; box-shadow: var(--shadow-lg), var(--shadow-glow);
+              }
+              @keyframes wrSlideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+              #westrin-app-container .modal h3 { margin-bottom: 22px; font-size: 19px; font-weight: 800; color: #facc15; display: flex; align-items: center; gap: 10px; }
+              #westrin-app-container .modal .field { margin-bottom: 16px; }
+              #westrin-app-container .modal label { display: block; font-size: 12px; color: #fde047; margin-bottom: 6px; font-weight: 700; }
+              #westrin-app-container .modal-btns { display: flex; gap: 10px; margin-top: 24px; }
+              #westrin-app-container .modal-btns .btn { flex: 1; justify-content: center; }
+              @media (max-width: 900px) {
+                #westrin-app-container .tx-form { grid-template-columns: 1fr 1fr; }
+              }
+              @media (max-width: 768px) {
+                #westrin-app-container { padding: 12px; }
+                #westrin-app-container .wr-container { border-radius: 20px; }
+                #westrin-app-container .topbar { padding: 16px 20px; }
+                #westrin-app-container .accounts-view,
+                #westrin-app-container .trash-view { padding: 24px 20px; }
+                #westrin-app-container .tab-content { padding: 20px 18px; }
+                #westrin-app-container .tx-form { grid-template-columns: 1fr; }
+              }
+            `;
+            document.head.appendChild(westrinStyles);
+
+            // HTML الخاص بتطبيق ويسترن
+            container.innerHTML = `
+              <div class="wr-container">
+                <div class="topbar">
+                  <div class="brand">
+                    <div class="brand-logo">W</div>
+                    <div class="brand-text">
+                      <h1>WESTRIN</h1>
+                      <p>نظام إدارة الحسابات والمعاملات</p>
+                    </div>
+                  </div>
+                  <div class="topbar-btns">
+                    <button class="btn btn-warn btn-sm" onclick="westrinOpenTrash()">
+                      <span>🗑️</span> سلة المحذوفات <span class="badge" style="padding:1px 8px;font-size:11px" id="wrTrashCount">0</span>
+                    </button>
+                    <button class="btn btn-danger btn-sm" onclick="westrinClearAllData()">
+                      <span>🧹</span> حذف كل البيانات
+                    </button>
+                  </div>
+                </div>
+                
+                <div class="accounts-view" id="wrAccountsView">
+                  <div class="section-header">
+                    <div class="section-header-left">
+                      <h2>الحسابات</h2>
+                      <span class="badge" id="wrAccountsCount">0</span>
+                    </div>
+                    <button class="btn btn-primary" onclick="westrinOpenAccountModal()">
+                      <span>➕</span> إضافة حساب
+                    </button>
+                  </div>
+                  <div class="accounts-grid" id="wrAccountsGrid"></div>
+                </div>
+                
+                <div class="trash-view" id="wrTrashView">
+                  <div class="section-header">
+                    <div class="section-header-left">
+                      <h2>🗑️ سلة المحذوفات</h2>
+                      <span class="badge" id="wrTrashCountView">0</span>
+                    </div>
+                    <button class="btn btn-ghost" onclick="westrinBackToAccounts()">
+                      <span>←</span> رجوع للحسابات
+                    </button>
+                  </div>
+                  <div class="accounts-grid" id="wrTrashGrid"></div>
+                </div>
+                
+                <div class="account-view" id="wrAccountView">
+                  <div class="account-header">
+                    <div class="title-wrap">
+                      <div class="acc-avatar">📁</div>
+                      <div>
+                        <h2 id="wrAccountTitle">حساب</h2>
+                        <div class="sub" id="wrAccountNote"></div>
+                      </div>
+                    </div>
+                    <button class="btn btn-ghost" onclick="westrinBackToAccounts()">
+                      <span>←</span> رجوع للحسابات
+                    </button>
+                  </div>
+                  
+                  <div class="tabs">
+                    <button class="tab active" data-tab="pending" onclick="westrinSwitchTab('pending')">
+                      🟡 تحت السحب <span class="count" id="wrCountPending">0</span>
+                    </button>
+                    <button class="tab" data-tab="withdrawn" onclick="westrinSwitchTab('withdrawn')">
+                      🟢 تم السحب <span class="count" id="wrCountWithdrawn">0</span>
+                    </button>
+                    <button class="tab" data-tab="report" onclick="westrinSwitchTab('report')">
+                      🔵 كشف الحساب
+                    </button>
+                  </div>
+                  
+                  <div class="tab-content active" id="wrTab-pending">
+                    <div class="tx-form">
+                      <input type="text" id="wrTxName" placeholder="اسم المعاملة">
+                      <input type="number" id="wrTxAmount" placeholder="0.00" step="0.01">
+                      <input type="date" id="wrTxDate">
+                      <input type="time" id="wrTxTime" step="60">
+                      <button class="btn btn-primary" onclick="westrinAddTransaction()">
+                        <span>➕</span> إضافة
+                      </button>
+                    </div>
+                    <div id="wrPendingList"></div>
+                  </div>
+                  
+                  <div class="tab-content" id="wrTab-withdrawn">
+                    <div id="wrWithdrawnList"></div>
+                  </div>
+                  
+                  <div class="tab-content" id="wrTab-report">
+                    <div class="report-controls">
+                      <div class="field">
+                        <label>من تاريخ</label>
+                        <input type="date" id="wrReportFrom">
+                      </div>
+                      <div class="field">
+                        <label>من وقت</label>
+                        <input type="time" id="wrReportFromTime" step="60">
+                      </div>
+                      <div class="field">
+                        <label>إلى تاريخ</label>
+                        <input type="date" id="wrReportTo">
+                      </div>
+                      <div class="field">
+                        <label>إلى وقت</label>
+                        <input type="time" id="wrReportToTime" step="60">
+                      </div>
+                      <div class="actions">
+                        <button class="btn btn-info" onclick="westrinGenerateReport()">
+                          <span>📄</span> عرض الكشف
+                        </button>
+                        <button class="btn btn-warn" onclick="westrinPrintReport()">
+                          <span>🖨️</span> طباعة / PDF
+                        </button>
+                      </div>
+                    </div>
+                    
+                    <div class="report-paper" id="wrReportPaper">
+                      <div class="empty-state">
+                        <div class="icon">📄</div>
+                        <p>حدد الفترة ثم اضغط "عرض الكشف"</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="modal-overlay" id="wrAccountModal">
+                <div class="modal">
+                  <h3 id="wrAccountModalTitle">➕ إضافة حساب جديد</h3>
+                  <div class="field">
+                    <label>اسم الحساب</label>
+                    <input type="text" id="wrAccountModalName" placeholder="اكتب اسم الحساب...">
+                  </div>
+                  <div class="field">
+                    <label>ملاحظة (اختياري)</label>
+                    <textarea id="wrAccountModalNote" placeholder="ملاحظة عن الحساب..."></textarea>
+                  </div>
+                  <div class="modal-btns">
+                    <button class="btn btn-primary" onclick="westrinSaveAccount()">💾 حفظ</button>
+                    <button class="btn btn-ghost" onclick="westrinCloseAccountModal()">إلغاء</button>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="modal-overlay" id="wrEditModal">
+                <div class="modal">
+                  <h3>✏️ تعديل المعاملة</h3>
+                  <div class="field">
+                    <label>اسم المعاملة</label>
+                    <input type="text" id="wrEditName">
+                  </div>
+                  <div class="field">
+                    <label>القيمة</label>
+                    <input type="number" id="wrEditAmount" step="0.01">
+                  </div>
+                  <div class="field">
+                    <label>التاريخ</label>
+                    <input type="date" id="wrEditDate">
+                  </div>
+                  <div class="field">
+                    <label>الوقت</label>
+                    <input type="time" id="wrEditTime" step="60">
+                  </div>
+                  <div class="modal-btns">
+                    <button class="btn btn-primary" onclick="westrinSaveEdit()">💾 حفظ التغييرات</button>
+                    <button class="btn btn-ghost" onclick="westrinCloseEditModal()">إلغاء</button>
+                  </div>
+                </div>
+              </div>
+            `;
+
+            // JS الخاص بتطبيق ويسترن
+            westrinLoadData();
+            westrinRenderAccounts();
+            westrinRenderTrash();
+
+            // ربط الأحداث
+            document.getElementById('wrEditModal').addEventListener('click', (e) => {
+                if (e.target.id === 'wrEditModal') westrinCloseEditModal();
+            });
+            document.getElementById('wrAccountModal').addEventListener('click', (e) => {
+                if (e.target.id === 'wrAccountModal') westrinCloseAccountModal();
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    westrinCloseEditModal();
+                    westrinCloseAccountModal();
+                }
+            });
+            document.getElementById('wrAccountModalName').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') westrinSaveAccount();
+            });
+        }
+
+        // ============ دوال تطبيق WESTRIN ============
+        let wrData = { accounts: [], transactions: [], trash: [] };
+        let wrCurrentAccountId = null;
+        let wrEditingTxId = null;
+        let wrEditingAccountId = null;
+
+        function westrinLoadData() {
+            const saved = localStorage.getItem('alanharData_westrin');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    wrData = {
+                        accounts: parsed.accounts || [],
+                        transactions: parsed.transactions || [],
+                        trash: parsed.trash || []
+                    };
+                } catch(e) { console.error(e); }
+            }
+        }
+        function westrinSaveData() {
+            localStorage.setItem('alanharData_westrin', JSON.stringify(wrData));
+        }
+
+        function westrinClearAllData() {
+            if (confirm('⚠️ هل أنت متأكد من حذف كل البيانات نهائياً؟ لا يمكن التراجع!')) {
+                if (confirm('⚠️ تأكيد أخير: سيتم حذف كل الحسابات والمعاملات والسلة!')) {
+                    wrData = { accounts: [], transactions: [], trash: [] };
+                    westrinSaveData();
+                    westrinRenderAccounts();
+                    westrinRenderTrash();
+                    westrinBackToAccounts();
+                }
+            }
+        }
+
+        function westrinFmtMoney(n) {
+            const num = Number(n) || 0;
+            return num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+        function westrinFmtDateTime(date, time) {
+            const d = date ? date.split('-').join('/') : '';
+            const t = time || '00:00';
+            return `${d} ${t}`;
+        }
+        function westrinGetCurrentTime() {
+            const now = new Date();
+            const hh = String(now.getHours()).padStart(2, '0');
+            const mm = String(now.getMinutes()).padStart(2, '0');
+            return `${hh}:${mm}`;
+        }
+        function westrinGetCurrentDate() {
+            const now = new Date();
+            const yyyy = now.getFullYear();
+            const mm = String(now.getMonth() + 1).padStart(2, '0');
+            const dd = String(now.getDate()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd}`;
+        }
+
+        function westrinOpenAccountModal(editId = null) {
+            wrEditingAccountId = editId;
+            const nameInput = document.getElementById('wrAccountModalName');
+            const noteInput = document.getElementById('wrAccountModalNote');
+            const title = document.getElementById('wrAccountModalTitle');
+            if (editId) {
+                const acc = wrData.accounts.find(a => a.id === editId);
+                if (!acc) return;
+                title.textContent = '✏️ تعديل الحساب';
+                nameInput.value = acc.name;
+                noteInput.value = acc.note || '';
+            } else {
+                title.textContent = '➕ إضافة حساب جديد';
+                nameInput.value = '';
+                noteInput.value = '';
+            }
+            document.getElementById('wrAccountModal').classList.add('active');
+            setTimeout(() => nameInput.focus(), 100);
+        }
+        function westrinCloseAccountModal() {
+            document.getElementById('wrAccountModal').classList.remove('active');
+            wrEditingAccountId = null;
+        }
+        function westrinSaveAccount() {
+            const name = document.getElementById('wrAccountModalName').value.trim();
+            const note = document.getElementById('wrAccountModalNote').value.trim();
+            if (!name) { alert('اكتب اسم الحساب'); return; }
+            if (wrEditingAccountId) {
+                const acc = wrData.accounts.find(a => a.id === wrEditingAccountId);
+                if (acc) { acc.name = name; acc.note = note; }
+            } else {
+                wrData.accounts.push({ id: Date.now(), name: name, note: note, createdAt: new Date().toISOString() });
+            }
+            westrinSaveData();
+            westrinCloseAccountModal();
+            westrinRenderAccounts();
+        }
+        function westrinDeleteAccount(id, e) {
+            e.stopPropagation();
+            const acc = wrData.accounts.find(a => a.id === id);
+            if (!acc) return;
+            const txs = wrData.transactions.filter(t => t.accountId === id);
+            if (txs.length === 0) {
+                if (!confirm(`حذف الحساب "${acc.name}" نهائياً؟`)) return;
+                wrData.accounts = wrData.accounts.filter(a => a.id !== id);
+            } else {
+                if (!confirm(`الحساب "${acc.name}" يحتوي على ${txs.length} معاملة.\nسيتم نقله إلى سلة المحذوفات. متابعة؟`)) return;
+                wrData.trash.push({ account: acc, transactions: txs, deletedAt: new Date().toISOString() });
+                wrData.accounts = wrData.accounts.filter(a => a.id !== id);
+                wrData.transactions = wrData.transactions.filter(t => t.accountId !== id);
+            }
+            westrinSaveData();
+            westrinRenderAccounts();
+            westrinRenderTrash();
+        }
+        function westrinOpenAccount(id) {
+            wrCurrentAccountId = id;
+            document.getElementById('wrAccountsView').classList.add('hidden');
+            document.getElementById('wrTrashView').classList.remove('active');
+            document.getElementById('wrAccountView').classList.add('active');
+            const acc = wrData.accounts.find(a => a.id === id);
+            document.getElementById('wrAccountTitle').textContent = acc.name;
+            document.getElementById('wrAccountNote').textContent = acc.note || 'إدارة المعاملات والكشف';
+            document.getElementById('wrTxDate').value = westrinGetCurrentDate();
+            document.getElementById('wrTxTime').value = westrinGetCurrentTime();
+            document.getElementById('wrReportFrom').value = '';
+            document.getElementById('wrReportFromTime').value = '';
+            document.getElementById('wrReportTo').value = '';
+            document.getElementById('wrReportToTime').value = '';
+            westrinSwitchTab('pending');
+            westrinRenderAll();
+        }
+        function westrinBackToAccounts() {
+            wrCurrentAccountId = null;
+            document.getElementById('wrAccountView').classList.remove('active');
+            document.getElementById('wrTrashView').classList.remove('active');
+            document.getElementById('wrAccountsView').classList.remove('hidden');
+            westrinRenderAccounts();
+        }
+        function westrinOpenTrash() {
+            document.getElementById('wrAccountsView').classList.add('hidden');
+            document.getElementById('wrAccountView').classList.remove('active');
+            document.getElementById('wrTrashView').classList.add('active');
+            westrinRenderTrash();
+        }
+        function westrinRenderAccounts() {
+            const grid = document.getElementById('wrAccountsGrid');
+            if (!grid) return;
+            document.getElementById('wrAccountsCount').textContent = wrData.accounts.length;
+            if (wrData.accounts.length === 0) {
+                grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
+                  <div class="icon">📂</div>
+                  <p>لا توجد حسابات بعد، اضغط "إضافة حساب" للبدء</p>
+                </div>`;
+                return;
+            }
+            grid.innerHTML = wrData.accounts.map(acc => {
+                const txs = wrData.transactions.filter(t => t.accountId === acc.id);
+                const pending = txs.filter(t => t.status === 'pending').length;
+                const withdrawn = txs.filter(t => t.status === 'withdrawn').length;
+                const total = txs.reduce((s,t) => s + Number(t.amount), 0);
+                return `
+                  <div class="account-card" onclick="westrinOpenAccount(${acc.id})">
+                    <div class="card-actions">
+                      <button class="edit-btn" onclick="event.stopPropagation();westrinOpenAccountModal(${acc.id})" title="تعديل">✏️</button>
+                      <button class="del-btn" onclick="westrinDeleteAccount(${acc.id}, event)" title="حذف">🗑️</button>
+                    </div>
+                    <div class="icon-wrap">📁</div>
+                    <h3>${acc.name}</h3>
+                    ${acc.note ? `<div class="note">${acc.note}</div>` : ''}
+                    <div class="stats">
+                      <div class="stat-row"><span>🟡 تحت السحب</span><span class="val warn">${pending}</span></div>
+                      <div class="stat-row"><span>🟢 تم السحب</span><span class="val pos">${withdrawn}</span></div>
+                      <div class="stat-row" style="padding-top:10px;border-top:1px solid rgba(250,204,21,0.15);margin-top:4px">
+                        <span>💰 المجموع</span><span class="val">${westrinFmtMoney(total)}</span>
+                      </div>
+                    </div>
+                  </div>
+                `;
+            }).join('');
+        }
+        function westrinRenderTrash() {
+            const grid = document.getElementById('wrTrashGrid');
+            if (!grid) return;
+            document.getElementById('wrTrashCount').textContent = wrData.trash.length;
+            document.getElementById('wrTrashCountView').textContent = wrData.trash.length;
+            if (wrData.trash.length === 0) {
+                grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
+                  <div class="icon">🗑️</div>
+                  <p>سلة المحذوفات فارغة</p>
+                </div>`;
+                return;
+            }
+            grid.innerHTML = wrData.trash.map((item, i) => {
+                const acc = item.account;
+                const txs = item.transactions || [];
+                const total = txs.reduce((s,t) => s + Number(t.amount), 0);
+                const deletedDate = item.deletedAt ? item.deletedAt.split('T')[0] : '';
+                return `
+                  <div class="trash-card">
+                    <h3>📁 ${acc.name}</h3>
+                    ${acc.note ? `<div class="note">${acc.note}</div>` : ''}
+                    <div class="info">
+                      <span>المعاملات: <b>${txs.length}</b></span>
+                      <span>المجموع: <b>${westrinFmtMoney(total)}</b></span>
+                      <span>حُذف: <b>${deletedDate}</b></span>
+                    </div>
+                    <div class="actions">
+                      <button class="btn btn-success btn-sm" onclick="westrinRestoreAccount(${i})">♻️ استرجاع</button>
+                      <button class="btn btn-danger btn-sm" onclick="westrinDeleteForever(${i})">🗑️ حذف نهائي</button>
+                    </div>
+                  </div>
+                `;
+            }).join('');
+        }
+        function westrinRestoreAccount(index) {
+            const item = wrData.trash[index];
+            if (!item) return;
+            if (!confirm(`استرجاع الحساب "${item.account.name}" مع ${item.transactions.length} معاملة؟`)) return;
+            wrData.accounts.push(item.account);
+            wrData.transactions.push(...item.transactions);
+            wrData.trash.splice(index, 1);
+            westrinSaveData();
+            westrinRenderTrash();
+            westrinRenderAccounts();
+        }
+        function westrinDeleteForever(index) {
+            const item = wrData.trash[index];
+            if (!item) return;
+            if (!confirm(`⚠️ حذف نهائي للحساب "${item.account.name}" وكل معاملاته؟ لا يمكن التراجع!`)) return;
+            wrData.trash.splice(index, 1);
+            westrinSaveData();
+            westrinRenderTrash();
+        }
+        function westrinSwitchTab(tab) {
+            document.querySelectorAll('#westrin-app-container .tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+            document.querySelectorAll('#westrin-app-container .tab-content').forEach(c => c.classList.remove('active'));
+            document.getElementById('wrTab-' + tab).classList.add('active');
+            if (tab === 'pending') westrinRenderPending();
+            if (tab === 'withdrawn') westrinRenderWithdrawn();
+        }
+        function westrinAddTransaction() {
+            const name = document.getElementById('wrTxName').value.trim();
+            const amount = parseFloat(document.getElementById('wrTxAmount').value);
+            const date = document.getElementById('wrTxDate').value;
+            const time = document.getElementById('wrTxTime').value || westrinGetCurrentTime();
+            if (!name) { alert('اكتب اسم المعاملة'); return; }
+            if (isNaN(amount)) { alert('اكتب القيمة بشكل صحيح'); return; }
+            if (!date) { alert('حدد التاريخ'); return; }
+            wrData.transactions.push({
+                id: Date.now(),
+                accountId: wrCurrentAccountId,
+                name: name,
+                amount: amount,
+                date: date,
+                time: time,
+                status: 'pending'
+            });
+            westrinSaveData();
+            document.getElementById('wrTxName').value = '';
+            document.getElementById('wrTxAmount').value = '';
+            document.getElementById('wrTxDate').value = westrinGetCurrentDate();
+            document.getElementById('wrTxTime').value = westrinGetCurrentTime();
+            document.getElementById('wrTxName').focus();
+            westrinRenderAll();
+        }
+        function westrinToggleWithdraw(txId) {
+            const tx = wrData.transactions.find(t => t.id === txId);
+            if (!tx) return;
+            tx.status = tx.status === 'pending' ? 'withdrawn' : 'pending';
+            westrinSaveData();
+            westrinRenderAll();
+        }
+        function westrinEnableEdit(txId) {
+            const row = document.querySelector(`#westrin-app-container tr[data-txid="${txId}"]`);
+            if (row) {
+                row.classList.add('editing');
+                const cb = row.querySelector('input[type="checkbox"]');
+                if (cb) cb.disabled = false;
+            }
+        }
+        function westrinOpenEditModal(txId) {
+            const tx = wrData.transactions.find(t => t.id === txId);
+            if (!tx) return;
+            wrEditingTxId = txId;
+            document.getElementById('wrEditName').value = tx.name;
+            document.getElementById('wrEditAmount').value = tx.amount;
+            document.getElementById('wrEditDate').value = tx.date;
+            document.getElementById('wrEditTime').value = tx.time || '00:00';
+            document.getElementById('wrEditModal').classList.add('active');
+        }
+        function westrinCloseEditModal() {
+            document.getElementById('wrEditModal').classList.remove('active');
+            wrEditingTxId = null;
+            westrinRenderAll();
+        }
+        function westrinSaveEdit() {
+            const tx = wrData.transactions.find(t => t.id === wrEditingTxId);
+            if (!tx) return;
+            const name = document.getElementById('wrEditName').value.trim();
+            const amount = parseFloat(document.getElementById('wrEditAmount').value);
+            const date = document.getElementById('wrEditDate').value;
+            const time = document.getElementById('wrEditTime').value || '00:00';
+            if (!name || isNaN(amount) || !date) { alert('أكمل البيانات'); return; }
+            tx.name = name;
+            tx.amount = amount;
+            tx.date = date;
+            tx.time = time;
+            westrinSaveData();
+            westrinCloseEditModal();
+        }
+        function westrinDeleteTransaction(txId) {
+            if (!confirm('حذف هذه المعاملة؟')) return;
+            wrData.transactions = wrData.transactions.filter(t => t.id !== txId);
+            westrinSaveData();
+            westrinRenderAll();
+        }
+        function westrinGetAccountTransactions() {
+            return wrData.transactions.filter(t => t.accountId === wrCurrentAccountId);
+        }
+        function westrinSortByDateTime(a, b) {
+            const da = `${a.date} ${a.time || '00:00'}`;
+            const db = `${b.date} ${b.time || '00:00'}`;
+            return da.localeCompare(db);
+        }
+        function westrinRenderPending() {
+            const txs = westrinGetAccountTransactions().filter(t => t.status === 'pending');
+            document.getElementById('wrCountPending').textContent = txs.length;
+            const container = document.getElementById('wrPendingList');
+            if (!container) return;
+            if (txs.length === 0) {
+                container.innerHTML = `<div class="empty-state"><div class="icon">✅</div><p>لا توجد معاملات تحت السحب</p></div>`;
+                return;
+            }
+            txs.sort(westrinSortByDateTime);
+            container.innerHTML = `
+              <div class="table-wrap">
+                <table class="tx-table">
+                  <thead><tr>
+                    <th style="width:110px">تم السحب</th>
+                    <th>اسم المعاملة</th>
+                    <th>القيمة</th>
+                    <th>التاريخ والوقت</th>
+                    <th style="width:140px">إجراءات</th>
+                  </tr></thead>
+                  <tbody>
+                    ${txs.map(tx => `
+                      <tr data-txid="${tx.id}">
+                        <td>
+                          <label class="withdraw-check">
+                            <input type="checkbox" onchange="westrinToggleWithdraw(${tx.id})">
+                            <span>تم السحب</span>
+                          </label>
+                        </td>
+                        <td><span class="tx-name">${tx.name}</span></td>
+                        <td><span class="amount ${tx.amount >= 0 ? 'pos' : 'neg'}">${westrinFmtMoney(tx.amount)}</span></td>
+                        <td><span class="tx-date">${westrinFmtDateTime(tx.date, tx.time)}</span></td>
+                        <td>
+                          <button class="btn btn-warn btn-sm" onclick="westrinOpenEditModal(${tx.id})" title="تعديل">✏️</button>
+                          <button class="btn btn-danger btn-sm" onclick="westrinDeleteTransaction(${tx.id})" title="حذف" style="margin-inline-start:4px">🗑️</button>
+                        </td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
+            `;
+        }
+        function westrinRenderWithdrawn() {
+            const txs = westrinGetAccountTransactions().filter(t => t.status === 'withdrawn');
+            document.getElementById('wrCountWithdrawn').textContent = txs.length;
+            const container = document.getElementById('wrWithdrawnList');
+            if (!container) return;
+            if (txs.length === 0) {
+                container.innerHTML = `<div class="empty-state"><div class="icon">📭</div><p>لا توجد معاملات مسحوبة</p></div>`;
+                return;
+            }
+            txs.sort(westrinSortByDateTime);
+            container.innerHTML = `
+              <div class="table-wrap">
+                <table class="tx-table">
+                  <thead><tr>
+                    <th style="width:130px">الحالة</th>
+                    <th>اسم المعاملة</th>
+                    <th>القيمة</th>
+                    <th>التاريخ والوقت</th>
+                    <th style="width:180px">إجراءات</th>
+                  </tr></thead>
+                  <tbody>
+                    ${txs.map(tx => `
+                      <tr class="withdrawn-row" data-txid="${tx.id}">
+                        <td>
+                          <label class="withdraw-check">
+                            <input type="checkbox" checked disabled onchange="westrinToggleWithdraw(${tx.id})">
+                            <span>تم السحب ✓</span>
+                          </label>
+                        </td>
+                        <td><span class="tx-name">${tx.name}</span></td>
+                        <td><span class="amount ${tx.amount >= 0 ? 'pos' : 'neg'}">${westrinFmtMoney(tx.amount)}</span></td>
+                        <td><span class="tx-date">${westrinFmtDateTime(tx.date, tx.time)}</span></td>
+                        <td class="action-cell">
+                          <button class="btn btn-warn btn-sm" onclick="westrinEnableEdit(${tx.id})">✏️ تعديل</button>
+                          <button class="btn btn-danger btn-sm" onclick="westrinDeleteTransaction(${tx.id})" style="margin-inline-start:4px">🗑️</button>
+                        </td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
+            `;
+        }
+        function westrinRenderAll() {
+            westrinRenderPending();
+            westrinRenderWithdrawn();
+        }
+        function westrinGenerateReport() {
+            const fromDate = document.getElementById('wrReportFrom').value;
+            const fromTime = document.getElementById('wrReportFromTime').value;
+            const toDate = document.getElementById('wrReportTo').value;
+            const toTime = document.getElementById('wrReportToTime').value;
+            const acc = wrData.accounts.find(a => a.id === wrCurrentAccountId);
+            if (!acc) return;
+            let txs = westrinGetAccountTransactions();
+            if (fromDate) {
+                const fromDT = `${fromDate} ${fromTime || '00:00'}`;
+                txs = txs.filter(t => `${t.date} ${t.time || '00:00'}` >= fromDT);
+            }
+            if (toDate) {
+                const toDT = `${toDate} ${toTime || '23:59'}`;
+                txs = txs.filter(t => `${t.date} ${t.time || '00:00'}` <= toDT);
+            }
+            txs.sort(westrinSortByDateTime);
+            const total = txs.reduce((s,t) => s + Number(t.amount), 0);
+            const totalWithdrawn = txs.filter(t => t.status === 'withdrawn').reduce((s,t) => s + Number(t.amount), 0);
+            const totalPending = txs.filter(t => t.status === 'pending').reduce((s,t) => s + Number(t.amount), 0);
+            const paper = document.getElementById('wrReportPaper');
+            let periodText = 'كل الفترات';
+            if (fromDate || toDate) {
+                const fromPart = fromDate ? `من: ${fromDate.split('-').join('/')}${fromTime ? ' ' + fromTime : ''}` : '';
+                const toPart = toDate ? `إلى: ${toDate.split('-').join('/')}${toTime ? ' ' + toTime : ''}` : '';
+                periodText = `${fromPart}  ${toPart}`.trim();
+            }
+            let fileName = acc.name;
+            if (fromDate || toDate) {
+                if (fromDate && toDate) {
+                    fileName += `_${fromDate.split('-').join('')}_${toDate.split('-').join('')}`;
+                } else if (fromDate) {
+                    fileName += `_من_${fromDate.split('-').join('')}`;
+                } else {
+                    fileName += `_إلى_${toDate.split('-').join('')}`;
+                }
+            } else {
+                fileName += `_${westrinGetCurrentDate().split('-').join('')}`;
+            }
+            window.wrCurrentReportFileName = fileName;
+            if (txs.length === 0) {
+                paper.innerHTML = `
+                  <div class="report-brand">WESTRIN</div>
+                  <div class="report-title">
+                    <h2>كشف حساب: ${acc.name}</h2>
+                    <div class="period">${periodText}</div>
+                  </div>
+                  <div class="empty-state" style="color:#78350f">
+                    <div class="icon">📄</div>
+                    <p>لا توجد معاملات في هذه الفترة</p>
+                  </div>
+                `;
+                return;
+            }
+            paper.innerHTML = `
+              <div class="report-brand">WESTRIN</div>
+              <div class="report-title">
+                <h2>كشف حساب: ${acc.name}</h2>
+                <div class="period">${periodText}</div>
+              </div>
+              <div class="report-summary">
+                <div class="summary-card">
+                  <div class="label">عدد المعاملات</div>
+                  <div class="value">${txs.length}</div>
+                </div>
+                <div class="summary-card">
+                  <div class="label">تحت السحب</div>
+                  <div class="value">${westrinFmtMoney(totalPending)}</div>
+                </div>
+                <div class="summary-card">
+                  <div class="label">تم السحب</div>
+                  <div class="value">${westrinFmtMoney(totalWithdrawn)}</div>
+                </div>
+              </div>
+              <table class="report-table">
+                <thead><tr>
+                  <th style="width:50px">#</th>
+                  <th>اسم المعاملة</th>
+                  <th>التاريخ والوقت</th>
+                  <th>القيمة</th>
+                  <th>الحالة</th>
+                </tr></thead>
+                <tbody>
+                  ${txs.map((tx, i) => `
+                    <tr>
+                      <td class="num">${i+1}</td>
+                      <td><b>${tx.name}</b></td>
+                      <td class="num">${westrinFmtDateTime(tx.date, tx.time)}</td>
+                      <td class="num ${tx.amount >= 0 ? 'pos' : 'neg'}">${westrinFmtMoney(tx.amount)}</td>
+                      <td>${tx.status === 'withdrawn' ? '<span class="badge-done">✓ تم السحب</span>' : '<span class="badge-done" style="background:rgba(245,158,11,0.15);border-color:rgba(245,158,11,0.4);color:#b45309">⏳ تحت السحب</span>'}</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+              <div class="totals-box">
+                <div class="item">
+                  <div class="label">المجموع الكلي</div>
+                  <div class="value">${westrinFmtMoney(total)}</div>
+                </div>
+                <div class="item">
+                  <div class="label">فرق الحساب (تم السحب)</div>
+                  <div class="value">${westrinFmtMoney(totalWithdrawn)}</div>
+                </div>
+              </div>
+            `;
+        }
+        function westrinPrintReport() {
+            const originalTitle = document.title;
+            if (window.wrCurrentReportFileName) {
+                document.title = window.wrCurrentReportFileName;
+            }
+            window.print();
+            setTimeout(() => {
+                document.title = originalTitle;
+            }, 100);
+        }
 
         /* ==================== ربط الدوال ==================== */
         window.showToast = showToast;
@@ -2771,6 +3970,30 @@
         window.renderBankTransactions = renderBankTransactions;
         window.prepareBankStatementView = prepareBankStatementView;
         window.renderBankStatementTable = renderBankStatementTable;
+
+        // ربط دوال WESTRIN
+        window.initWestrinApp = initWestrinApp;
+        window.westrinOpenTrash = westrinOpenTrash;
+        window.westrinClearAllData = westrinClearAllData;
+        window.westrinOpenAccountModal = westrinOpenAccountModal;
+        window.westrinCloseAccountModal = westrinCloseAccountModal;
+        window.westrinSaveAccount = westrinSaveAccount;
+        window.westrinDeleteAccount = westrinDeleteAccount;
+        window.westrinOpenAccount = westrinOpenAccount;
+        window.westrinBackToAccounts = westrinBackToAccounts;
+        window.westrinRestoreAccount = westrinRestoreAccount;
+        window.westrinDeleteForever = westrinDeleteForever;
+        window.westrinSwitchTab = westrinSwitchTab;
+        window.westrinAddTransaction = westrinAddTransaction;
+        window.westrinToggleWithdraw = westrinToggleWithdraw;
+        window.westrinEnableEdit = westrinEnableEdit;
+        window.westrinOpenEditModal = westrinOpenEditModal;
+        window.westrinCloseEditModal = westrinCloseEditModal;
+        window.westrinSaveEdit = westrinSaveEdit;
+        window.westrinDeleteTransaction = westrinDeleteTransaction;
+        window.westrinGenerateReport = westrinGenerateReport;
+        window.westrinPrintReport = westrinPrintReport;
     </script>
+
 </body>
 </html>
