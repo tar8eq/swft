@@ -354,11 +354,11 @@
                 <p class="text-xs text-emerald-300">المعاملات البنكية (ليرة / دولار / يورو)</p>
             </button>
 
-            <button onclick="enterModule('WESTRIN')" class="glass-panel p-8 rounded-3xl border-2 border-yellow-500/60 hover:border-yellow-400 hover:scale-105 transition-all shadow-2xl flex flex-col items-center justify-center group cursor-pointer" style="background: linear-gradient(135deg, rgba(0,0,0,0.85), rgba(20,20,20,0.9)); border-color: rgba(250, 204, 21, 0.5);">
+            <button onclick="enterModule('Western Union')" class="glass-panel p-8 rounded-3xl border-2 border-yellow-500/60 hover:border-yellow-400 hover:scale-105 transition-all shadow-2xl flex flex-col items-center justify-center group cursor-pointer" style="background: linear-gradient(135deg, rgba(0,0,0,0.85), rgba(20,20,20,0.9)); border-color: rgba(250, 204, 21, 0.5);">
                 <div class="w-20 h-20 rounded-2xl flex items-center justify-center mb-4 shadow-lg group-hover:rotate-6 transition" style="background: linear-gradient(135deg, #facc15 0%, #000 100%); box-shadow: 0 8px 32px rgba(250, 204, 21, 0.4);">
                     <span class="text-3xl font-black text-black">W</span>
                 </div>
-                <h2 class="text-3xl font-black mb-2" style="background: linear-gradient(135deg, #facc15, #fbbf24); -webkit-background-clip: text; background-clip: text; color: transparent;">WESTRIN</h2>
+                <h2 class="text-3xl font-black mb-2" style="background: linear-gradient(135deg, #facc15, #fbbf24); -webkit-background-clip: text; background-clip: text; color: transparent;">Western Union</h2>
                 <p class="text-xs" style="color: #fde047;">نظام إدارة الحسابات والمعاملات المستقل</p>
             </button>
         </div>
@@ -937,8 +937,9 @@
         </main>
     </div>
 
-    <!-- قسم WESTRIN -->
-    <div id="module-westrin" class="hidden" style="background: linear-gradient(135deg, #000 0%, #1a1a1a 50%, #000 100%); min-height: 100vh;">
+    <!-- قسم Western Union
+    -->
+    <div id="module-Western Union" class="hidden" style="background: linear-gradient(135deg, #000 0%, #1a1a1a 50%, #000 100%); min-height: 100vh;">
         <header class="sticky top-0 z-40 px-4 md:px-6 py-4 shadow-2xl no-print" style="background: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(20,20,20,0.95)); border-bottom: 2px solid #facc15;">
             <div class="max-w-7xl mx-auto flex justify-between items-center flex-wrap gap-3">
                 <div class="flex items-center gap-4">
@@ -950,14 +951,14 @@
                             <span class="text-xl font-black text-black">W</span>
                         </div>
                         <div>
-                            <h1 class="text-lg font-black tracking-wider text-white">AL ANHAR <span class="font-light text-xs" style="color: #facc15;">WESTRIN</span></h1>
+                            <h1 class="text-lg font-black tracking-wider text-white">AL ANHAR <span class="font-light text-xs" style="color: #facc15;">Western Union</span></h1>
                             <p class="text-[10px] text-yellow-400/70 font-bold">متصل بقاعدة البيانات السحابية</p>
                         </div>
                     </div>
                 </div>
             </div>
         </header>
-        <div id="westrin-app-container"></div>
+        <div id="Western Union-app-container"></div>
     </div>
 
     <!-- طلبات الدخول -->
@@ -1207,7 +1208,7 @@
             rmbClients: [], rmbCompanies: [], rmbTransactions: [],
             bankAccounts: [], bankTransactions: [],
             users: [], accessRequests: [],
-            westrinAccounts: [], westrinTransactions: [], westrinTrash: []
+            Western UnionAccounts: [], Western UnionTransactions: [], Western UnionTrash: []
         };
 
         let currentUser = null;
@@ -1225,9 +1226,9 @@
                 const raw = localStorage.getItem('alanhar_db');
                 if (!raw) return null;
                 const data = JSON.parse(raw);
-                if (!data.westrinAccounts) data.westrinAccounts = [];
-                if (!data.westrinTransactions) data.westrinTransactions = [];
-                if (!data.westrinTrash) data.westrinTrash = [];
+                if (!data.Western UnionAccounts) data.Western UnionAccounts = [];
+                if (!data.Western UnionTransactions) data.Western UnionTransactions = [];
+                if (!data.Western UnionTrash) data.Western UnionTrash = [];
                 return data;
             } catch(e) { return null; }
         }
@@ -1263,7 +1264,7 @@
                         rmbClients: data.rmbClients || [], rmbCompanies: data.rmbCompanies || [], rmbTransactions: data.rmbTransactions || [],
                         bankAccounts: data.bankAccounts || [], bankTransactions: data.bankTransactions || [],
                         users: data.users || [], accessRequests: data.accessRequests || [],
-                        westrinAccounts: data.westrinAccounts || [], westrinTransactions: data.westrinTransactions || [], westrinTrash: data.westrinTrash || []
+                        Western UnionAccounts: data.Western UnionAccounts || [], Western UnionTransactions: data.Western UnionTransactions || [], Western UnionTrash: data.Western UnionTrash || []
                     };
                     const adminExists = appDb.users.some(u => u.id === 'admin-tarek');
                     if (!adminExists) {
@@ -1324,9 +1325,9 @@
                     if (!document.getElementById('bank-sec-trash').classList.contains('hidden')) renderBankTrash();
                     if (!document.getElementById('bank-sec-statements').classList.contains('hidden')) prepareBankStatementView();
                 }
-                if (!document.getElementById('module-westrin').classList.contains('hidden')) {
-                    westrinRenderAccounts(); westrinRenderTrash();
-                    if (wrCurrentAccountId) westrinRenderAll();
+                if (!document.getElementById('module-Western Union').classList.contains('hidden')) {
+                    Western UnionRenderAccounts(); Western UnionRenderTrash();
+                    if (wrCurrentAccountId) Western UnionRenderAll();
                 }
             } catch(e) { console.warn(e); }
             updateAdminControls();
@@ -1566,7 +1567,7 @@
             document.getElementById('module-swft').classList.add('hidden');
             document.getElementById('module-rmb').classList.add('hidden');
             document.getElementById('module-bank').classList.add('hidden');
-            document.getElementById('module-westrin').classList.add('hidden');
+            document.getElementById('module-Western Union').classList.add('hidden');
             document.getElementById('view-landing').classList.add('hidden');
             document.getElementById('view-landing').classList.remove('flex');
             document.getElementById('auth-screen').classList.remove('hidden');
@@ -1680,19 +1681,19 @@
             document.getElementById('module-swft').classList.add('hidden');
             document.getElementById('module-rmb').classList.add('hidden');
             document.getElementById('module-bank').classList.add('hidden');
-            document.getElementById('module-westrin').classList.add('hidden');
+            document.getElementById('module-Western Union').classList.add('hidden');
 
             if (moduleName === 'SWFT') { document.getElementById('module-swft').classList.remove('hidden'); switchSwftBottomTab('home'); }
             else if (moduleName === 'RMB') { document.getElementById('module-rmb').classList.remove('hidden'); switchRmbTab('transactions'); }
             else if (moduleName === 'BANK') { document.getElementById('module-bank').classList.remove('hidden'); switchBankTab('transactions'); }
-            else if (moduleName === 'WESTRIN') { document.getElementById('module-westrin').classList.remove('hidden'); initWestrinApp(); }
+            else if (moduleName === 'Western Union') { document.getElementById('module-Western Union').classList.remove('hidden'); initWestern UnionApp(); }
         }
 
         function exitToLanding() {
             document.getElementById('module-swft').classList.add('hidden');
             document.getElementById('module-rmb').classList.add('hidden');
             document.getElementById('module-bank').classList.add('hidden');
-            document.getElementById('module-westrin').classList.add('hidden');
+            document.getElementById('module-Western Union').classList.add('hidden');
             document.getElementById('view-landing').classList.remove('hidden');
             document.getElementById('view-landing').classList.add('flex');
             updateAdminControls();
@@ -2948,13 +2949,13 @@
             reader.onload = async function(e) {
                 try {
                     let importedDb = JSON.parse(e.target.result);
-                    if (importedDb.companies || importedDb.rmbClients || importedDb.bankAccounts || importedDb.westrinAccounts) {
+                    if (importedDb.companies || importedDb.rmbClients || importedDb.bankAccounts || importedDb.Western UnionAccounts) {
                         appDb = {
                             companies: importedDb.companies || [], transactions: importedDb.transactions || [],
                             rmbClients: importedDb.rmbClients || [], rmbCompanies: importedDb.rmbCompanies || [], rmbTransactions: importedDb.rmbTransactions || [],
                             bankAccounts: importedDb.bankAccounts || [], bankTransactions: importedDb.bankTransactions || [],
                             users: importedDb.users || [], accessRequests: importedDb.accessRequests || [],
-                            westrinAccounts: importedDb.westrinAccounts || [], westrinTransactions: importedDb.westrinTransactions || [], westrinTrash: importedDb.westrinTrash || []
+                            Western UnionAccounts: importedDb.Western UnionAccounts || [], Western UnionTransactions: importedDb.Western UnionTransactions || [], Western UnionTrash: importedDb.Western UnionTrash || []
                         };
                         await saveToFirebase(appDb);
                         location.reload();
@@ -3005,7 +3006,7 @@
                         rmbClients: data.rmbClients || [], rmbCompanies: data.rmbCompanies || [], rmbTransactions: data.rmbTransactions || [],
                         bankAccounts: data.bankAccounts || [], bankTransactions: data.bankTransactions || [],
                         users: data.users || [], accessRequests: data.accessRequests || [],
-                        westrinAccounts: data.westrinAccounts || [], westrinTransactions: data.westrinTransactions || [], westrinTrash: data.westrinTrash || []
+                        Western UnionAccounts: data.Western UnionAccounts || [], Western UnionTransactions: data.Western UnionTransactions || [], Western UnionTrash: data.Western UnionTrash || []
                     };
                     localStorage.setItem('alanhar_db', JSON.stringify(appDb));
                     updateAdminControls();
@@ -3018,32 +3019,32 @@
         };
 
         /* ============================================================
-           WESTRIN APP
+           Western Union APP
            ============================================================ */
-        let westrinInitialized = false;
+        let Western UnionInitialized = false;
 
-        function wrGetAccounts() { return appDb.westrinAccounts || []; }
-        function wrSetAccounts(v) { appDb.westrinAccounts = v; }
-        function wrGetTransactions() { return appDb.westrinTransactions || []; }
-        function wrSetTransactions(v) { appDb.westrinTransactions = v; }
-        function wrGetTrash() { return appDb.westrinTrash || []; }
-        function wrSetTrash(v) { appDb.westrinTrash = v; }
+        function wrGetAccounts() { return appDb.Western UnionAccounts || []; }
+        function wrSetAccounts(v) { appDb.Western UnionAccounts = v; }
+        function wrGetTransactions() { return appDb.Western UnionTransactions || []; }
+        function wrSetTransactions(v) { appDb.Western UnionTransactions = v; }
+        function wrGetTrash() { return appDb.Western UnionTrash || []; }
+        function wrSetTrash(v) { appDb.Western UnionTrash = v; }
         async function wrSave() { await saveToFirebase(appDb); }
 
-        function initWestrinApp() {
-            if (westrinInitialized) {
-                westrinRenderAccounts();
-                westrinRenderTrash();
+        function initWestern UnionApp() {
+            if (Western UnionInitialized) {
+                Western UnionRenderAccounts();
+                Western UnionRenderTrash();
                 return;
             }
-            westrinInitialized = true;
-            const container = document.getElementById('westrin-app-container');
+            Western UnionInitialized = true;
+            const container = document.getElementById('Western Union-app-container');
             if (!container) return;
 
-            const westrinStyles = document.createElement('style');
-            westrinStyles.id = 'westrin-styles';
-            westrinStyles.innerHTML = `
-              #westrin-app-container {
+            const Western UnionStyles = document.createElement('style');
+            Western UnionStyles.id = 'Western Union-styles';
+            Western UnionStyles.innerHTML = `
+              #Western Union-app-container {
                 --glass-bg: rgba(255, 255, 255, 0.06);
                 --glass-bg-hover: rgba(255, 255, 255, 0.1);
                 --glass-border: rgba(250, 204, 21, 0.25);
@@ -3061,8 +3062,8 @@
                 min-height: 100vh;
                 background: transparent;
               }
-              #westrin-app-container * { box-sizing: border-box; }
-              #westrin-app-container .wr-container {
+              #Western Union-app-container * { box-sizing: border-box; }
+              #Western Union-app-container .wr-container {
                 max-width: 1300px; margin: 0 auto;
                 background: linear-gradient(135deg, rgba(0,0,0,0.75), rgba(20,20,20,0.85));
                 backdrop-filter: blur(30px);
@@ -3071,15 +3072,15 @@
                 box-shadow: var(--shadow-lg), var(--shadow-glow);
                 overflow: hidden;
               }
-              #westrin-app-container .topbar {
+              #Western Union-app-container .topbar {
                 padding: 22px 32px;
                 border-bottom: 1px solid var(--glass-border);
                 display: flex; justify-content: space-between; align-items: center;
                 background: linear-gradient(180deg, rgba(250,204,21,0.06), transparent);
                 flex-wrap: wrap; gap: 12px;
               }
-              #westrin-app-container .brand { display: flex; align-items: center; gap: 14px; }
-              #westrin-app-container .brand-logo {
+              #Western Union-app-container .brand { display: flex; align-items: center; gap: 14px; }
+              #Western Union-app-container .brand-logo {
                 width: 48px; height: 48px; border-radius: 14px;
                 background: linear-gradient(135deg, #facc15, #000);
                 display: grid; place-items: center;
@@ -3087,15 +3088,15 @@
                 box-shadow: 0 8px 24px rgba(250, 204, 21, 0.5);
                 font-family: 'Inter', sans-serif; letter-spacing: -1px;
               }
-              #westrin-app-container .brand-text h1 {
+              #Western Union-app-container .brand-text h1 {
                 font-size: 22px; font-weight: 900; letter-spacing: 1px;
                 background: linear-gradient(135deg, #fefce8, #facc15, #eab308);
                 -webkit-background-clip: text; background-clip: text; color: transparent;
                 font-family: 'Inter', sans-serif;
               }
-              #westrin-app-container .brand-text p { font-size: 11px; color: var(--text-muted); font-weight: 600; letter-spacing: 0.5px; }
-              #westrin-app-container .topbar-btns { display: flex; gap: 10px; flex-wrap: wrap; }
-              #westrin-app-container .btn {
+              #Western Union-app-container .brand-text p { font-size: 11px; color: var(--text-muted); font-weight: 600; letter-spacing: 0.5px; }
+              #Western Union-app-container .topbar-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+              #Western Union-app-container .btn {
                 display: inline-flex; align-items: center; gap: 8px;
                 padding: 11px 20px;
                 border: 1px solid var(--glass-border-strong);
@@ -3105,17 +3106,17 @@
                 font-size: 13.5px; font-weight: 700;
                 cursor: pointer; transition: all 0.25s; white-space: nowrap;
               }
-              #westrin-app-container .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(250,204,21,0.3); }
-              #westrin-app-container .btn-primary { background: linear-gradient(135deg, #facc15, #eab308); border-color: transparent; color: #000; box-shadow: 0 8px 24px rgba(250, 204, 21, 0.4); }
-              #westrin-app-container .btn-success { background: linear-gradient(135deg, #10b981, #059669); border-color: transparent; color: #fff; }
-              #westrin-app-container .btn-info { background: linear-gradient(135deg, #06b6d4, #0891b2); border-color: transparent; color: #fff; }
-              #westrin-app-container .btn-warn { background: linear-gradient(135deg, #f59e0b, #d97706); border-color: transparent; color: #fff; }
-              #westrin-app-container .btn-danger { background: linear-gradient(135deg, #ef4444, #dc2626); border-color: transparent; color: #fff; }
-              #westrin-app-container .btn-ghost { background: transparent; border-color: var(--glass-border-strong); }
-              #westrin-app-container .btn-sm { padding: 7px 14px; font-size: 12px; border-radius: 10px; }
-              #westrin-app-container input,
-              #westrin-app-container select,
-              #westrin-app-container textarea {
+              #Western Union-app-container .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(250,204,21,0.3); }
+              #Western Union-app-container .btn-primary { background: linear-gradient(135deg, #facc15, #eab308); border-color: transparent; color: #000; box-shadow: 0 8px 24px rgba(250, 204, 21, 0.4); }
+              #Western Union-app-container .btn-success { background: linear-gradient(135deg, #10b981, #059669); border-color: transparent; color: #fff; }
+              #Western Union-app-container .btn-info { background: linear-gradient(135deg, #06b6d4, #0891b2); border-color: transparent; color: #fff; }
+              #Western Union-app-container .btn-warn { background: linear-gradient(135deg, #f59e0b, #d97706); border-color: transparent; color: #fff; }
+              #Western Union-app-container .btn-danger { background: linear-gradient(135deg, #ef4444, #dc2626); border-color: transparent; color: #fff; }
+              #Western Union-app-container .btn-ghost { background: transparent; border-color: var(--glass-border-strong); }
+              #Western Union-app-container .btn-sm { padding: 7px 14px; font-size: 12px; border-radius: 10px; }
+              #Western Union-app-container input,
+              #Western Union-app-container select,
+              #Western Union-app-container textarea {
                 width: 100%; padding: 13px 18px;
                 background: rgba(255, 255, 255, 0.04);
                 border: 1px solid var(--glass-border);
@@ -3123,22 +3124,22 @@
                 font-family: 'Cairo', sans-serif;
                 font-size: 14px; font-weight: 500; transition: all 0.25s;
               }
-              #westrin-app-container input::placeholder,
-              #westrin-app-container textarea::placeholder { color: var(--text-muted); }
-              #westrin-app-container input:focus,
-              #westrin-app-container textarea:focus {
+              #Western Union-app-container input::placeholder,
+              #Western Union-app-container textarea::placeholder { color: var(--text-muted); }
+              #Western Union-app-container input:focus,
+              #Western Union-app-container textarea:focus {
                 outline: none; border-color: var(--accent-1);
                 background: rgba(250, 204, 21, 0.08);
                 box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.15);
               }
-              #westrin-app-container textarea { resize: vertical; min-height: 80px; }
-              #westrin-app-container .section-header {
+              #Western Union-app-container textarea { resize: vertical; min-height: 80px; }
+              #Western Union-app-container .section-header {
                 display: flex; align-items: center; justify-content: space-between;
                 gap: 12px; margin-bottom: 24px; flex-wrap: wrap;
               }
-              #westrin-app-container .section-header-left { display: flex; align-items: center; gap: 12px; }
-              #westrin-app-container .section-header h2 { font-size: 24px; font-weight: 800; color: #fefce8; }
-              #westrin-app-container .badge {
+              #Western Union-app-container .section-header-left { display: flex; align-items: center; gap: 12px; }
+              #Western Union-app-container .section-header h2 { font-size: 24px; font-weight: 800; color: #fefce8; }
+              #Western Union-app-container .badge {
                 padding: 4px 12px;
                 background: rgba(250, 204, 21, 0.15);
                 border: 1px solid rgba(250, 204, 21, 0.35);
@@ -3146,89 +3147,89 @@
                 font-size: 12px; font-weight: 700;
                 font-family: 'Inter', sans-serif;
               }
-              #westrin-app-container .accounts-view { padding: 40px 36px; }
-              #westrin-app-container .accounts-grid {
+              #Western Union-app-container .accounts-view { padding: 40px 36px; }
+              #Western Union-app-container .accounts-grid {
                 display: grid;
                 grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
                 gap: 18px;
               }
-              #westrin-app-container .account-card {
+              #Western Union-app-container .account-card {
                 background: var(--glass-bg);
                 border: 1px solid var(--glass-border);
                 border-radius: 20px; padding: 22px;
                 cursor: pointer; transition: all 0.3s;
                 position: relative; overflow: hidden;
               }
-              #westrin-app-container .account-card::before {
+              #Western Union-app-container .account-card::before {
                 content: ''; position: absolute; top: 0; right: 0;
                 width: 4px; height: 100%;
                 background: linear-gradient(180deg, #facc15, #000);
               }
-              #westrin-app-container .account-card:hover {
+              #Western Union-app-container .account-card:hover {
                 transform: translateY(-6px);
                 border-color: rgba(250, 204, 21, 0.7);
                 background: var(--glass-bg-hover);
                 box-shadow: 0 20px 50px rgba(250, 204, 21, 0.3);
               }
-              #westrin-app-container .account-card .icon-wrap {
+              #Western Union-app-container .account-card .icon-wrap {
                 width: 48px; height: 48px; border-radius: 14px;
                 background: linear-gradient(135deg, rgba(250,204,21,0.25), rgba(0,0,0,0.6));
                 border: 1px solid rgba(250, 204, 21, 0.4);
                 display: grid; place-items: center;
                 font-size: 22px; margin-bottom: 14px;
               }
-              #westrin-app-container .account-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; color: #fefce8; }
-              #westrin-app-container .account-card .note { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; font-style: italic; }
-              #westrin-app-container .account-card .stats { display: flex; flex-direction: column; gap: 8px; }
-              #westrin-app-container .stat-row { display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; color: var(--text-secondary); }
-              #westrin-app-container .stat-row .val { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 13px; color: #fefce8; }
-              #westrin-app-container .stat-row .val.pos { color: #6ee7b7; }
-              #westrin-app-container .stat-row .val.warn { color: #fcd34d; }
-              #westrin-app-container .stat-row .val.neg { color: #fca5a5; }
-              #westrin-app-container .account-card .card-actions {
+              #Western Union-app-container .account-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; color: #fefce8; }
+              #Western Union-app-container .account-card .note { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; font-style: italic; }
+              #Western Union-app-container .account-card .stats { display: flex; flex-direction: column; gap: 8px; }
+              #Western Union-app-container .stat-row { display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; color: var(--text-secondary); }
+              #Western Union-app-container .stat-row .val { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 13px; color: #fefce8; }
+              #Western Union-app-container .stat-row .val.pos { color: #6ee7b7; }
+              #Western Union-app-container .stat-row .val.warn { color: #fcd34d; }
+              #Western Union-app-container .stat-row .val.neg { color: #fca5a5; }
+              #Western Union-app-container .account-card .card-actions {
                 position: absolute; top: 14px; left: 14px;
                 display: flex; gap: 6px; opacity: 0; transition: opacity 0.2s;
               }
-              #westrin-app-container .account-card:hover .card-actions { opacity: 1; }
-              #westrin-app-container .account-card .card-actions button {
+              #Western Union-app-container .account-card:hover .card-actions { opacity: 1; }
+              #Western Union-app-container .account-card .card-actions button {
                 width: 30px; height: 30px; border-radius: 10px;
                 cursor: pointer; font-size: 14px; font-weight: 700;
                 border: 1px solid; display: grid; place-items: center; transition: all 0.2s;
               }
-              #westrin-app-container .account-card .edit-btn { background: rgba(250, 204, 21, 0.15); border-color: rgba(250, 204, 21, 0.4); color: #fde047; }
-              #westrin-app-container .account-card .edit-btn:hover { background: rgba(250, 204, 21, 0.35); transform: scale(1.1); }
-              #westrin-app-container .account-card .del-btn { background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.35); color: #fca5a5; }
-              #westrin-app-container .account-card .del-btn:hover { background: rgba(239, 68, 68, 0.35); transform: scale(1.1); }
-              #westrin-app-container .account-view { display: none; }
-              #westrin-app-container .account-view.active { display: block; animation: wrSlideIn 0.4s; }
-              #westrin-app-container .accounts-view.hidden { display: none; }
-              #westrin-app-container .trash-view { display: none; }
-              #westrin-app-container .trash-view.active { display: block; animation: wrSlideIn 0.4s; }
+              #Western Union-app-container .account-card .edit-btn { background: rgba(250, 204, 21, 0.15); border-color: rgba(250, 204, 21, 0.4); color: #fde047; }
+              #Western Union-app-container .account-card .edit-btn:hover { background: rgba(250, 204, 21, 0.35); transform: scale(1.1); }
+              #Western Union-app-container .account-card .del-btn { background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.35); color: #fca5a5; }
+              #Western Union-app-container .account-card .del-btn:hover { background: rgba(239, 68, 68, 0.35); transform: scale(1.1); }
+              #Western Union-app-container .account-view { display: none; }
+              #Western Union-app-container .account-view.active { display: block; animation: wrSlideIn 0.4s; }
+              #Western Union-app-container .accounts-view.hidden { display: none; }
+              #Western Union-app-container .trash-view { display: none; }
+              #Western Union-app-container .trash-view.active { display: block; animation: wrSlideIn 0.4s; }
               @keyframes wrSlideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-              #westrin-app-container .account-header {
+              #Western Union-app-container .account-header {
                 padding: 22px 32px;
                 display: flex; justify-content: space-between; align-items: center;
                 border-bottom: 1px solid var(--glass-border);
                 background: linear-gradient(180deg, rgba(250,204,21,0.08), transparent);
                 flex-wrap: wrap; gap: 12px;
               }
-              #westrin-app-container .account-header .title-wrap { display: flex; align-items: center; gap: 14px; }
-              #westrin-app-container .account-header .acc-avatar {
+              #Western Union-app-container .account-header .title-wrap { display: flex; align-items: center; gap: 14px; }
+              #Western Union-app-container .account-header .acc-avatar {
                 width: 48px; height: 48px; border-radius: 14px;
                 background: linear-gradient(135deg, #facc15, #000);
                 display: grid; place-items: center; font-size: 22px;
                 box-shadow: 0 8px 24px rgba(250, 204, 21, 0.5);
               }
-              #westrin-app-container .account-header h2 { font-size: 20px; font-weight: 800; color: #fefce8; }
-              #westrin-app-container .account-header .sub { font-size: 12px; color: var(--text-muted); font-weight: 500; margin-top: 2px; }
-              #westrin-app-container .tabs {
+              #Western Union-app-container .account-header h2 { font-size: 20px; font-weight: 800; color: #fefce8; }
+              #Western Union-app-container .account-header .sub { font-size: 12px; color: var(--text-muted); font-weight: 500; margin-top: 2px; }
+              #Western Union-app-container .tabs {
                 display: flex; gap: 6px; padding: 14px 20px;
                 background: rgba(0,0,0,0.3);
                 border-bottom: 1px solid var(--glass-border);
                 overflow-x: auto; scrollbar-width: none;
               }
-              #westrin-app-container .tabs::-webkit-scrollbar { display: none; }
-              #westrin-app-container .tab {
+              #Western Union-app-container .tabs::-webkit-scrollbar { display: none; }
+              #Western Union-app-container .tab {
                 flex: 1; padding: 12px 18px;
                 background: transparent; border: 1px solid transparent;
                 border-radius: 12px; cursor: pointer;
@@ -3238,23 +3239,23 @@
                 white-space: nowrap; min-width: 130px;
                 display: flex; align-items: center; justify-content: center; gap: 8px;
               }
-              #westrin-app-container .tab .count {
+              #Western Union-app-container .tab .count {
                 background: rgba(250, 204, 21, 0.12);
                 padding: 2px 8px; border-radius: 10px;
                 font-size: 11px; font-family: 'Inter', sans-serif; font-weight: 700;
               }
-              #westrin-app-container .tab:hover { color: var(--text-secondary); background: rgba(250,204,21,0.06); }
-              #westrin-app-container .tab.active {
+              #Western Union-app-container .tab:hover { color: var(--text-secondary); background: rgba(250,204,21,0.06); }
+              #Western Union-app-container .tab.active {
                 color: #000;
                 background: linear-gradient(135deg, #facc15, #eab308);
                 border-color: transparent;
                 box-shadow: 0 6px 20px rgba(250, 204, 21, 0.4);
               }
-              #westrin-app-container .tab.active .count { background: rgba(0,0,0,0.2); color: #000; }
-              #westrin-app-container .tab-content { padding: 28px 32px; display: none; }
-              #westrin-app-container .tab-content.active { display: block; animation: wrFadeIn 0.3s; }
+              #Western Union-app-container .tab.active .count { background: rgba(0,0,0,0.2); color: #000; }
+              #Western Union-app-container .tab-content { padding: 28px 32px; display: none; }
+              #Western Union-app-container .tab-content.active { display: block; animation: wrFadeIn 0.3s; }
               @keyframes wrFadeIn { from {opacity:0; transform: translateY(6px);} to {opacity:1; transform: translateY(0);} }
-              #westrin-app-container .tx-form {
+              #Western Union-app-container .tx-form {
                 display: grid;
                 grid-template-columns: 2fr 1fr 1fr 1fr auto;
                 gap: 10px; margin-bottom: 24px; padding: 18px;
@@ -3262,58 +3263,58 @@
                 border: 1px solid var(--glass-border);
                 border-radius: 18px;
               }
-              #westrin-app-container .table-wrap {
+              #Western Union-app-container .table-wrap {
                 border-radius: 18px; overflow: hidden;
                 border: 1px solid var(--glass-border);
                 background: var(--glass-bg);
               }
-              #westrin-app-container .tx-table { width: 100%; border-collapse: collapse; }
-              #westrin-app-container .tx-table thead th {
+              #Western Union-app-container .tx-table { width: 100%; border-collapse: collapse; }
+              #Western Union-app-container .tx-table thead th {
                 padding: 14px 18px; text-align: right;
                 font-size: 12px; font-weight: 700; color: #fde047;
                 letter-spacing: 0.5px;
                 background: rgba(0, 0, 0, 0.3);
                 border-bottom: 1px solid var(--glass-border);
               }
-              #westrin-app-container .tx-table tbody td {
+              #Western Union-app-container .tx-table tbody td {
                 padding: 16px 18px; font-size: 14px;
                 border-bottom: 1px solid rgba(250, 204, 21, 0.08);
                 color: var(--text-secondary); vertical-align: middle;
               }
-              #westrin-app-container .tx-table tbody tr:hover { background: rgba(250, 204, 21, 0.05); }
-              #westrin-app-container .tx-name { color: #fefce8; font-weight: 700; }
-              #westrin-app-container .tx-date { font-family: 'Inter', sans-serif; font-size: 12.5px; color: var(--text-muted); font-weight: 600; direction: ltr; display: inline-block; }
-              #westrin-app-container .amount { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 15px; }
-              #westrin-app-container .amount.pos { color: #6ee7b7; }
-              #westrin-app-container .amount.neg { color: #fca5a5; }
-              #westrin-app-container .status-pill {
+              #Western Union-app-container .tx-table tbody tr:hover { background: rgba(250, 204, 21, 0.05); }
+              #Western Union-app-container .tx-name { color: #fefce8; font-weight: 700; }
+              #Western Union-app-container .tx-date { font-family: 'Inter', sans-serif; font-size: 12.5px; color: var(--text-muted); font-weight: 600; direction: ltr; display: inline-block; }
+              #Western Union-app-container .amount { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 15px; }
+              #Western Union-app-container .amount.pos { color: #6ee7b7; }
+              #Western Union-app-container .amount.neg { color: #fca5a5; }
+              #Western Union-app-container .status-pill {
                 display: inline-flex; align-items: center; gap: 5px;
                 padding: 5px 12px; border-radius: 20px;
                 font-size: 11px; font-weight: 800;
                 white-space: nowrap;
               }
-              #westrin-app-container .status-pill.done { background: rgba(16,185,129,.15); color: #34d399; border: 1px solid rgba(16,185,129,.4); }
-              #westrin-app-container .status-pill.pending { background: rgba(250,204,21,.15); color: #fcd34d; border: 1px solid rgba(250,204,21,.4); }
-              #westrin-app-container .status-pill.failed { background: rgba(239,68,68,.15); color: #fca5a5; border: 1px solid rgba(239,68,68,.4); }
-              #westrin-app-container .action-btn-group { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; }
-              #westrin-app-container .action-btn {
+              #Western Union-app-container .status-pill.done { background: rgba(16,185,129,.15); color: #34d399; border: 1px solid rgba(16,185,129,.4); }
+              #Western Union-app-container .status-pill.pending { background: rgba(250,204,21,.15); color: #fcd34d; border: 1px solid rgba(250,204,21,.4); }
+              #Western Union-app-container .status-pill.failed { background: rgba(239,68,68,.15); color: #fca5a5; border: 1px solid rgba(239,68,68,.4); }
+              #Western Union-app-container .action-btn-group { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; }
+              #Western Union-app-container .action-btn {
                 display: inline-flex; align-items: center; justify-content: center;
                 padding: 6px 10px; border-radius: 9px;
                 font-size: 11.5px; font-weight: 800;
                 cursor: pointer; border: 1px solid;
                 transition: all 0.2s; white-space: nowrap;
               }
-              #westrin-app-container .action-btn.green { background: rgba(16,185,129,.15); border-color: rgba(16,185,129,.4); color: #34d399; }
-              #westrin-app-container .action-btn.green:hover { background: rgba(16,185,129,.3); transform: translateY(-1px); }
-              #westrin-app-container .action-btn.red { background: rgba(239,68,68,.15); border-color: rgba(239,68,68,.4); color: #fca5a5; }
-              #westrin-app-container .action-btn.red:hover { background: rgba(239,68,68,.3); transform: translateY(-1px); }
-              #westrin-app-container .action-btn.gold { background: rgba(250,204,21,.15); border-color: rgba(250,204,21,.4); color: #fde047; }
-              #westrin-app-container .action-btn.gold:hover { background: rgba(250,204,21,.3); transform: translateY(-1px); }
-              #westrin-app-container .action-btn.blue { background: rgba(59,130,246,.15); border-color: rgba(59,130,246,.4); color: #93c5fd; }
-              #westrin-app-container .action-btn.blue:hover { background: rgba(59,130,246,.3); transform: translateY(-1px); }
-              #westrin-app-container .action-btn.dark-red { background: rgba(220,38,38,.2); border-color: rgba(220,38,38,.5); color: #fca5a5; }
-              #westrin-app-container .action-btn.dark-red:hover { background: rgba(220,38,38,.4); transform: translateY(-1px); }
-              #westrin-app-container .report-controls {
+              #Western Union-app-container .action-btn.green { background: rgba(16,185,129,.15); border-color: rgba(16,185,129,.4); color: #34d399; }
+              #Western Union-app-container .action-btn.green:hover { background: rgba(16,185,129,.3); transform: translateY(-1px); }
+              #Western Union-app-container .action-btn.red { background: rgba(239,68,68,.15); border-color: rgba(239,68,68,.4); color: #fca5a5; }
+              #Western Union-app-container .action-btn.red:hover { background: rgba(239,68,68,.3); transform: translateY(-1px); }
+              #Western Union-app-container .action-btn.gold { background: rgba(250,204,21,.15); border-color: rgba(250,204,21,.4); color: #fde047; }
+              #Western Union-app-container .action-btn.gold:hover { background: rgba(250,204,21,.3); transform: translateY(-1px); }
+              #Western Union-app-container .action-btn.blue { background: rgba(59,130,246,.15); border-color: rgba(59,130,246,.4); color: #93c5fd; }
+              #Western Union-app-container .action-btn.blue:hover { background: rgba(59,130,246,.3); transform: translateY(-1px); }
+              #Western Union-app-container .action-btn.dark-red { background: rgba(220,38,38,.2); border-color: rgba(220,38,38,.5); color: #fca5a5; }
+              #Western Union-app-container .action-btn.dark-red:hover { background: rgba(220,38,38,.4); transform: translateY(-1px); }
+              #Western Union-app-container .report-controls {
                 display: grid;
                 grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
                 gap: 12px; align-items: flex-end; margin-bottom: 24px; padding: 20px;
@@ -3321,28 +3322,28 @@
                 border: 1px solid var(--glass-border);
                 border-radius: 18px;
               }
-              #westrin-app-container .report-controls .field { display: flex; flex-direction: column; gap: 6px; }
-              #westrin-app-container .report-controls label { font-size: 12px; font-weight: 700; color: #fde047; letter-spacing: 0.4px; }
-              #westrin-app-container .report-controls .actions { display: flex; gap: 10px; align-items: flex-end; }
-              #westrin-app-container .report-paper {
+              #Western Union-app-container .report-controls .field { display: flex; flex-direction: column; gap: 6px; }
+              #Western Union-app-container .report-controls label { font-size: 12px; font-weight: 700; color: #fde047; letter-spacing: 0.4px; }
+              #Western Union-app-container .report-controls .actions { display: flex; gap: 10px; align-items: flex-end; }
+              #Western Union-app-container .report-paper {
                 background: rgba(255, 255, 255, 0.97);
                 border: 1px solid rgba(250, 204, 21, 0.5);
                 border-radius: 20px; padding: 40px;
                 box-shadow: 0 20px 60px rgba(0,0,0,0.5);
                 color: #1e293b; position: relative;
               }
-              #westrin-app-container .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
-              #westrin-app-container .empty-state .icon { font-size: 56px; margin-bottom: 16px; opacity: 0.4; }
-              #westrin-app-container .empty-state p { font-size: 15px; font-weight: 600; }
-              #westrin-app-container .modal-overlay {
+              #Western Union-app-container .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+              #Western Union-app-container .empty-state .icon { font-size: 56px; margin-bottom: 16px; opacity: 0.4; }
+              #Western Union-app-container .empty-state p { font-size: 15px; font-weight: 600; }
+              #Western Union-app-container .modal-overlay {
                 position: fixed; inset: 0;
                 background: rgba(0, 0, 0, 0.85);
                 backdrop-filter: blur(8px);
                 display: none; align-items: center; justify-content: center;
                 z-index: 1000; padding: 20px; overflow-y: auto;
               }
-              #westrin-app-container .modal-overlay.active { display: flex; animation: wrFadeIn 0.2s; }
-              #westrin-app-container .modal {
+              #Western Union-app-container .modal-overlay.active { display: flex; animation: wrFadeIn 0.2s; }
+              #Western Union-app-container .modal {
                 background: linear-gradient(135deg, rgba(0,0,0,0.98), rgba(30, 30, 30, 0.98));
                 border: 2px solid var(--glass-border-strong);
                 border-radius: 22px; padding: 28px;
@@ -3350,39 +3351,39 @@
                 animation: wrSlideUp 0.3s; box-shadow: var(--shadow-lg), var(--shadow-glow);
               }
               @keyframes wrSlideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-              #westrin-app-container .modal h3 { margin-bottom: 22px; font-size: 19px; font-weight: 800; color: #facc15; display: flex; align-items: center; gap: 10px; }
-              #westrin-app-container .modal .field { margin-bottom: 16px; }
-              #westrin-app-container .modal label { display: block; font-size: 12px; color: #fde047; margin-bottom: 6px; font-weight: 700; }
-              #westrin-app-container .modal-btns { display: flex; gap: 10px; margin-top: 24px; }
-              #westrin-app-container .modal-btns .btn { flex: 1; justify-content: center; }
-              #westrin-app-container .withdraw-info-box {
+              #Western Union-app-container .modal h3 { margin-bottom: 22px; font-size: 19px; font-weight: 800; color: #facc15; display: flex; align-items: center; gap: 10px; }
+              #Western Union-app-container .modal .field { margin-bottom: 16px; }
+              #Western Union-app-container .modal label { display: block; font-size: 12px; color: #fde047; margin-bottom: 6px; font-weight: 700; }
+              #Western Union-app-container .modal-btns { display: flex; gap: 10px; margin-top: 24px; }
+              #Western Union-app-container .modal-btns .btn { flex: 1; justify-content: center; }
+              #Western Union-app-container .withdraw-info-box {
                 background: linear-gradient(135deg, rgba(16,185,129,.12), rgba(5,150,105,.06));
                 border: 1px solid rgba(16,185,129,.4);
                 border-radius: 14px; padding: 14px 18px;
                 margin: 10px 0 18px 0;
               }
-              #westrin-app-container .withdraw-info-box .title {
+              #Western Union-app-container .withdraw-info-box .title {
                 font-size: 12px; color: #6ee7b7; font-weight: 800;
                 margin-bottom: 8px; letter-spacing: 0.5px;
               }
-              #westrin-app-container .withdraw-info-box .auto-time {
+              #Western Union-app-container .withdraw-info-box .auto-time {
                 font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 900;
                 color: #34d399; direction: ltr; letter-spacing: 1px;
               }
               @media (max-width: 900px) {
-                #westrin-app-container .tx-form { grid-template-columns: 1fr 1fr; }
+                #Western Union-app-container .tx-form { grid-template-columns: 1fr 1fr; }
               }
               @media (max-width: 768px) {
-                #westrin-app-container { padding: 12px; }
-                #westrin-app-container .wr-container { border-radius: 20px; }
-                #westrin-app-container .topbar { padding: 16px 20px; }
-                #westrin-app-container .accounts-view,
-                #westrin-app-container .trash-view { padding: 24px 20px; }
-                #westrin-app-container .tab-content { padding: 20px 18px; }
-                #westrin-app-container .tx-form { grid-template-columns: 1fr; }
+                #Western Union-app-container { padding: 12px; }
+                #Western Union-app-container .wr-container { border-radius: 20px; }
+                #Western Union-app-container .topbar { padding: 16px 20px; }
+                #Western Union-app-container .accounts-view,
+                #Western Union-app-container .trash-view { padding: 24px 20px; }
+                #Western Union-app-container .tab-content { padding: 20px 18px; }
+                #Western Union-app-container .tx-form { grid-template-columns: 1fr; }
               }
             `;
-            document.head.appendChild(westrinStyles);
+            document.head.appendChild(Western UnionStyles);
 
             container.innerHTML = `
               <div class="wr-container">
@@ -3390,15 +3391,15 @@
                   <div class="brand">
                     <div class="brand-logo">W</div>
                     <div class="brand-text">
-                      <h1>WESTRIN</h1>
+                      <h1>Western Union</h1>
                       <p>متصل بقاعدة البيانات السحابية ☁️</p>
                     </div>
                   </div>
                   <div class="topbar-btns">
-                    <button class="btn btn-warn btn-sm" onclick="westrinOpenTrash()">
+                    <button class="btn btn-warn btn-sm" onclick="Western UnionOpenTrash()">
                       <span>🗑️</span> سلة المحذوفات <span class="badge" style="padding:1px 8px;font-size:11px" id="wrTrashCount">0</span>
                     </button>
-                    <button class="btn btn-danger btn-sm" onclick="westrinClearAllData()">
+                    <button class="btn btn-danger btn-sm" onclick="Western UnionClearAllData()">
                       <span>🧹</span> حذف كل البيانات
                     </button>
                   </div>
@@ -3410,7 +3411,7 @@
                       <h2>الحسابات</h2>
                       <span class="badge" id="wrAccountsCount">0</span>
                     </div>
-                    <button class="btn btn-primary" onclick="westrinOpenAccountModal()">
+                    <button class="btn btn-primary" onclick="Western UnionOpenAccountModal()">
                       <span>➕</span> إضافة حساب
                     </button>
                   </div>
@@ -3423,7 +3424,7 @@
                       <h2>🗑️ سلة المحذوفات</h2>
                       <span class="badge" id="wrTrashCountView">0</span>
                     </div>
-                    <button class="btn btn-ghost" onclick="westrinBackToAccounts()">
+                    <button class="btn btn-ghost" onclick="Western UnionBackToAccounts()">
                       <span>←</span> رجوع للحسابات
                     </button>
                   </div>
@@ -3439,22 +3440,22 @@
                         <div class="sub" id="wrAccountNote"></div>
                       </div>
                     </div>
-                    <button class="btn btn-ghost" onclick="westrinBackToAccounts()">
+                    <button class="btn btn-ghost" onclick="Western UnionBackToAccounts()">
                       <span>←</span> رجوع للحسابات
                     </button>
                   </div>
                   
                   <div class="tabs">
-                    <button class="tab active" data-tab="pending" onclick="westrinSwitchTab('pending')">
+                    <button class="tab active" data-tab="pending" onclick="Western UnionSwitchTab('pending')">
                       🟡 تحت السحب <span class="count" id="wrCountPending">0</span>
                     </button>
-                    <button class="tab" data-tab="withdrawn" onclick="westrinSwitchTab('withdrawn')">
+                    <button class="tab" data-tab="withdrawn" onclick="Western UnionSwitchTab('withdrawn')">
                       🟢 تم السحب <span class="count" id="wrCountWithdrawn">0</span>
                     </button>
-                    <button class="tab" data-tab="failed" onclick="westrinSwitchTab('failed')">
+                    <button class="tab" data-tab="failed" onclick="Western UnionSwitchTab('failed')">
                       🔴 لم يتم السحب <span class="count" id="wrCountFailed">0</span>
                     </button>
-                    <button class="tab" data-tab="report" onclick="westrinSwitchTab('report')">
+                    <button class="tab" data-tab="report" onclick="Western UnionSwitchTab('report')">
                       🔵 كشف الحساب
                     </button>
                   </div>
@@ -3465,7 +3466,7 @@
                       <input type="number" id="wrTxAmount" placeholder="0.00" step="0.01">
                       <input type="date" id="wrTxDate">
                       <input type="time" id="wrTxTime" step="60">
-                      <button class="btn btn-primary" onclick="westrinAddTransaction()">
+                      <button class="btn btn-primary" onclick="Western UnionAddTransaction()">
                         <span>➕</span> إضافة
                       </button>
                     </div>
@@ -3499,10 +3500,10 @@
                         <input type="time" id="wrReportToTime" step="60">
                       </div>
                       <div class="actions">
-                        <button class="btn btn-info" onclick="westrinGenerateReport()">
+                        <button class="btn btn-info" onclick="Western UnionGenerateReport()">
                           <span>📄</span> عرض الكشف
                         </button>
-                        <button class="btn btn-warn" onclick="westrinPrintReport()">
+                        <button class="btn btn-warn" onclick="Western UnionPrintReport()">
                           <span>🖨️</span> طباعة / PDF
                         </button>
                       </div>
@@ -3530,8 +3531,8 @@
                     <textarea id="wrAccountModalNote" placeholder="ملاحظة عن الحساب..."></textarea>
                   </div>
                   <div class="modal-btns">
-                    <button class="btn btn-primary" onclick="westrinSaveAccount()">💾 حفظ</button>
-                    <button class="btn btn-ghost" onclick="westrinCloseAccountModal()">إلغاء</button>
+                    <button class="btn btn-primary" onclick="Western UnionSaveAccount()">💾 حفظ</button>
+                    <button class="btn btn-ghost" onclick="Western UnionCloseAccountModal()">إلغاء</button>
                   </div>
                 </div>
               </div>
@@ -3556,8 +3557,8 @@
                     <input type="time" id="wrEditTime" step="60">
                   </div>
                   <div class="modal-btns">
-                    <button class="btn btn-primary" onclick="westrinSaveEdit()">💾 حفظ التغييرات</button>
-                    <button class="btn btn-ghost" onclick="westrinCloseEditModal()">إلغاء</button>
+                    <button class="btn btn-primary" onclick="Western UnionSaveEdit()">💾 حفظ التغييرات</button>
+                    <button class="btn btn-ghost" onclick="Western UnionCloseEditModal()">إلغاء</button>
                   </div>
                 </div>
               </div>
@@ -3580,8 +3581,8 @@
                     <input type="time" id="wrWithdrawTime" step="60">
                   </div>
                   <div class="modal-btns">
-                    <button class="btn btn-success" onclick="westrinConfirmWithdraw()">✅ تأكيد السحب</button>
-                    <button class="btn btn-ghost" onclick="westrinCloseWithdrawModal()">إلغاء</button>
+                    <button class="btn btn-success" onclick="Western UnionConfirmWithdraw()">✅ تأكيد السحب</button>
+                    <button class="btn btn-ghost" onclick="Western UnionCloseWithdrawModal()">إلغاء</button>
                   </div>
                 </div>
               </div>
@@ -3604,38 +3605,38 @@
                     <input type="time" id="wrFailedTime" step="60">
                   </div>
                   <div class="modal-btns">
-                    <button class="btn btn-danger" onclick="westrinConfirmFailed()">❌ تأكيد: لم يتم السحب</button>
-                    <button class="btn btn-ghost" onclick="westrinCloseFailedModal()">إلغاء</button>
+                    <button class="btn btn-danger" onclick="Western UnionConfirmFailed()">❌ تأكيد: لم يتم السحب</button>
+                    <button class="btn btn-ghost" onclick="Western UnionCloseFailedModal()">إلغاء</button>
                   </div>
                 </div>
               </div>
             `;
 
-            westrinRenderAccounts();
-            westrinRenderTrash();
+            Western UnionRenderAccounts();
+            Western UnionRenderTrash();
 
             document.getElementById('wrEditModal').addEventListener('click', (e) => {
-                if (e.target.id === 'wrEditModal') westrinCloseEditModal();
+                if (e.target.id === 'wrEditModal') Western UnionCloseEditModal();
             });
             document.getElementById('wrAccountModal').addEventListener('click', (e) => {
-                if (e.target.id === 'wrAccountModal') westrinCloseAccountModal();
+                if (e.target.id === 'wrAccountModal') Western UnionCloseAccountModal();
             });
             document.getElementById('wrWithdrawModal').addEventListener('click', (e) => {
-                if (e.target.id === 'wrWithdrawModal') westrinCloseWithdrawModal();
+                if (e.target.id === 'wrWithdrawModal') Western UnionCloseWithdrawModal();
             });
             document.getElementById('wrFailedModal').addEventListener('click', (e) => {
-                if (e.target.id === 'wrFailedModal') westrinCloseFailedModal();
+                if (e.target.id === 'wrFailedModal') Western UnionCloseFailedModal();
             });
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
-                    westrinCloseEditModal();
-                    westrinCloseAccountModal();
-                    westrinCloseWithdrawModal();
-                    westrinCloseFailedModal();
+                    Western UnionCloseEditModal();
+                    Western UnionCloseAccountModal();
+                    Western UnionCloseWithdrawModal();
+                    Western UnionCloseFailedModal();
                 }
             });
             document.getElementById('wrAccountModalName').addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') westrinSaveAccount();
+                if (e.key === 'Enter') Western UnionSaveAccount();
             });
         }
 
@@ -3645,36 +3646,36 @@
         let wrWithdrawingTxId = null;
         let wrFailingTxId = null;
 
-        async function westrinClearAllData() {
+        async function Western UnionClearAllData() {
             if (confirm('⚠️ هل أنت متأكد من حذف كل البيانات نهائياً؟ لا يمكن التراجع!')) {
                 if (confirm('⚠️ تأكيد أخير: سيتم حذف كل الحسابات والمعاملات والسلة!')) {
                     wrSetAccounts([]); wrSetTransactions([]); wrSetTrash([]);
                     await wrSave();
-                    westrinRenderAccounts(); westrinRenderTrash(); westrinBackToAccounts();
+                    Western UnionRenderAccounts(); Western UnionRenderTrash(); Western UnionBackToAccounts();
                     showToast('تم حذف كل البيانات ☁️');
                 }
             }
         }
 
-        function westrinFmtMoney(n) {
+        function Western UnionFmtMoney(n) {
             const num = Number(n) || 0;
             return num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         }
-        function westrinFmtDateTime(date, time) {
+        function Western UnionFmtDateTime(date, time) {
             const d = date ? date.split('-').join('/') : '';
             const t = time || '00:00';
             return `${d} ${t}`;
         }
-        function westrinGetCurrentTime() {
+        function Western UnionGetCurrentTime() {
             const now = new Date();
             return `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
         }
-        function westrinGetCurrentDate() {
+        function Western UnionGetCurrentDate() {
             const now = new Date();
             return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
         }
 
-        function westrinOpenAccountModal(editId = null) {
+        function Western UnionOpenAccountModal(editId = null) {
             wrEditingAccountId = editId;
             const nameInput = document.getElementById('wrAccountModalName');
             const noteInput = document.getElementById('wrAccountModalNote');
@@ -3692,11 +3693,11 @@
             document.getElementById('wrAccountModal').classList.add('active');
             setTimeout(() => nameInput.focus(), 100);
         }
-        function westrinCloseAccountModal() {
+        function Western UnionCloseAccountModal() {
             document.getElementById('wrAccountModal').classList.remove('active');
             wrEditingAccountId = null;
         }
-        async function westrinSaveAccount() {
+        async function Western UnionSaveAccount() {
             const name = document.getElementById('wrAccountModalName').value.trim();
             const note = document.getElementById('wrAccountModalNote').value.trim();
             if (!name) { alert('اكتب اسم الحساب'); return; }
@@ -3709,11 +3710,11 @@
             }
             wrSetAccounts(accounts);
             await wrSave();
-            westrinCloseAccountModal();
-            westrinRenderAccounts();
+            Western UnionCloseAccountModal();
+            Western UnionRenderAccounts();
             showToast('تم الحفظ ☁️');
         }
-        async function westrinDeleteAccount(id, e) {
+        async function Western UnionDeleteAccount(id, e) {
             e.stopPropagation();
             const accounts = wrGetAccounts();
             const acc = accounts.find(a => a.id === id);
@@ -3731,10 +3732,10 @@
                 wrSetTransactions(wrGetTransactions().filter(t => t.accountId !== id));
             }
             await wrSave();
-            westrinRenderAccounts(); westrinRenderTrash();
+            Western UnionRenderAccounts(); Western UnionRenderTrash();
             showToast('تم الحفظ ☁️');
         }
-        function westrinOpenAccount(id) {
+        function Western UnionOpenAccount(id) {
             wrCurrentAccountId = id;
             document.getElementById('wrAccountsView').classList.add('hidden');
             document.getElementById('wrTrashView').classList.remove('active');
@@ -3742,29 +3743,29 @@
             const acc = wrGetAccounts().find(a => a.id === id);
             document.getElementById('wrAccountTitle').textContent = acc.name;
             document.getElementById('wrAccountNote').textContent = acc.note || 'إدارة المعاملات والكشف';
-            document.getElementById('wrTxDate').value = westrinGetCurrentDate();
-            document.getElementById('wrTxTime').value = westrinGetCurrentTime();
+            document.getElementById('wrTxDate').value = Western UnionGetCurrentDate();
+            document.getElementById('wrTxTime').value = Western UnionGetCurrentTime();
             document.getElementById('wrReportFrom').value = '';
             document.getElementById('wrReportFromTime').value = '';
             document.getElementById('wrReportTo').value = '';
             document.getElementById('wrReportToTime').value = '';
-            westrinSwitchTab('pending');
-            westrinRenderAll();
+            Western UnionSwitchTab('pending');
+            Western UnionRenderAll();
         }
-        function westrinBackToAccounts() {
+        function Western UnionBackToAccounts() {
             wrCurrentAccountId = null;
             document.getElementById('wrAccountView').classList.remove('active');
             document.getElementById('wrTrashView').classList.remove('active');
             document.getElementById('wrAccountsView').classList.remove('hidden');
-            westrinRenderAccounts();
+            Western UnionRenderAccounts();
         }
-        function westrinOpenTrash() {
+        function Western UnionOpenTrash() {
             document.getElementById('wrAccountsView').classList.add('hidden');
             document.getElementById('wrAccountView').classList.remove('active');
             document.getElementById('wrTrashView').classList.add('active');
-            westrinRenderTrash();
+            Western UnionRenderTrash();
         }
-        function westrinRenderAccounts() {
+        function Western UnionRenderAccounts() {
             const grid = document.getElementById('wrAccountsGrid');
             if (!grid) return;
             const accounts = wrGetAccounts();
@@ -3781,10 +3782,10 @@
                 const failed = txs.filter(t => t.status === 'failed').length;
                 const total = txs.reduce((s,t) => s + Number(t.amount), 0);
                 return `
-                  <div class="account-card" onclick="westrinOpenAccount(${acc.id})">
+                  <div class="account-card" onclick="Western UnionOpenAccount(${acc.id})">
                     <div class="card-actions">
-                      <button class="edit-btn" onclick="event.stopPropagation();westrinOpenAccountModal(${acc.id})" title="تعديل">✏️</button>
-                      <button class="del-btn" onclick="westrinDeleteAccount(${acc.id}, event)" title="حذف">🗑️</button>
+                      <button class="edit-btn" onclick="event.stopPropagation();Western UnionOpenAccountModal(${acc.id})" title="تعديل">✏️</button>
+                      <button class="del-btn" onclick="Western UnionDeleteAccount(${acc.id}, event)" title="حذف">🗑️</button>
                     </div>
                     <div class="icon-wrap">📁</div>
                     <h3>${escapeHtml(acc.name)}</h3>
@@ -3794,14 +3795,14 @@
                       <div class="stat-row"><span>🟢 تم السحب</span><span class="val pos">${withdrawn}</span></div>
                       <div class="stat-row"><span>🔴 لم يتم السحب</span><span class="val neg">${failed}</span></div>
                       <div class="stat-row" style="padding-top:10px;border-top:1px solid rgba(250,204,21,0.15);margin-top:4px">
-                        <span>💰 المجموع</span><span class="val">${westrinFmtMoney(total)}</span>
+                        <span>💰 المجموع</span><span class="val">${Western UnionFmtMoney(total)}</span>
                       </div>
                     </div>
                   </div>
                 `;
             }).join('');
         }
-        function westrinRenderTrash() {
+        function Western UnionRenderTrash() {
             const grid = document.getElementById('wrTrashGrid');
             if (!grid) return;
             const trash = wrGetTrash();
@@ -3822,18 +3823,18 @@
                     ${acc.note ? `<div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;font-style:italic;">${escapeHtml(acc.note)}</div>` : ''}
                     <div style="display:flex;gap:14px;font-size:12px;color:var(--text-secondary);margin-bottom:16px;flex-wrap:wrap;">
                       <span>المعاملات: <b style="font-family:'Inter',sans-serif;color:#fefce8;">${txs.length}</b></span>
-                      <span>المجموع: <b style="font-family:'Inter',sans-serif;color:#fefce8;">${westrinFmtMoney(total)}</b></span>
+                      <span>المجموع: <b style="font-family:'Inter',sans-serif;color:#fefce8;">${Western UnionFmtMoney(total)}</b></span>
                       <span>حُذف: <b style="font-family:'Inter',sans-serif;color:#fefce8;">${deletedDate}</b></span>
                     </div>
                     <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                      <button class="btn btn-success btn-sm" onclick="westrinRestoreAccount(${i})">♻️ استرجاع</button>
-                      <button class="btn btn-danger btn-sm" onclick="westrinDeleteForever(${i})">🗑️ حذف نهائي</button>
+                      <button class="btn btn-success btn-sm" onclick="Western UnionRestoreAccount(${i})">♻️ استرجاع</button>
+                      <button class="btn btn-danger btn-sm" onclick="Western UnionDeleteForever(${i})">🗑️ حذف نهائي</button>
                     </div>
                   </div>
                 `;
             }).join('');
         }
-        async function westrinRestoreAccount(index) {
+        async function Western UnionRestoreAccount(index) {
             const trash = wrGetTrash();
             const item = trash[index];
             if (!item) return;
@@ -3847,10 +3848,10 @@
             trash.splice(index, 1);
             wrSetTrash(trash);
             await wrSave();
-            westrinRenderTrash(); westrinRenderAccounts();
+            Western UnionRenderTrash(); Western UnionRenderAccounts();
             showToast('تم الاسترجاع ☁️');
         }
-        async function westrinDeleteForever(index) {
+        async function Western UnionDeleteForever(index) {
             const trash = wrGetTrash();
             const item = trash[index];
             if (!item) return;
@@ -3858,22 +3859,22 @@
             trash.splice(index, 1);
             wrSetTrash(trash);
             await wrSave();
-            westrinRenderTrash();
+            Western UnionRenderTrash();
             showToast('تم الحذف النهائي ☁️');
         }
-        function westrinSwitchTab(tab) {
-            document.querySelectorAll('#westrin-app-container .tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
-            document.querySelectorAll('#westrin-app-container .tab-content').forEach(c => c.classList.remove('active'));
+        function Western UnionSwitchTab(tab) {
+            document.querySelectorAll('#Western Union-app-container .tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+            document.querySelectorAll('#Western Union-app-container .tab-content').forEach(c => c.classList.remove('active'));
             document.getElementById('wrTab-' + tab).classList.add('active');
-            if (tab === 'pending') westrinRenderPending();
-            if (tab === 'withdrawn') westrinRenderWithdrawn();
-            if (tab === 'failed') westrinRenderFailed();
+            if (tab === 'pending') Western UnionRenderPending();
+            if (tab === 'withdrawn') Western UnionRenderWithdrawn();
+            if (tab === 'failed') Western UnionRenderFailed();
         }
-        async function westrinAddTransaction() {
+        async function Western UnionAddTransaction() {
             const name = document.getElementById('wrTxName').value.trim();
             const amount = parseFloat(document.getElementById('wrTxAmount').value);
             const date = document.getElementById('wrTxDate').value;
-            const time = document.getElementById('wrTxTime').value || westrinGetCurrentTime();
+            const time = document.getElementById('wrTxTime').value || Western UnionGetCurrentTime();
             if (!name) { alert('اكتب اسم المعاملة'); return; }
             if (isNaN(amount)) { alert('اكتب القيمة بشكل صحيح'); return; }
             if (!date) { alert('حدد التاريخ'); return; }
@@ -3891,15 +3892,15 @@
             await wrSave();
             document.getElementById('wrTxName').value = '';
             document.getElementById('wrTxAmount').value = '';
-            document.getElementById('wrTxDate').value = westrinGetCurrentDate();
-            document.getElementById('wrTxTime').value = westrinGetCurrentTime();
+            document.getElementById('wrTxDate').value = Western UnionGetCurrentDate();
+            document.getElementById('wrTxTime').value = Western UnionGetCurrentTime();
             document.getElementById('wrTxName').focus();
-            westrinRenderAll();
+            Western UnionRenderAll();
             showToast('تم الحفظ ☁️');
         }
 
         // 🟢 فتح نافذة تأكيد السحب - التاريخ والوقت الحالي تلقائياً
-        function westrinOpenWithdrawModal(txId) {
+        function Western UnionOpenWithdrawModal(txId) {
             const tx = wrGetTransactions().find(t => t.id === txId);
             if (!tx) return;
             wrWithdrawingTxId = txId;
@@ -3914,11 +3915,11 @@
 
             document.getElementById('wrWithdrawModal').classList.add('active');
         }
-        function westrinCloseWithdrawModal() {
+        function Western UnionCloseWithdrawModal() {
             document.getElementById('wrWithdrawModal').classList.remove('active');
             wrWithdrawingTxId = null;
         }
-        async function westrinConfirmWithdraw() {
+        async function Western UnionConfirmWithdraw() {
             if (!wrWithdrawingTxId) return;
             const withdrawDate = document.getElementById('wrWithdrawDate').value;
             const withdrawTime = document.getElementById('wrWithdrawTime').value;
@@ -3932,13 +3933,13 @@
             tx.withdrawAt = `${withdrawDate}T${withdrawTime}:00`;
             wrSetTransactions(txs);
             await wrSave();
-            westrinCloseWithdrawModal();
-            westrinRenderAll();
+            Western UnionCloseWithdrawModal();
+            Western UnionRenderAll();
             showToast('✅ تم تسجيل السحب بنجاح');
         }
 
         // 🔴 فتح نافذة تأكيد لم يتم السحب
-        function westrinOpenFailedModal(txId) {
+        function Western UnionOpenFailedModal(txId) {
             const tx = wrGetTransactions().find(t => t.id === txId);
             if (!tx) return;
             wrFailingTxId = txId;
@@ -3953,11 +3954,11 @@
 
             document.getElementById('wrFailedModal').classList.add('active');
         }
-        function westrinCloseFailedModal() {
+        function Western UnionCloseFailedModal() {
             document.getElementById('wrFailedModal').classList.remove('active');
             wrFailingTxId = null;
         }
-        async function westrinConfirmFailed() {
+        async function Western UnionConfirmFailed() {
             if (!wrFailingTxId) return;
             const failedDate = document.getElementById('wrFailedDate').value;
             const failedTime = document.getElementById('wrFailedTime').value;
@@ -3971,13 +3972,13 @@
             tx.failedAt = `${failedDate}T${failedTime}:00`;
             wrSetTransactions(txs);
             await wrSave();
-            westrinCloseFailedModal();
-            westrinRenderAll();
+            Western UnionCloseFailedModal();
+            Western UnionRenderAll();
             showToast('❌ تم تسجيل: لم يتم السحب');
         }
 
         // 🔄 إعادة تعيين حالة المعاملة إلى "تحت السحب"
-        async function westrinResetToPending(txId) {
+        async function Western UnionResetToPending(txId) {
             if (!confirm('إعادة تعيين هذه المعاملة إلى "تحت السحب"؟')) return;
             const txs = wrGetTransactions();
             const tx = txs.find(t => t.id === txId);
@@ -3991,19 +3992,19 @@
             tx.failedAt = null;
             wrSetTransactions(txs);
             await wrSave();
-            westrinRenderAll();
+            Western UnionRenderAll();
             showToast('تمت الإعادة إلى تحت السحب');
         }
 
-        function westrinEnableEdit(txId) {
-            const row = document.querySelector(`#westrin-app-container tr[data-txid="${txId}"]`);
+        function Western UnionEnableEdit(txId) {
+            const row = document.querySelector(`#Western Union-app-container tr[data-txid="${txId}"]`);
             if (row) {
                 row.classList.add('editing');
                 const cb = row.querySelector('input[type="checkbox"]');
                 if (cb) cb.disabled = false;
             }
         }
-        function westrinOpenEditModal(txId) {
+        function Western UnionOpenEditModal(txId) {
             const tx = wrGetTransactions().find(t => t.id === txId);
             if (!tx) return;
             wrEditingTxId = txId;
@@ -4013,12 +4014,12 @@
             document.getElementById('wrEditTime').value = tx.time || '00:00';
             document.getElementById('wrEditModal').classList.add('active');
         }
-        function westrinCloseEditModal() {
+        function Western UnionCloseEditModal() {
             document.getElementById('wrEditModal').classList.remove('active');
             wrEditingTxId = null;
-            westrinRenderAll();
+            Western UnionRenderAll();
         }
-        async function westrinSaveEdit() {
+        async function Western UnionSaveEdit() {
             const txs = wrGetTransactions();
             const tx = txs.find(t => t.id === wrEditingTxId);
             if (!tx) return;
@@ -4030,32 +4031,32 @@
             tx.name = name; tx.amount = amount; tx.date = date; tx.time = time;
             wrSetTransactions(txs);
             await wrSave();
-            westrinCloseEditModal();
+            Western UnionCloseEditModal();
             showToast('تم التعديل ☁️');
         }
-        async function westrinDeleteTransaction(txId) {
+        async function Western UnionDeleteTransaction(txId) {
             if (!confirm('حذف هذه المعاملة؟')) return;
             wrSetTransactions(wrGetTransactions().filter(t => t.id !== txId));
             await wrSave();
-            westrinRenderAll();
+            Western UnionRenderAll();
             showToast('تم الحذف ☁️');
         }
-        function westrinGetAccountTransactions() {
+        function Western UnionGetAccountTransactions() {
             return wrGetTransactions().filter(t => t.accountId === wrCurrentAccountId);
         }
-        function westrinSortByDateTime(a, b) {
+        function Western UnionSortByDateTime(a, b) {
             const da = `${a.date} ${a.time || '00:00'}`;
             const db = `${b.date} ${b.time || '00:00'}`;
             return da.localeCompare(db);
         }
-        function westrinSortByLastUpdate(a, b) {
+        function Western UnionSortByLastUpdate(a, b) {
             const aLast = a.withdrawAt || a.failedAt || `${a.date}T${a.time || '00:00'}:00`;
             const bLast = b.withdrawAt || b.failedAt || `${b.date}T${b.time || '00:00'}:00`;
             return aLast.localeCompare(bLast);
         }
 
-        function westrinRenderPending() {
-            const txs = westrinGetAccountTransactions().filter(t => t.status === 'pending');
+        function Western UnionRenderPending() {
+            const txs = Western UnionGetAccountTransactions().filter(t => t.status === 'pending');
             document.getElementById('wrCountPending').textContent = txs.length;
             const container = document.getElementById('wrPendingList');
             if (!container) return;
@@ -4063,7 +4064,7 @@
                 container.innerHTML = `<div class="empty-state"><div class="icon">✅</div><p>لا توجد معاملات تحت السحب</p></div>`;
                 return;
             }
-            txs.sort(westrinSortByDateTime);
+            txs.sort(Western UnionSortByDateTime);
             container.innerHTML = `
               <div class="table-wrap">
                 <table class="tx-table">
@@ -4079,18 +4080,18 @@
                       <tr data-txid="${tx.id}">
                         <td>
                           <label style="display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;">
-                            <input type="checkbox" onchange="if(this.checked){this.checked=false;westrinOpenWithdrawModal(${tx.id})}" style="appearance:none;-webkit-appearance:none;width:26px;height:26px;border:2px solid #facc15;border-radius:8px;background:rgba(0,0,0,0.4);cursor:pointer;position:relative;flex-shrink:0;transition:all 0.25s;" onmouseover="this.style.borderColor='#fff'" onmouseout="this.style.borderColor='#facc15'">
+                            <input type="checkbox" onchange="if(this.checked){this.checked=false;Western UnionOpenWithdrawModal(${tx.id})}" style="appearance:none;-webkit-appearance:none;width:26px;height:26px;border:2px solid #facc15;border-radius:8px;background:rgba(0,0,0,0.4);cursor:pointer;position:relative;flex-shrink:0;transition:all 0.25s;" onmouseover="this.style.borderColor='#fff'" onmouseout="this.style.borderColor='#facc15'">
                             <span style="font-size:10.5px;color:#a16207;font-weight:700;">تم السحب</span>
                           </label>
                         </td>
                         <td><span class="tx-name">${escapeHtml(tx.name)}</span></td>
-                        <td><span class="amount ${tx.amount >= 0 ? 'pos' : 'neg'}">${westrinFmtMoney(tx.amount)}</span></td>
-                        <td><span class="tx-date">${westrinFmtDateTime(tx.date, tx.time)}</span></td>
+                        <td><span class="amount ${tx.amount >= 0 ? 'pos' : 'neg'}">${Western UnionFmtMoney(tx.amount)}</span></td>
+                        <td><span class="tx-date">${Western UnionFmtDateTime(tx.date, tx.time)}</span></td>
                         <td>
                           <div class="action-btn-group">
-                            <button class="action-btn gold" onclick="westrinOpenEditModal(${tx.id})" title="تعديل">✏️ تعديل</button>
-                            <button class="action-btn red" onclick="westrinOpenFailedModal(${tx.id})" title="لم يتم السحب">❌ لم يتم السحب</button>
-                            <button class="action-btn dark-red" onclick="westrinDeleteTransaction(${tx.id})" title="حذف">🗑️ حذف</button>
+                            <button class="action-btn gold" onclick="Western UnionOpenEditModal(${tx.id})" title="تعديل">✏️ تعديل</button>
+                            <button class="action-btn red" onclick="Western UnionOpenFailedModal(${tx.id})" title="لم يتم السحب">❌ لم يتم السحب</button>
+                            <button class="action-btn dark-red" onclick="Western UnionDeleteTransaction(${tx.id})" title="حذف">🗑️ حذف</button>
                           </div>
                         </td>
                       </tr>
@@ -4101,8 +4102,8 @@
             `;
         }
 
-        function westrinRenderWithdrawn() {
-            const txs = westrinGetAccountTransactions().filter(t => t.status === 'withdrawn');
+        function Western UnionRenderWithdrawn() {
+            const txs = Western UnionGetAccountTransactions().filter(t => t.status === 'withdrawn');
             document.getElementById('wrCountWithdrawn').textContent = txs.length;
             const container = document.getElementById('wrWithdrawnList');
             if (!container) return;
@@ -4110,7 +4111,7 @@
                 container.innerHTML = `<div class="empty-state"><div class="icon">📭</div><p>لا توجد معاملات مسحوبة</p></div>`;
                 return;
             }
-            txs.sort(westrinSortByDateTime);
+            txs.sort(Western UnionSortByDateTime);
             container.innerHTML = `
               <div class="table-wrap">
                 <table class="tx-table">
@@ -4129,15 +4130,15 @@
                           <span class="status-pill done">✓ تم السحب</span>
                         </td>
                         <td><span class="tx-name">${escapeHtml(tx.name)}</span></td>
-                        <td><span class="amount ${tx.amount >= 0 ? 'pos' : 'neg'}">${westrinFmtMoney(tx.amount)}</span></td>
-                        <td><span class="tx-date">${westrinFmtDateTime(tx.date, tx.time)}</span></td>
-                        <td><span class="tx-date" style="color:#34d399;font-weight:800;">${tx.withdrawDate ? westrinFmtDateTime(tx.withdrawDate, tx.withdrawTime) : '—'}</span></td>
+                        <td><span class="amount ${tx.amount >= 0 ? 'pos' : 'neg'}">${Western UnionFmtMoney(tx.amount)}</span></td>
+                        <td><span class="tx-date">${Western UnionFmtDateTime(tx.date, tx.time)}</span></td>
+                        <td><span class="tx-date" style="color:#34d399;font-weight:800;">${tx.withdrawDate ? Western UnionFmtDateTime(tx.withdrawDate, tx.withdrawTime) : '—'}</span></td>
                         <td>
                           <div class="action-btn-group">
-                            <button class="action-btn gold" onclick="westrinOpenEditModal(${tx.id})">✏️ تعديل</button>
-                            <button class="action-btn blue" onclick="westrinResetToPending(${tx.id})" title="إعادة إلى تحت السحب">↩️ إعادة</button>
-                            <button class="action-btn red" onclick="westrinOpenFailedModal(${tx.id})" title="لم يتم السحب">❌ لم يتم السحب</button>
-                            <button class="action-btn dark-red" onclick="westrinDeleteTransaction(${tx.id})">🗑️ حذف</button>
+                            <button class="action-btn gold" onclick="Western UnionOpenEditModal(${tx.id})">✏️ تعديل</button>
+                            <button class="action-btn blue" onclick="Western UnionResetToPending(${tx.id})" title="إعادة إلى تحت السحب">↩️ إعادة</button>
+                            <button class="action-btn red" onclick="Western UnionOpenFailedModal(${tx.id})" title="لم يتم السحب">❌ لم يتم السحب</button>
+                            <button class="action-btn dark-red" onclick="Western UnionDeleteTransaction(${tx.id})">🗑️ حذف</button>
                           </div>
                         </td>
                       </tr>
@@ -4148,8 +4149,8 @@
             `;
         }
 
-        function westrinRenderFailed() {
-            const txs = westrinGetAccountTransactions().filter(t => t.status === 'failed');
+        function Western UnionRenderFailed() {
+            const txs = Western UnionGetAccountTransactions().filter(t => t.status === 'failed');
             document.getElementById('wrCountFailed').textContent = txs.length;
             const container = document.getElementById('wrFailedList');
             if (!container) return;
@@ -4157,7 +4158,7 @@
                 container.innerHTML = `<div class="empty-state"><div class="icon">🎉</div><p>لا توجد معاملات لم يتم سحبها</p></div>`;
                 return;
             }
-            txs.sort(westrinSortByDateTime);
+            txs.sort(Western UnionSortByDateTime);
             container.innerHTML = `
               <div class="table-wrap">
                 <table class="tx-table">
@@ -4176,15 +4177,15 @@
                           <span class="status-pill failed">✗ لم يتم السحب</span>
                         </td>
                         <td><span class="tx-name">${escapeHtml(tx.name)}</span></td>
-                        <td><span class="amount ${tx.amount >= 0 ? 'pos' : 'neg'}">${westrinFmtMoney(tx.amount)}</span></td>
-                        <td><span class="tx-date">${westrinFmtDateTime(tx.date, tx.time)}</span></td>
-                        <td><span class="tx-date" style="color:#f87171;font-weight:800;">${tx.failedDate ? westrinFmtDateTime(tx.failedDate, tx.failedTime) : '—'}</span></td>
+                        <td><span class="amount ${tx.amount >= 0 ? 'pos' : 'neg'}">${Western UnionFmtMoney(tx.amount)}</span></td>
+                        <td><span class="tx-date">${Western UnionFmtDateTime(tx.date, tx.time)}</span></td>
+                        <td><span class="tx-date" style="color:#f87171;font-weight:800;">${tx.failedDate ? Western UnionFmtDateTime(tx.failedDate, tx.failedTime) : '—'}</span></td>
                         <td>
                           <div class="action-btn-group">
-                            <button class="action-btn gold" onclick="westrinOpenEditModal(${tx.id})">✏️ تعديل</button>
-                            <button class="action-btn green" onclick="westrinOpenWithdrawModal(${tx.id})" title="تم السحب">✓ تم السحب</button>
-                            <button class="action-btn blue" onclick="westrinResetToPending(${tx.id})" title="إعادة">↩️ إعادة</button>
-                            <button class="action-btn dark-red" onclick="westrinDeleteTransaction(${tx.id})">🗑️ حذف</button>
+                            <button class="action-btn gold" onclick="Western UnionOpenEditModal(${tx.id})">✏️ تعديل</button>
+                            <button class="action-btn green" onclick="Western UnionOpenWithdrawModal(${tx.id})" title="تم السحب">✓ تم السحب</button>
+                            <button class="action-btn blue" onclick="Western UnionResetToPending(${tx.id})" title="إعادة">↩️ إعادة</button>
+                            <button class="action-btn dark-red" onclick="Western UnionDeleteTransaction(${tx.id})">🗑️ حذف</button>
                           </div>
                         </td>
                       </tr>
@@ -4195,14 +4196,14 @@
             `;
         }
 
-        function westrinRenderAll() {
-            westrinRenderPending();
-            westrinRenderWithdrawn();
-            westrinRenderFailed();
+        function Western UnionRenderAll() {
+            Western UnionRenderPending();
+            Western UnionRenderWithdrawn();
+            Western UnionRenderFailed();
         }
 
         // ✅ عرض الكشف داخل الصفحة - يعتمد على آخر عملية تحديث
-        function westrinGetFilteredTransactions(acc, fromDate, fromTime, toDate, toTime) {
+        function Western UnionGetFilteredTransactions(acc, fromDate, fromTime, toDate, toTime) {
             let txs = wrGetTransactions().filter(t => t.accountId === acc.id);
 
             // الفلترة تعتمد على آخر عملية تحديث (سحب/فشل) إن وجدت، وإلا تاريخ الإنشاء
@@ -4222,7 +4223,7 @@
             return txs;
         }
 
-        function westrinGenerateReport() {
+        function Western UnionGenerateReport() {
             const fromDate = document.getElementById('wrReportFrom').value;
             const fromTime = document.getElementById('wrReportFromTime').value;
             const toDate = document.getElementById('wrReportTo').value;
@@ -4230,8 +4231,8 @@
             const acc = wrGetAccounts().find(a => a.id === wrCurrentAccountId);
             if (!acc) return;
 
-            let txs = westrinGetFilteredTransactions(acc, fromDate, fromTime, toDate, toTime);
-            txs.sort(westrinSortByLastUpdate);
+            let txs = Western UnionGetFilteredTransactions(acc, fromDate, fromTime, toDate, toTime);
+            txs.sort(Western UnionSortByLastUpdate);
 
             const total = txs.reduce((s,t) => s + Number(t.amount), 0);
             const totalWithdrawn = txs.filter(t => t.status === 'withdrawn').reduce((s,t) => s + Number(t.amount), 0);
@@ -4253,13 +4254,13 @@
                 else if (fromDate) fileName += `_من_${fromDate.split('-').join('')}`;
                 else fileName += `_إلى_${toDate.split('-').join('')}`;
             } else {
-                fileName += `_${westrinGetCurrentDate().split('-').join('')}`;
+                fileName += `_${Western UnionGetCurrentDate().split('-').join('')}`;
             }
             window.wrCurrentReportFileName = fileName;
 
             if (txs.length === 0) {
                 paper.innerHTML = `
-                  <div style="position:absolute;top:20px;left:20px;font-family:'Inter',sans-serif;font-weight:900;font-size:14px;letter-spacing:2px;color:#000;padding:6px 14px;border:2px solid #000;border-radius:8px;background:#facc15;">WESTRIN</div>
+                  <div style="position:absolute;top:20px;left:20px;font-family:'Inter',sans-serif;font-weight:900;font-size:14px;letter-spacing:2px;color:#000;padding:6px 14px;border:2px solid #000;border-radius:8px;background:#facc15;">Western Union</div>
                   <div style="text-align:center;border-bottom:2px solid #facc15;padding-bottom:20px;margin-bottom:24px;padding-top:20px;">
                     <h2 style="color:#0f172a;font-size:26px;margin-bottom:8px;font-weight:800;">كشف حساب: ${escapeHtml(acc.name)}</h2>
                     <div style="color:#64748b;font-size:13.5px;font-weight:600;direction:ltr;display:inline-block;">${periodText}</div>
@@ -4273,7 +4274,7 @@
             }
 
             paper.innerHTML = `
-              <div style="position:absolute;top:20px;left:20px;font-family:'Inter',sans-serif;font-weight:900;font-size:14px;letter-spacing:2px;color:#000;padding:6px 14px;border:2px solid #000;border-radius:8px;background:#facc15;">WESTRIN</div>
+              <div style="position:absolute;top:20px;left:20px;font-family:'Inter',sans-serif;font-weight:900;font-size:14px;letter-spacing:2px;color:#000;padding:6px 14px;border:2px solid #000;border-radius:8px;background:#facc15;">Western Union</div>
               <div style="text-align:center;border-bottom:2px solid #facc15;padding-bottom:20px;margin-bottom:24px;padding-top:20px;">
                 <h2 style="color:#0f172a;font-size:26px;margin-bottom:8px;font-weight:800;">كشف حساب: ${escapeHtml(acc.name)}</h2>
                 <div style="color:#64748b;font-size:13.5px;font-weight:600;direction:ltr;display:inline-block;">${periodText}</div>
@@ -4285,15 +4286,15 @@
                 </div>
                 <div style="padding:16px;background:linear-gradient(135deg,#d1fae5,#a7f3d0);border:1px solid #10b981;border-radius:14px;text-align:center;">
                   <div style="font-size:11.5px;color:#065f46;font-weight:700;margin-bottom:8px;">تم السحب</div>
-                  <div style="font-size:20px;font-weight:800;font-family:'Inter',sans-serif;color:#0f172a;">${westrinFmtMoney(totalWithdrawn)}</div>
+                  <div style="font-size:20px;font-weight:800;font-family:'Inter',sans-serif;color:#0f172a;">${Western UnionFmtMoney(totalWithdrawn)}</div>
                 </div>
                 <div style="padding:16px;background:linear-gradient(135deg,#ffedd5,#fed7aa);border:1px solid #f97316;border-radius:14px;text-align:center;">
                   <div style="font-size:11.5px;color:#9a3412;font-weight:700;margin-bottom:8px;">تحت السحب</div>
-                  <div style="font-size:20px;font-weight:800;font-family:'Inter',sans-serif;color:#0f172a;">${westrinFmtMoney(totalPending)}</div>
+                  <div style="font-size:20px;font-weight:800;font-family:'Inter',sans-serif;color:#0f172a;">${Western UnionFmtMoney(totalPending)}</div>
                 </div>
                 <div style="padding:16px;background:linear-gradient(135deg,#fee2e2,#fecaca);border:1px solid #dc2626;border-radius:14px;text-align:center;">
                   <div style="font-size:11.5px;color:#991b1b;font-weight:700;margin-bottom:8px;">لم يتم السحب</div>
-                  <div style="font-size:20px;font-weight:800;font-family:'Inter',sans-serif;color:#0f172a;">${westrinFmtMoney(totalFailed)}</div>
+                  <div style="font-size:20px;font-weight:800;font-family:'Inter',sans-serif;color:#0f172a;">${Western UnionFmtMoney(totalFailed)}</div>
                 </div>
               </div>
               <table style="width:100%;border-collapse:collapse;margin-top:10px;">
@@ -4310,9 +4311,9 @@
                 <tbody>
                   ${txs.map((tx, i) => {
                       let lastUpdateDT = '—';
-                      if (tx.status === 'withdrawn' && tx.withdrawDate) lastUpdateDT = westrinFmtDateTime(tx.withdrawDate, tx.withdrawTime);
-                      else if (tx.status === 'failed' && tx.failedDate) lastUpdateDT = westrinFmtDateTime(tx.failedDate, tx.failedTime);
-                      else lastUpdateDT = westrinFmtDateTime(tx.date, tx.time);
+                      if (tx.status === 'withdrawn' && tx.withdrawDate) lastUpdateDT = Western UnionFmtDateTime(tx.withdrawDate, tx.withdrawTime);
+                      else if (tx.status === 'failed' && tx.failedDate) lastUpdateDT = Western UnionFmtDateTime(tx.failedDate, tx.failedTime);
+                      else lastUpdateDT = Western UnionFmtDateTime(tx.date, tx.time);
 
                       let statusBadge = '';
                       if (tx.status === 'withdrawn') statusBadge = '<span style="display:inline-block;padding:5px 12px;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);color:#059669;border-radius:20px;font-size:10.5px;font-weight:800;">✓ تم السحب</span>';
@@ -4323,8 +4324,8 @@
                         <tr style="border-bottom:1px solid #fef3c7;">
                           <td style="padding:10px 8px;font-size:13px;font-family:'Inter',sans-serif;font-weight:700;">${i+1}</td>
                           <td style="padding:10px 8px;font-size:13px;font-weight:700;color:#0f172a;">${escapeHtml(tx.name)}</td>
-                          <td style="padding:10px 8px;font-size:13px;font-family:'Inter',sans-serif;font-weight:700;">${westrinFmtMoney(tx.amount)}</td>
-                          <td style="padding:10px 8px;font-size:12px;font-family:'Inter',sans-serif;color:#64748b;direction:ltr;">${westrinFmtDateTime(tx.date, tx.time)}</td>
+                          <td style="padding:10px 8px;font-size:13px;font-family:'Inter',sans-serif;font-weight:700;">${Western UnionFmtMoney(tx.amount)}</td>
+                          <td style="padding:10px 8px;font-size:12px;font-family:'Inter',sans-serif;color:#64748b;direction:ltr;">${Western UnionFmtDateTime(tx.date, tx.time)}</td>
                           <td style="padding:10px 8px;font-size:12px;font-family:'Inter',sans-serif;color:#334155;font-weight:700;direction:ltr;">${lastUpdateDT}</td>
                           <td style="padding:10px 8px;">${statusBadge}</td>
                         </tr>
@@ -4335,22 +4336,22 @@
               <div style="margin-top:24px;padding:24px 28px;background:linear-gradient(135deg,#000,#1a1a1a);color:#fefce8;border-radius:16px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;border:2px solid #facc15;">
                 <div style="text-align:center;">
                   <div style="font-size:12px;opacity:0.85;letter-spacing:0.6px;font-weight:700;margin-bottom:8px;color:#fde047;">المجموع الكلي</div>
-                  <div style="font-size:24px;font-weight:800;font-family:'Inter',sans-serif;">${westrinFmtMoney(total)}</div>
+                  <div style="font-size:24px;font-weight:800;font-family:'Inter',sans-serif;">${Western UnionFmtMoney(total)}</div>
                 </div>
                 <div style="text-align:center;border-left:1px solid rgba(250,204,21,0.3);border-right:1px solid rgba(250,204,21,0.3);">
                   <div style="font-size:12px;opacity:0.85;letter-spacing:0.6px;font-weight:700;margin-bottom:8px;color:#fde047;">تم السحب</div>
-                  <div style="font-size:24px;font-weight:800;font-family:'Inter',sans-serif;color:#6ee7b7;">${westrinFmtMoney(totalWithdrawn)}</div>
+                  <div style="font-size:24px;font-weight:800;font-family:'Inter',sans-serif;color:#6ee7b7;">${Western UnionFmtMoney(totalWithdrawn)}</div>
                 </div>
                 <div style="text-align:center;">
                   <div style="font-size:12px;opacity:0.85;letter-spacing:0.6px;font-weight:700;margin-bottom:8px;color:#fde047;">لم يتم السحب</div>
-                  <div style="font-size:24px;font-weight:800;font-family:'Inter',sans-serif;color:#fca5a5;">${westrinFmtMoney(totalFailed)}</div>
+                  <div style="font-size:24px;font-weight:800;font-family:'Inter',sans-serif;color:#fca5a5;">${Western UnionFmtMoney(totalFailed)}</div>
                 </div>
               </div>
             `;
         }
 
         // 🖨️ الطباعة الاحترافية
-        function westrinPrintReport() {
+        function Western UnionPrintReport() {
             const fromDate = document.getElementById('wrReportFrom').value;
             const fromTime = document.getElementById('wrReportFromTime').value;
             const toDate = document.getElementById('wrReportTo').value;
@@ -4358,8 +4359,8 @@
             const acc = wrGetAccounts().find(a => a.id === wrCurrentAccountId);
             if (!acc) { alert('يرجى اختيار حساب أولاً.'); return; }
 
-            let txs = westrinGetFilteredTransactions(acc, fromDate, fromTime, toDate, toTime);
-            txs.sort(westrinSortByLastUpdate);
+            let txs = Western UnionGetFilteredTransactions(acc, fromDate, fromTime, toDate, toTime);
+            txs.sort(Western UnionSortByLastUpdate);
 
             const total = txs.reduce((s,t) => s + Number(t.amount), 0);
             const totalWithdrawn = txs.filter(t => t.status === 'withdrawn').reduce((s,t) => s + Number(t.amount), 0);
@@ -4375,9 +4376,9 @@
 
             const rows = txs.map(tx => {
                 let lastUpdateDT = '';
-                if (tx.status === 'withdrawn' && tx.withdrawDate) lastUpdateDT = westrinFmtDateTime(tx.withdrawDate, tx.withdrawTime);
-                else if (tx.status === 'failed' && tx.failedDate) lastUpdateDT = westrinFmtDateTime(tx.failedDate, tx.failedTime);
-                else lastUpdateDT = westrinFmtDateTime(tx.date, tx.time);
+                if (tx.status === 'withdrawn' && tx.withdrawDate) lastUpdateDT = Western UnionFmtDateTime(tx.withdrawDate, tx.withdrawTime);
+                else if (tx.status === 'failed' && tx.failedDate) lastUpdateDT = Western UnionFmtDateTime(tx.failedDate, tx.failedTime);
+                else lastUpdateDT = Western UnionFmtDateTime(tx.date, tx.time);
 
                 let statusBadgeHtml = '';
                 if (tx.status === 'withdrawn') statusBadgeHtml = '<span class="status-badge done">✓ تم السحب</span>';
@@ -4386,27 +4387,27 @@
 
                 return [
                     `<td><span class="tx-name">${escapeHtml(tx.name)}</span></td>`,
-                    `<td><span class="num">${westrinFmtMoney(tx.amount)}</span></td>`,
-                    `<td><span class="num">${westrinFmtDateTime(tx.date, tx.time)}</span></td>`,
+                    `<td><span class="num">${Western UnionFmtMoney(tx.amount)}</span></td>`,
+                    `<td><span class="num">${Western UnionFmtDateTime(tx.date, tx.time)}</span></td>`,
                     `<td><span class="num" style="color:#0f172a;font-weight:900;">${lastUpdateDT}</span></td>`,
                     `<td style="text-align:center;">${statusBadgeHtml}</td>`
                 ];
             });
 
             const statsArr = [
-                { label: 'إجمالي المبالغ', value: westrinFmtMoney(total), color: 'gold' },
-                { label: 'تم السحب', value: westrinFmtMoney(totalWithdrawn), color: 'green' },
-                { label: 'تحت السحب', value: westrinFmtMoney(totalPending), color: 'amber' }
+                { label: 'إجمالي المبالغ', value: Western UnionFmtMoney(total), color: 'gold' },
+                { label: 'تم السحب', value: Western UnionFmtMoney(totalWithdrawn), color: 'green' },
+                { label: 'تحت السحب', value: Western UnionFmtMoney(totalPending), color: 'amber' }
             ];
             if (totalFailed > 0) {
-                statsArr.push({ label: 'لم يتم السحب', value: westrinFmtMoney(totalFailed), color: 'red' });
+                statsArr.push({ label: 'لم يتم السحب', value: Western UnionFmtMoney(totalFailed), color: 'red' });
             }
 
             doProPrint({
                 logoLetter: 'W',
-                brandSuffix: 'WESTRIN',
+                brandSuffix: 'Western Union',
                 brandTagline: 'FINANCIAL STATEMENT · كشف حساب مالي',
-                stampText: 'WESTRIN',
+                stampText: 'Western Union',
                 title: `كشف حساب رسمي — ${escapeHtml(acc.name)}`,
                 subtitle: periodText,
                 info: [
@@ -4424,8 +4425,8 @@
                 ],
                 rows: rows,
                 totals: [
-                    { label: 'المجموع الكلي', value: westrinFmtMoney(total), color: 'total' },
-                    { label: 'فرق الحساب (تم السحب)', value: westrinFmtMoney(totalWithdrawn), color: 'gold-total' }
+                    { label: 'المجموع الكلي', value: Western UnionFmtMoney(total), color: 'total' },
+                    { label: 'فرق الحساب (تم السحب)', value: Western UnionFmtMoney(totalWithdrawn), color: 'gold-total' }
                 ],
                 fileName: acc.name + (fromDate ? `_${fromDate.split('-').join('')}` : '') + (toDate ? `_${toDate.split('-').join('')}` : '')
             });
@@ -4529,33 +4530,33 @@
         window.renderBankStatementTable = renderBankStatementTable;
         window.printBankStatement = printBankStatement;
 
-        window.initWestrinApp = initWestrinApp;
-        window.westrinOpenTrash = westrinOpenTrash;
-        window.westrinClearAllData = westrinClearAllData;
-        window.westrinOpenAccountModal = westrinOpenAccountModal;
-        window.westrinCloseAccountModal = westrinCloseAccountModal;
-        window.westrinSaveAccount = westrinSaveAccount;
-        window.westrinDeleteAccount = westrinDeleteAccount;
-        window.westrinOpenAccount = westrinOpenAccount;
-        window.westrinBackToAccounts = westrinBackToAccounts;
-        window.westrinRestoreAccount = westrinRestoreAccount;
-        window.westrinDeleteForever = westrinDeleteForever;
-        window.westrinSwitchTab = westrinSwitchTab;
-        window.westrinAddTransaction = westrinAddTransaction;
-        window.westrinOpenWithdrawModal = westrinOpenWithdrawModal;
-        window.westrinCloseWithdrawModal = westrinCloseWithdrawModal;
-        window.westrinConfirmWithdraw = westrinConfirmWithdraw;
-        window.westrinOpenFailedModal = westrinOpenFailedModal;
-        window.westrinCloseFailedModal = westrinCloseFailedModal;
-        window.westrinConfirmFailed = westrinConfirmFailed;
-        window.westrinResetToPending = westrinResetToPending;
-        window.westrinEnableEdit = westrinEnableEdit;
-        window.westrinOpenEditModal = westrinOpenEditModal;
-        window.westrinCloseEditModal = westrinCloseEditModal;
-        window.westrinSaveEdit = westrinSaveEdit;
-        window.westrinDeleteTransaction = westrinDeleteTransaction;
-        window.westrinGenerateReport = westrinGenerateReport;
-        window.westrinPrintReport = westrinPrintReport;
+        window.initWestern UnionApp = initWestern UnionApp;
+        window.Western UnionOpenTrash = Western UnionOpenTrash;
+        window.Western UnionClearAllData = Western UnionClearAllData;
+        window.Western UnionOpenAccountModal = Western UnionOpenAccountModal;
+        window.Western UnionCloseAccountModal = Western UnionCloseAccountModal;
+        window.Western UnionSaveAccount = Western UnionSaveAccount;
+        window.Western UnionDeleteAccount = Western UnionDeleteAccount;
+        window.Western UnionOpenAccount = Western UnionOpenAccount;
+        window.Western UnionBackToAccounts = Western UnionBackToAccounts;
+        window.Western UnionRestoreAccount = Western UnionRestoreAccount;
+        window.Western UnionDeleteForever = Western UnionDeleteForever;
+        window.Western UnionSwitchTab = Western UnionSwitchTab;
+        window.Western UnionAddTransaction = Western UnionAddTransaction;
+        window.Western UnionOpenWithdrawModal = Western UnionOpenWithdrawModal;
+        window.Western UnionCloseWithdrawModal = Western UnionCloseWithdrawModal;
+        window.Western UnionConfirmWithdraw = Western UnionConfirmWithdraw;
+        window.Western UnionOpenFailedModal = Western UnionOpenFailedModal;
+        window.Western UnionCloseFailedModal = Western UnionCloseFailedModal;
+        window.Western UnionConfirmFailed = Western UnionConfirmFailed;
+        window.Western UnionResetToPending = Western UnionResetToPending;
+        window.Western UnionEnableEdit = Western UnionEnableEdit;
+        window.Western UnionOpenEditModal = Western UnionOpenEditModal;
+        window.Western UnionCloseEditModal = Western UnionCloseEditModal;
+        window.Western UnionSaveEdit = Western UnionSaveEdit;
+        window.Western UnionDeleteTransaction = Western UnionDeleteTransaction;
+        window.Western UnionGenerateReport = Western UnionGenerateReport;
+        window.Western UnionPrintReport = Western UnionPrintReport;
     </script>
 
 </body>
