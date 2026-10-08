@@ -20,7 +20,6 @@
         .account-btn-tab { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(245, 158, 11, 0.3); color: #f59e0b; padding: 10px 20px; border-radius: 12px; font-weight: 800; font-size: 0.85rem; cursor: pointer; white-space: nowrap; transition: all 0.25s ease-in-out; outline: none; }
         .account-btn-tab:hover { background: rgba(245, 158, 11, 0.15); border-color: #f59e0b; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(245, 158, 11, 0.25); }
 
-        /* ==================== أنماط الطباعة العامة ==================== */
         @media print {
             body { background: white !important; color: black !important; padding: 0 !important; margin: 0 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             .no-print { display: none !important; }
@@ -58,34 +57,24 @@
         .cloud-spinner { width: 14px; height: 14px; border: 2px solid rgba(245,158,11,.2); border-top-color: #f59e0b; border-radius: 50%; animation: spin 0.8s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* ============================================================
-           🎨 قالب الطباعة الاحترافي الموحد (AL ANHAR PRO REPORT)
-           ============================================================ */
+        /* ==================== قالب الطباعة الموحد الاحترافي ==================== */
         @media print {
             body > *:not(#alAnharPrintRoot) { display: none !important; }
             #alAnharPrintRoot {
                 display: block !important;
                 position: absolute !important;
-                top: 0 !important;
-                left: 0 !important;
-                width: 100% !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                background: #ffffff !important;
-                color: #0f172a !important;
-                font-family: 'Cairo', sans-serif !important;
-                direction: rtl !important;
+                top: 0 !important; left: 0 !important;
+                width: 100% !important; margin: 0 !important; padding: 0 !important;
+                background: #ffffff !important; color: #0f172a !important;
+                font-family: 'Cairo', sans-serif !important; direction: rtl !important;
             }
             #alAnharPrintRoot .pro-header {
                 background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #000 100%) !important;
-                color: #ffffff !important;
-                padding: 22px 30px !important;
-                display: flex !important;
-                justify-content: space-between !important;
+                color: #ffffff !important; padding: 22px 30px !important;
+                display: flex !important; justify-content: space-between !important;
                 align-items: center !important;
                 border-bottom: 5px solid #facc15 !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
+                -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
             }
             #alAnharPrintRoot .pro-header .brand-box { display: flex !important; align-items: center !important; gap: 15px !important; }
             #alAnharPrintRoot .pro-header .brand-logo {
@@ -94,7 +83,6 @@
                 display: flex !important; align-items: center !important; justify-content: center !important;
                 color: #000 !important; font-size: 26px !important; font-weight: 900 !important;
                 font-family: 'Inter', sans-serif !important;
-                box-shadow: 0 6px 18px rgba(250,204,21,0.5) !important;
             }
             #alAnharPrintRoot .pro-header .brand-text h1 {
                 font-size: 22px !important; font-weight: 900 !important; color: #ffffff !important;
@@ -118,7 +106,6 @@
                 background: linear-gradient(90deg, #facc15 0%, #f59e0b 100%) !important;
                 color: #000 !important; padding: 14px 30px !important; text-align: center !important;
                 font-weight: 900 !important; font-size: 18px !important; letter-spacing: 1px !important;
-                -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
             }
             #alAnharPrintRoot .pro-title-bar .sub {
                 font-size: 12px !important; font-weight: 700 !important;
@@ -134,7 +121,6 @@
                 background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
                 border: 1px solid #cbd5e1 !important; border-right: 4px solid #facc15 !important;
                 border-radius: 8px !important; padding: 10px 14px !important;
-                -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
             }
             #alAnharPrintRoot .pro-info-item .label {
                 font-size: 10px !important; color: #64748b !important;
@@ -150,37 +136,21 @@
             }
             #alAnharPrintRoot .pro-stat-card {
                 border-radius: 10px !important; padding: 14px !important; text-align: center !important;
-                -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
                 border: 1px solid !important;
             }
-            #alAnharPrintRoot .pro-stat-card.gold {
-                background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%) !important;
-                border-color: #f59e0b !important;
-            }
-            #alAnharPrintRoot .pro-stat-card.green {
-                background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%) !important;
-                border-color: #10b981 !important;
-            }
-            #alAnharPrintRoot .pro-stat-card.amber {
-                background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%) !important;
-                border-color: #f97316 !important;
-            }
-            #alAnharPrintRoot .pro-stat-card.blue {
-                background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%) !important;
-                border-color: #3b82f6 !important;
-            }
-            #alAnharPrintRoot .pro-stat-card.purple {
-                background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%) !important;
-                border-color: #8b5cf6 !important;
-            }
+            #alAnharPrintRoot .pro-stat-card.gold { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%) !important; border-color: #f59e0b !important; }
+            #alAnharPrintRoot .pro-stat-card.green { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%) !important; border-color: #10b981 !important; }
+            #alAnharPrintRoot .pro-stat-card.amber { background: linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%) !important; border-color: #f97316 !important; }
+            #alAnharPrintRoot .pro-stat-card.red { background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%) !important; border-color: #dc2626 !important; }
+            #alAnharPrintRoot .pro-stat-card.blue { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%) !important; border-color: #3b82f6 !important; }
             #alAnharPrintRoot .pro-stat-card .stat-label {
                 font-size: 11px !important; color: #78350f !important;
                 font-weight: 800 !important; letter-spacing: 1px !important; margin-bottom: 6px !important;
             }
             #alAnharPrintRoot .pro-stat-card.green .stat-label { color: #065f46 !important; }
             #alAnharPrintRoot .pro-stat-card.amber .stat-label { color: #9a3412 !important; }
+            #alAnharPrintRoot .pro-stat-card.red .stat-label { color: #991b1b !important; }
             #alAnharPrintRoot .pro-stat-card.blue .stat-label { color: #1e40af !important; }
-            #alAnharPrintRoot .pro-stat-card.purple .stat-label { color: #5b21b6 !important; }
             #alAnharPrintRoot .pro-stat-card .stat-value {
                 font-size: 20px !important; font-weight: 900 !important;
                 font-family: 'Inter', sans-serif !important; color: #0f172a !important;
@@ -189,14 +159,12 @@
             #alAnharPrintRoot .pro-table {
                 width: 100% !important; border-collapse: collapse !important; margin-bottom: 20px !important;
                 border-radius: 10px !important; overflow: hidden !important;
-                box-shadow: 0 4px 14px rgba(0,0,0,0.08) !important;
             }
             #alAnharPrintRoot .pro-table thead th {
                 background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
                 color: #facc15 !important; font-size: 11px !important; font-weight: 900 !important;
                 letter-spacing: 1px !important; padding: 12px 10px !important;
                 text-align: right !important; border-bottom: 3px solid #facc15 !important;
-                -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
             }
             #alAnharPrintRoot .pro-table thead th.center { text-align: center !important; }
             #alAnharPrintRoot .pro-table tbody td {
@@ -204,11 +172,7 @@
                 border-bottom: 1px solid #e2e8f0 !important; text-align: right !important;
                 vertical-align: middle !important; background: #ffffff !important;
             }
-            #alAnharPrintRoot .pro-table tbody tr:nth-child(even) td {
-                background: #f8fafc !important;
-                -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
-            }
-            #alAnharPrintRoot .pro-table tbody tr:last-child td { border-bottom: none !important; }
+            #alAnharPrintRoot .pro-table tbody tr:nth-child(even) td { background: #f8fafc !important; }
             #alAnharPrintRoot .pro-table .num {
                 font-family: 'Inter', sans-serif !important;
                 font-weight: 800 !important; direction: ltr !important; display: inline-block !important;
@@ -218,25 +182,16 @@
                 line-height: 22px !important; text-align: center !important;
                 background: #facc15 !important; color: #000 !important;
                 border-radius: 50% !important; font-weight: 900 !important; font-size: 10.5px !important;
-                -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
             }
             #alAnharPrintRoot .pro-table .tx-name { font-weight: 800 !important; color: #0f172a !important; }
             #alAnharPrintRoot .status-badge {
-                display: inline-block !important; padding: 4px 12px !important;
-                border-radius: 20px !important; font-size: 10.5px !important;
-                font-weight: 900 !important; letter-spacing: 0.3px !important;
-                -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
+                display: inline-block !important; padding: 4px 10px !important;
+                border-radius: 20px !important; font-size: 10px !important;
+                font-weight: 900 !important;
             }
-            #alAnharPrintRoot .status-badge.done {
-                background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
-                color: #ffffff !important;
-                box-shadow: 0 2px 6px rgba(16,185,129,0.4) !important;
-            }
-            #alAnharPrintRoot .status-badge.pending {
-                background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
-                color: #ffffff !important;
-                box-shadow: 0 2px 6px rgba(245,158,11,0.4) !important;
-            }
+            #alAnharPrintRoot .status-badge.done { background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important; color: #ffffff !important; }
+            #alAnharPrintRoot .status-badge.pending { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important; color: #ffffff !important; }
+            #alAnharPrintRoot .status-badge.failed { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important; color: #ffffff !important; }
             #alAnharPrintRoot .pro-totals {
                 display: grid !important;
                 grid-template-columns: 1fr 1fr !important;
@@ -246,27 +201,12 @@
                 border-radius: 12px !important; padding: 16px 20px !important;
                 display: flex !important; justify-content: space-between !important;
                 align-items: center !important;
-                -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;
             }
-            #alAnharPrintRoot .pro-total-card.total {
-                background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
-                color: #ffffff !important; border: 2px solid #facc15 !important;
-            }
-            #alAnharPrintRoot .pro-total-card.withdrawn {
-                background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
-                color: #ffffff !important; border: 2px solid #047857 !important;
-            }
-            #alAnharPrintRoot .pro-total-card.gold-total {
-                background: linear-gradient(135deg, #facc15 0%, #f59e0b 100%) !important;
-                color: #000000 !important; border: 2px solid #b45309 !important;
-            }
-            #alAnharPrintRoot .pro-total-card .label {
-                font-size: 12px !important; font-weight: 800 !important; letter-spacing: 0.5px !important;
-            }
-            #alAnharPrintRoot .pro-total-card .value {
-                font-size: 22px !important; font-weight: 900 !important;
-                font-family: 'Inter', sans-serif !important; direction: ltr !important;
-            }
+            #alAnharPrintRoot .pro-total-card.total { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important; color: #ffffff !important; border: 2px solid #facc15 !important; }
+            #alAnharPrintRoot .pro-total-card.withdrawn { background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important; color: #ffffff !important; border: 2px solid #047857 !important; }
+            #alAnharPrintRoot .pro-total-card.gold-total { background: linear-gradient(135deg, #facc15 0%, #f59e0b 100%) !important; color: #000000 !important; border: 2px solid #b45309 !important; }
+            #alAnharPrintRoot .pro-total-card .label { font-size: 12px !important; font-weight: 800 !important; }
+            #alAnharPrintRoot .pro-total-card .value { font-size: 22px !important; font-weight: 900 !important; font-family: 'Inter', sans-serif !important; direction: ltr !important; }
             #alAnharPrintRoot .pro-total-card.total .value { color: #facc15 !important; }
             #alAnharPrintRoot .pro-total-card.gold-total .value { color: #000 !important; }
             #alAnharPrintRoot .pro-footer {
@@ -274,19 +214,11 @@
                 border-top: 2px dashed #cbd5e1 !important;
                 display: flex !important; justify-content: space-between !important;
                 align-items: center !important; font-size: 10px !important;
-                color: #64748b !important; letter-spacing: 0.5px !important;
+                color: #64748b !important;
             }
             #alAnharPrintRoot .pro-footer .stamp {
                 font-weight: 900 !important; color: #f59e0b !important;
                 font-size: 12px !important; letter-spacing: 2px !important;
-            }
-            #alAnharPrintRoot .pro-empty {
-                text-align: center !important; padding: 50px 20px !important;
-                color: #94a3b8 !important; font-size: 14px !important; font-weight: 700 !important;
-            }
-            #alAnharPrintRoot .pro-empty .icon {
-                font-size: 56px !important; margin-bottom: 14px !important;
-                display: block !important; opacity: 0.4 !important;
             }
             @page { size: A4; margin: 8mm; }
         }
@@ -1442,7 +1374,7 @@
         function currencySymbol(code) { return code === 'USD' ? '$' : code === 'EUR' ? '€' : '₺'; }
 
         /* ============================================================
-           🎨 محرك الطباعة الموحد الاحترافي (Universal Print Engine)
+           🎨 محرك الطباعة الموحد (Universal Print Engine)
            ============================================================ */
         function buildProPrintHTML(config) {
             const now = new Date();
@@ -1538,19 +1470,28 @@
 
         function doProPrint(config) {
             const printRoot = document.getElementById('alAnharPrintRoot');
-            if (!printRoot) { window.print(); return; }
+            if (!printRoot) { try { window.print(); } catch(e) { alert('تعذر فتح نافذة الطباعة'); } return; }
             printRoot.innerHTML = buildProPrintHTML(config);
 
             const originalTitle = document.title;
             if (config.fileName) document.title = config.fileName;
 
+            // ✅ الطباعة تعمل على الكمبيوتر والتلفون
             setTimeout(() => {
-                window.print();
+                try {
+                    if (typeof window.print === 'function') {
+                        window.print();
+                    } else {
+                        alert('المتصفح لا يدعم الطباعة');
+                    }
+                } catch(e) {
+                    console.error('خطأ الطباعة:', e);
+                }
                 setTimeout(() => {
                     document.title = originalTitle;
                     printRoot.innerHTML = '';
-                }, 500);
-            }, 150);
+                }, 800);
+            }, 200);
         }
 
         // ==================== Telegram ====================
@@ -2110,24 +2051,20 @@
                         <td class="p-3 font-mono font-bold">${formatMoney(t.finalTotal)} ${curr}</td>
                         <td class="p-3 font-bold text-purple-300">${escapeHtml(employeeLabel(t))}</td>
                     `;
-                    tbody.appendChild(tbody);
+                    tbody.appendChild(tr);
                 });
             }
             document.getElementById('pdfStatementCurrency').innerText = currencyUsed;
             document.getElementById('pdfStatementTotalVal').innerText = `${currencyUsed} ${formatMoney(totalAmount)}`;
         }
-
-        // 🖨️ طباعة كشف SWFT بالتصميم الاحترافي الموحد
         function printSwftStatement() {
             const compId = document.getElementById('statementSwftCompany').value;
             const comp = appDb.companies.find(c => c.id === compId);
             if (!comp) { alert('يرجى اختيار شركة.'); return; }
-
             const trans = appDb.transactions.filter(t => t.companyId === compId);
             const totalAmount = trans.reduce((s, t) => s + Number(t.finalTotal || 0), 0);
             const totalBase = trans.reduce((s, t) => s + Number(t.amount || 0), 0);
             const currencyUsed = trans.length > 0 ? (trans[0].currency || '$') : '$';
-
             const rows = trans.map(t => {
                 const curr = t.currency || '$';
                 const accName = t.account === 'Dubai' ? 'DXB - Dubai Main' : 'TR - Turkey Main';
@@ -2141,12 +2078,9 @@
                     `<td>${escapeHtml(employeeLabel(t))}</td>`
                 ];
             });
-
             doProPrint({
-                logoLetter: 'S',
-                brandSuffix: 'SWFT',
-                brandTagline: 'SWIFT TRANSFER STATEMENT · كشف حوالات',
-                stampText: 'SWFT',
+                logoLetter: 'S', brandSuffix: 'SWFT',
+                brandTagline: 'SWIFT TRANSFER STATEMENT · كشف حوالات', stampText: 'SWFT',
                 title: `كشف حساب شركة — ${escapeHtml(comp.name)}`,
                 subtitle: `كود الشركة: ${escapeHtml(comp.code)}${comp.isDeleted ? ' · (محذوفة)' : ''}`,
                 info: [
@@ -2160,13 +2094,8 @@
                     { label: 'الإجمالي النهائي', value: formatMoney(totalAmount) + ' ' + currencyUsed, color: 'green' }
                 ],
                 tableHeaders: [
-                    { label: 'الشركة' },
-                    { label: 'التاريخ' },
-                    { label: 'المبلغ الأساسي' },
-                    { label: 'الحساب' },
-                    { label: 'الملاحظات' },
-                    { label: 'الإجمالي' },
-                    { label: 'الموظف / الحساب' }
+                    { label: 'الشركة' }, { label: 'التاريخ' }, { label: 'المبلغ الأساسي' },
+                    { label: 'الحساب' }, { label: 'الملاحظات' }, { label: 'الإجمالي' }, { label: 'الموظف / الحساب' }
                 ],
                 rows: rows,
                 totals: [
@@ -2176,7 +2105,6 @@
                 fileName: `SWFT_${comp.name}_${getTodayDateString()}`
             });
         }
-
         function clearSwftStatementFilters() {
             if (document.getElementById('statementSwftCompany').options.length > 0) {
                 document.getElementById('statementSwftCompany').selectedIndex = 0;
@@ -2496,18 +2424,14 @@
             }
             document.getElementById('rmbStatementTotal').innerText = `${formatMoney(total)} ¥`;
         }
-
-        // 🖨️ طباعة كشف RMB بالتصميم الاحترافي الموحد
         function printRmbStatement() {
             const type = document.getElementById('rmbStatementType').value;
             const targetId = document.getElementById('rmbStatementTargetSelect').value;
             const target = type === 'CLIENT' ? appDb.rmbClients.find(c => c.id === targetId) : appDb.rmbCompanies.find(c => c.id === targetId);
             if (!target) { alert('يرجى اختيار اسم.'); return; }
-
             const trans = appDb.rmbTransactions.filter(t => type === 'CLIENT' ? t.clientId === targetId : t.companyId === targetId);
             const total = trans.reduce((s, t) => s + Number(t.amount || 0), 0);
             const avg = trans.length > 0 ? total / trans.length : 0;
-
             const rows = trans.map(t => {
                 const client = appDb.rmbClients.find(c => c.id === t.clientId);
                 const company = appDb.rmbCompanies.find(c => c.id === t.companyId);
@@ -2520,12 +2444,9 @@
                     `<td>${escapeHtml(employeeLabel(t))}</td>`
                 ];
             });
-
             doProPrint({
-                logoLetter: '¥',
-                brandSuffix: 'RMB',
-                brandTagline: 'CHINESE YUAN STATEMENT · كشف اليوان الصيني',
-                stampText: 'RMB ¥',
+                logoLetter: '¥', brandSuffix: 'RMB',
+                brandTagline: 'CHINESE YUAN STATEMENT · كشف اليوان الصيني', stampText: 'RMB ¥',
                 title: `كشف حساب — ${escapeHtml(target.name)}`,
                 subtitle: type === 'CLIENT' ? 'كشف حساب زبون (RMB ¥)' : 'كشف حساب شركة (RMB ¥)',
                 info: [
@@ -2539,12 +2460,8 @@
                     { label: 'متوسط القيمة', value: formatMoney(avg) + ' ¥', color: 'blue' }
                 ],
                 tableHeaders: [
-                    { label: 'التاريخ' },
-                    { label: 'الزبون' },
-                    { label: 'الشركة' },
-                    { label: 'المبلغ (¥)' },
-                    { label: 'البيانات / الملاحظات' },
-                    { label: 'الموظف' }
+                    { label: 'التاريخ' }, { label: 'الزبون' }, { label: 'الشركة' },
+                    { label: 'المبلغ (¥)' }, { label: 'البيانات / الملاحظات' }, { label: 'الموظف' }
                 ],
                 rows: rows,
                 totals: [
@@ -2961,18 +2878,15 @@
             document.getElementById('bankStatementTotal').innerText = `${formatMoney(totalResult)} ${outSym2}`;
         }
 
-        // 🖨️ طباعة كشف BANK بالتصميم الاحترافي الموحد
         function printBankStatement() {
             const accId = document.getElementById('bankStatementAccountSelect').value;
             const acc = appDb.bankAccounts.find(a => a.id === accId);
             if (!acc) { alert('يرجى اختيار حساب.'); return; }
-
             const trans = appDb.bankTransactions.filter(t => t.accountId === accId).sort((a, b) => (a.date || '').localeCompare(b.date || ''));
             const totalResult = trans.reduce((s, t) => s + Number(t.resultAmount || 0), 0);
             const totalBase = trans.reduce((s, t) => s + Number(t.amount || 0), 0);
             const mainResultCur = trans.length > 0 ? (trans[trans.length-1].resultCurrency || 'TRY') : 'TRY';
             const mainSym = currencySymbol(mainResultCur);
-
             const rows = trans.map(t => {
                 const inSym = currencySymbol(t.currency);
                 const outSym = currencySymbol(t.resultCurrency || 'TRY');
@@ -2987,12 +2901,9 @@
                     `<td>${escapeHtml(employeeLabel(t))}</td>`
                 ];
             });
-
             doProPrint({
-                logoLetter: '₺',
-                brandSuffix: 'BANK',
-                brandTagline: 'BANK STATEMENT · كشف حساب بنكي',
-                stampText: 'BANK ₺',
+                logoLetter: '₺', brandSuffix: 'BANK',
+                brandTagline: 'BANK STATEMENT · كشف حساب بنكي', stampText: 'BANK ₺',
                 title: `كشف حساب بنكي — ${escapeHtml(acc.name)}`,
                 subtitle: `العملة الأساسية: ${mainResultCur} · ${trans.length} معاملة`,
                 info: [
@@ -3006,14 +2917,9 @@
                     { label: 'إجمالي الناتج', value: formatMoney(totalResult) + ' ' + mainSym, color: 'green' }
                 ],
                 tableHeaders: [
-                    { label: 'التاريخ' },
-                    { label: 'الحساب' },
-                    { label: 'المبلغ الأساسي' },
-                    { label: 'العملة' },
-                    { label: 'سعر الصرف' },
-                    { label: 'الناتج' },
-                    { label: 'الملاحظات' },
-                    { label: 'الموظف' }
+                    { label: 'التاريخ' }, { label: 'الحساب' }, { label: 'المبلغ الأساسي' },
+                    { label: 'العملة' }, { label: 'سعر الصرف' }, { label: 'الناتج' },
+                    { label: 'الملاحظات' }, { label: 'الموظف' }
                 ],
                 rows: rows,
                 totals: [
@@ -3278,6 +3184,7 @@
               #westrin-app-container .stat-row .val { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 13px; color: #fefce8; }
               #westrin-app-container .stat-row .val.pos { color: #6ee7b7; }
               #westrin-app-container .stat-row .val.warn { color: #fcd34d; }
+              #westrin-app-container .stat-row .val.neg { color: #fca5a5; }
               #westrin-app-container .account-card .card-actions {
                 position: absolute; top: 14px; left: 14px;
                 display: flex; gap: 6px; opacity: 0; transition: opacity 0.2s;
@@ -3379,38 +3286,33 @@
               #westrin-app-container .amount { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 15px; }
               #westrin-app-container .amount.pos { color: #6ee7b7; }
               #westrin-app-container .amount.neg { color: #fca5a5; }
-              #westrin-app-container .withdraw-check { display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; user-select: none; width: fit-content; }
-              #westrin-app-container .withdraw-check input[type="checkbox"] {
-                appearance: none; -webkit-appearance: none;
-                width: 26px; height: 26px;
-                border: 2px solid var(--glass-border-strong);
-                border-radius: 8px; background: rgba(0,0,0,0.4);
-                cursor: pointer; transition: all 0.25s;
-                position: relative; flex-shrink: 0;
-              }
-              #westrin-app-container .withdraw-check input[type="checkbox"]:hover { border-color: #facc15; background: rgba(250, 204, 21, 0.1); }
-              #westrin-app-container .withdraw-check input[type="checkbox"]:checked {
-                background: linear-gradient(135deg, #facc15, #eab308);
-                border-color: transparent;
-                box-shadow: 0 0 16px rgba(250, 204, 21, 0.6);
-              }
-              #westrin-app-container .withdraw-check input[type="checkbox"]:checked::after {
-                content: '✓'; position: absolute; inset: 0;
-                display: grid; place-items: center;
-                color: #000; font-size: 16px; font-weight: 900;
-              }
-              #westrin-app-container .withdraw-check span { font-size: 10.5px; color: var(--text-muted); font-weight: 700; white-space: nowrap; }
-              #westrin-app-container .withdrawn-row { background: linear-gradient(90deg, rgba(250, 204, 21, 0.06), transparent); opacity: 0.5; pointer-events: none; transition: all 0.3s; }
-              #westrin-app-container .withdrawn-row.editing { opacity: 1; pointer-events: auto; background: linear-gradient(90deg, rgba(250, 204, 21, 0.2), transparent); box-shadow: inset 0 0 0 2px rgba(250, 204, 21, 0.5); }
-              #westrin-app-container .withdrawn-row .action-cell { pointer-events: auto; }
-              #westrin-app-container .badge-done {
+              #westrin-app-container .status-pill {
                 display: inline-flex; align-items: center; gap: 5px;
-                padding: 5px 12px;
-                background: rgba(250, 204, 21, 0.15);
-                border: 1px solid rgba(250, 204, 21, 0.4);
-                color: #fde047; border-radius: 20px;
-                font-size: 11.5px; font-weight: 700;
+                padding: 5px 12px; border-radius: 20px;
+                font-size: 11px; font-weight: 800;
+                white-space: nowrap;
               }
+              #westrin-app-container .status-pill.done { background: rgba(16,185,129,.15); color: #34d399; border: 1px solid rgba(16,185,129,.4); }
+              #westrin-app-container .status-pill.pending { background: rgba(250,204,21,.15); color: #fcd34d; border: 1px solid rgba(250,204,21,.4); }
+              #westrin-app-container .status-pill.failed { background: rgba(239,68,68,.15); color: #fca5a5; border: 1px solid rgba(239,68,68,.4); }
+              #westrin-app-container .action-btn-group { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; }
+              #westrin-app-container .action-btn {
+                display: inline-flex; align-items: center; justify-content: center;
+                padding: 6px 10px; border-radius: 9px;
+                font-size: 11.5px; font-weight: 800;
+                cursor: pointer; border: 1px solid;
+                transition: all 0.2s; white-space: nowrap;
+              }
+              #westrin-app-container .action-btn.green { background: rgba(16,185,129,.15); border-color: rgba(16,185,129,.4); color: #34d399; }
+              #westrin-app-container .action-btn.green:hover { background: rgba(16,185,129,.3); transform: translateY(-1px); }
+              #westrin-app-container .action-btn.red { background: rgba(239,68,68,.15); border-color: rgba(239,68,68,.4); color: #fca5a5; }
+              #westrin-app-container .action-btn.red:hover { background: rgba(239,68,68,.3); transform: translateY(-1px); }
+              #westrin-app-container .action-btn.gold { background: rgba(250,204,21,.15); border-color: rgba(250,204,21,.4); color: #fde047; }
+              #westrin-app-container .action-btn.gold:hover { background: rgba(250,204,21,.3); transform: translateY(-1px); }
+              #westrin-app-container .action-btn.blue { background: rgba(59,130,246,.15); border-color: rgba(59,130,246,.4); color: #93c5fd; }
+              #westrin-app-container .action-btn.blue:hover { background: rgba(59,130,246,.3); transform: translateY(-1px); }
+              #westrin-app-container .action-btn.dark-red { background: rgba(220,38,38,.2); border-color: rgba(220,38,38,.5); color: #fca5a5; }
+              #westrin-app-container .action-btn.dark-red:hover { background: rgba(220,38,38,.4); transform: translateY(-1px); }
               #westrin-app-container .report-controls {
                 display: grid;
                 grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -3429,72 +3331,12 @@
                 box-shadow: 0 20px 60px rgba(0,0,0,0.5);
                 color: #1e293b; position: relative;
               }
-              #westrin-app-container .report-brand {
-                position: absolute; top: 20px; left: 20px;
-                font-family: 'Inter', sans-serif; font-weight: 900;
-                font-size: 14px; letter-spacing: 2px; color: #000;
-                padding: 6px 14px; border: 2px solid #000;
-                border-radius: 8px; background: #facc15;
-              }
-              #westrin-app-container .report-title {
-                text-align: center; border-bottom: 2px solid #facc15;
-                padding-bottom: 20px; margin-bottom: 24px; padding-top: 20px;
-              }
-              #westrin-app-container .report-title h2 { color: #0f172a; font-size: 26px; margin-bottom: 8px; font-weight: 800; }
-              #westrin-app-container .report-title .period { color: #64748b; font-size: 13.5px; font-weight: 600; direction: ltr; display: inline-block; }
-              #westrin-app-container .report-summary {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-                gap: 12px; margin-bottom: 24px;
-              }
-              #westrin-app-container .summary-card {
-                padding: 16px;
-                background: linear-gradient(135deg, #fefce8, #fef3c7);
-                border: 1px solid #facc15;
-                border-radius: 14px; text-align: center;
-              }
-              #westrin-app-container .summary-card .label { font-size: 11.5px; color: #78350f; font-weight: 700; margin-bottom: 8px; }
-              #westrin-app-container .summary-card .value { font-size: 20px; font-weight: 800; font-family: 'Inter', sans-serif; color: #0f172a; }
-              #westrin-app-container .report-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-              #westrin-app-container .report-table thead th {
-                background: #fef3c7; padding: 12px 14px;
-                text-align: right; font-size: 12px; font-weight: 700; color: #78350f;
-                border-bottom: 2px solid #facc15;
-              }
-              #westrin-app-container .report-table tbody td {
-                padding: 13px 14px; border-bottom: 1px solid #fef3c7;
-                font-size: 13.5px; color: #334155;
-              }
-              #westrin-app-container .report-table .num { font-family: 'Inter', sans-serif; font-weight: 700; direction: ltr; display: inline-block; }
-              #westrin-app-container .totals-box {
-                margin-top: 24px; padding: 24px 28px;
-                background: linear-gradient(135deg, #000, #1a1a1a);
-                color: #fefce8; border-radius: 16px;
-                display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
-                border: 2px solid #facc15;
-              }
-              #westrin-app-container .totals-box .item { text-align: center; }
-              #westrin-app-container .totals-box .item:first-child { border-left: 1px solid rgba(250, 204, 21, 0.3); }
-              #westrin-app-container .totals-box .label { font-size: 12px; opacity: 0.85; letter-spacing: 0.6px; font-weight: 700; margin-bottom: 8px; color: #fde047; }
-              #westrin-app-container .totals-box .value { font-size: 28px; font-weight: 800; font-family: 'Inter', sans-serif; }
-              #westrin-app-container .trash-view { padding: 40px 36px; }
-              #westrin-app-container .trash-card {
-                background: var(--glass-bg);
-                border: 1px solid var(--glass-border);
-                border-radius: 20px; padding: 22px; transition: all 0.3s;
-              }
-              #westrin-app-container .trash-card:hover { border-color: rgba(239, 68, 68, 0.5); background: rgba(239, 68, 68, 0.08); }
-              #westrin-app-container .trash-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; color: #fefce8; }
-              #westrin-app-container .trash-card .note { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; font-style: italic; }
-              #westrin-app-container .trash-card .info { display: flex; gap: 14px; font-size: 12px; color: var(--text-secondary); margin-bottom: 16px; flex-wrap: wrap; }
-              #westrin-app-container .trash-card .info span b { font-family: 'Inter', sans-serif; color: #fefce8; }
-              #westrin-app-container .trash-card .actions { display: flex; gap: 8px; flex-wrap: wrap; }
               #westrin-app-container .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
               #westrin-app-container .empty-state .icon { font-size: 56px; margin-bottom: 16px; opacity: 0.4; }
               #westrin-app-container .empty-state p { font-size: 15px; font-weight: 600; }
               #westrin-app-container .modal-overlay {
                 position: fixed; inset: 0;
-                background: rgba(0, 0, 0, 0.8);
+                background: rgba(0, 0, 0, 0.85);
                 backdrop-filter: blur(8px);
                 display: none; align-items: center; justify-content: center;
                 z-index: 1000; padding: 20px; overflow-y: auto;
@@ -3513,6 +3355,20 @@
               #westrin-app-container .modal label { display: block; font-size: 12px; color: #fde047; margin-bottom: 6px; font-weight: 700; }
               #westrin-app-container .modal-btns { display: flex; gap: 10px; margin-top: 24px; }
               #westrin-app-container .modal-btns .btn { flex: 1; justify-content: center; }
+              #westrin-app-container .withdraw-info-box {
+                background: linear-gradient(135deg, rgba(16,185,129,.12), rgba(5,150,105,.06));
+                border: 1px solid rgba(16,185,129,.4);
+                border-radius: 14px; padding: 14px 18px;
+                margin: 10px 0 18px 0;
+              }
+              #westrin-app-container .withdraw-info-box .title {
+                font-size: 12px; color: #6ee7b7; font-weight: 800;
+                margin-bottom: 8px; letter-spacing: 0.5px;
+              }
+              #westrin-app-container .withdraw-info-box .auto-time {
+                font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 900;
+                color: #34d399; direction: ltr; letter-spacing: 1px;
+              }
               @media (max-width: 900px) {
                 #westrin-app-container .tx-form { grid-template-columns: 1fr 1fr; }
               }
@@ -3595,6 +3451,9 @@
                     <button class="tab" data-tab="withdrawn" onclick="westrinSwitchTab('withdrawn')">
                       🟢 تم السحب <span class="count" id="wrCountWithdrawn">0</span>
                     </button>
+                    <button class="tab" data-tab="failed" onclick="westrinSwitchTab('failed')">
+                      🔴 لم يتم السحب <span class="count" id="wrCountFailed">0</span>
+                    </button>
                     <button class="tab" data-tab="report" onclick="westrinSwitchTab('report')">
                       🔵 كشف الحساب
                     </button>
@@ -3615,6 +3474,10 @@
                   
                   <div class="tab-content" id="wrTab-withdrawn">
                     <div id="wrWithdrawnList"></div>
+                  </div>
+                  
+                  <div class="tab-content" id="wrTab-failed">
+                    <div id="wrFailedList"></div>
                   </div>
                   
                   <div class="tab-content" id="wrTab-report">
@@ -3685,16 +3548,64 @@
                     <input type="number" id="wrEditAmount" step="0.01">
                   </div>
                   <div class="field">
-                    <label>التاريخ</label>
+                    <label>تاريخ إنشاء المعاملة</label>
                     <input type="date" id="wrEditDate">
                   </div>
                   <div class="field">
-                    <label>الوقت</label>
+                    <label>وقت إنشاء المعاملة</label>
                     <input type="time" id="wrEditTime" step="60">
                   </div>
                   <div class="modal-btns">
                     <button class="btn btn-primary" onclick="westrinSaveEdit()">💾 حفظ التغييرات</button>
                     <button class="btn btn-ghost" onclick="westrinCloseEditModal()">إلغاء</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 🟢 نافذة تأكيد السحب - التاريخ والوقت تلقائي -->
+              <div class="modal-overlay" id="wrWithdrawModal">
+                <div class="modal">
+                  <h3>✅ تأكيد تم السحب</h3>
+                  <div class="withdraw-info-box">
+                    <div class="title">⏱️ تم إدخال التاريخ والوقت تلقائياً:</div>
+                    <div class="auto-time" id="wrWithdrawAutoTime">--:-- / ----/--/--</div>
+                    <div style="font-size:11px;color:#a16207;margin-top:6px;">يمكنك تعديله إذا أردت</div>
+                  </div>
+                  <div class="field">
+                    <label>تاريخ السحب</label>
+                    <input type="date" id="wrWithdrawDate">
+                  </div>
+                  <div class="field">
+                    <label>وقت السحب</label>
+                    <input type="time" id="wrWithdrawTime" step="60">
+                  </div>
+                  <div class="modal-btns">
+                    <button class="btn btn-success" onclick="westrinConfirmWithdraw()">✅ تأكيد السحب</button>
+                    <button class="btn btn-ghost" onclick="westrinCloseWithdrawModal()">إلغاء</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 🔴 نافذة تأكيد لم يتم السحب -->
+              <div class="modal-overlay" id="wrFailedModal">
+                <div class="modal">
+                  <h3>❌ تسجيل: لم يتم السحب</h3>
+                  <div class="withdraw-info-box" style="background: linear-gradient(135deg, rgba(239,68,68,.12), rgba(220,38,38,.06)); border-color: rgba(239,68,68,.4);">
+                    <div class="title" style="color:#fca5a5;">⏱️ تم إدخال التاريخ والوقت تلقائياً:</div>
+                    <div class="auto-time" style="color:#ef4444;" id="wrFailedAutoTime">--:-- / ----/--/--</div>
+                    <div style="font-size:11px;color:#a16207;margin-top:6px;">يمكنك تعديله إذا أردت</div>
+                  </div>
+                  <div class="field">
+                    <label>تاريخ المحاولة الفاشلة</label>
+                    <input type="date" id="wrFailedDate">
+                  </div>
+                  <div class="field">
+                    <label>وقت المحاولة الفاشلة</label>
+                    <input type="time" id="wrFailedTime" step="60">
+                  </div>
+                  <div class="modal-btns">
+                    <button class="btn btn-danger" onclick="westrinConfirmFailed()">❌ تأكيد: لم يتم السحب</button>
+                    <button class="btn btn-ghost" onclick="westrinCloseFailedModal()">إلغاء</button>
                   </div>
                 </div>
               </div>
@@ -3709,8 +3620,19 @@
             document.getElementById('wrAccountModal').addEventListener('click', (e) => {
                 if (e.target.id === 'wrAccountModal') westrinCloseAccountModal();
             });
+            document.getElementById('wrWithdrawModal').addEventListener('click', (e) => {
+                if (e.target.id === 'wrWithdrawModal') westrinCloseWithdrawModal();
+            });
+            document.getElementById('wrFailedModal').addEventListener('click', (e) => {
+                if (e.target.id === 'wrFailedModal') westrinCloseFailedModal();
+            });
             document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') { westrinCloseEditModal(); westrinCloseAccountModal(); }
+                if (e.key === 'Escape') {
+                    westrinCloseEditModal();
+                    westrinCloseAccountModal();
+                    westrinCloseWithdrawModal();
+                    westrinCloseFailedModal();
+                }
             });
             document.getElementById('wrAccountModalName').addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') westrinSaveAccount();
@@ -3720,6 +3642,8 @@
         let wrCurrentAccountId = null;
         let wrEditingTxId = null;
         let wrEditingAccountId = null;
+        let wrWithdrawingTxId = null;
+        let wrFailingTxId = null;
 
         async function westrinClearAllData() {
             if (confirm('⚠️ هل أنت متأكد من حذف كل البيانات نهائياً؟ لا يمكن التراجع!')) {
@@ -3854,6 +3778,7 @@
                 const txs = allTxs.filter(t => t.accountId === acc.id);
                 const pending = txs.filter(t => t.status === 'pending').length;
                 const withdrawn = txs.filter(t => t.status === 'withdrawn').length;
+                const failed = txs.filter(t => t.status === 'failed').length;
                 const total = txs.reduce((s,t) => s + Number(t.amount), 0);
                 return `
                   <div class="account-card" onclick="westrinOpenAccount(${acc.id})">
@@ -3867,6 +3792,7 @@
                     <div class="stats">
                       <div class="stat-row"><span>🟡 تحت السحب</span><span class="val warn">${pending}</span></div>
                       <div class="stat-row"><span>🟢 تم السحب</span><span class="val pos">${withdrawn}</span></div>
+                      <div class="stat-row"><span>🔴 لم يتم السحب</span><span class="val neg">${failed}</span></div>
                       <div class="stat-row" style="padding-top:10px;border-top:1px solid rgba(250,204,21,0.15);margin-top:4px">
                         <span>💰 المجموع</span><span class="val">${westrinFmtMoney(total)}</span>
                       </div>
@@ -3891,15 +3817,15 @@
                 const total = txs.reduce((s,t) => s + Number(t.amount), 0);
                 const deletedDate = item.deletedAt ? item.deletedAt.split('T')[0] : '';
                 return `
-                  <div class="trash-card">
-                    <h3>📁 ${escapeHtml(acc.name)}</h3>
-                    ${acc.note ? `<div class="note">${escapeHtml(acc.note)}</div>` : ''}
-                    <div class="info">
-                      <span>المعاملات: <b>${txs.length}</b></span>
-                      <span>المجموع: <b>${westrinFmtMoney(total)}</b></span>
-                      <span>حُذف: <b>${deletedDate}</b></span>
+                  <div class="trash-card" style="background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:20px;padding:22px;">
+                    <h3 style="font-size:17px;font-weight:700;margin-bottom:8px;color:#fefce8;">📁 ${escapeHtml(acc.name)}</h3>
+                    ${acc.note ? `<div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;font-style:italic;">${escapeHtml(acc.note)}</div>` : ''}
+                    <div style="display:flex;gap:14px;font-size:12px;color:var(--text-secondary);margin-bottom:16px;flex-wrap:wrap;">
+                      <span>المعاملات: <b style="font-family:'Inter',sans-serif;color:#fefce8;">${txs.length}</b></span>
+                      <span>المجموع: <b style="font-family:'Inter',sans-serif;color:#fefce8;">${westrinFmtMoney(total)}</b></span>
+                      <span>حُذف: <b style="font-family:'Inter',sans-serif;color:#fefce8;">${deletedDate}</b></span>
                     </div>
-                    <div class="actions">
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
                       <button class="btn btn-success btn-sm" onclick="westrinRestoreAccount(${i})">♻️ استرجاع</button>
                       <button class="btn btn-danger btn-sm" onclick="westrinDeleteForever(${i})">🗑️ حذف نهائي</button>
                     </div>
@@ -3941,6 +3867,7 @@
             document.getElementById('wrTab-' + tab).classList.add('active');
             if (tab === 'pending') westrinRenderPending();
             if (tab === 'withdrawn') westrinRenderWithdrawn();
+            if (tab === 'failed') westrinRenderFailed();
         }
         async function westrinAddTransaction() {
             const name = document.getElementById('wrTxName').value.trim();
@@ -3951,7 +3878,15 @@
             if (isNaN(amount)) { alert('اكتب القيمة بشكل صحيح'); return; }
             if (!date) { alert('حدد التاريخ'); return; }
             const txs = wrGetTransactions();
-            txs.push({ id: Date.now(), accountId: wrCurrentAccountId, name, amount, date, time, status: 'pending' });
+            txs.push({
+                id: Date.now(),
+                accountId: wrCurrentAccountId,
+                name, amount,
+                date, time,
+                status: 'pending',
+                withdrawDate: null, withdrawTime: null,
+                failedDate: null, failedTime: null
+            });
             wrSetTransactions(txs);
             await wrSave();
             document.getElementById('wrTxName').value = '';
@@ -3962,15 +3897,104 @@
             westrinRenderAll();
             showToast('تم الحفظ ☁️');
         }
-        async function westrinToggleWithdraw(txId) {
+
+        // 🟢 فتح نافذة تأكيد السحب - التاريخ والوقت الحالي تلقائياً
+        function westrinOpenWithdrawModal(txId) {
+            const tx = wrGetTransactions().find(t => t.id === txId);
+            if (!tx) return;
+            wrWithdrawingTxId = txId;
+
+            const now = new Date();
+            const autoDate = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+            const autoTime = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+            document.getElementById('wrWithdrawDate').value = autoDate;
+            document.getElementById('wrWithdrawTime').value = autoTime;
+            document.getElementById('wrWithdrawAutoTime').textContent = `${autoTime} — ${autoDate.split('-').join('/')}`;
+
+            document.getElementById('wrWithdrawModal').classList.add('active');
+        }
+        function westrinCloseWithdrawModal() {
+            document.getElementById('wrWithdrawModal').classList.remove('active');
+            wrWithdrawingTxId = null;
+        }
+        async function westrinConfirmWithdraw() {
+            if (!wrWithdrawingTxId) return;
+            const withdrawDate = document.getElementById('wrWithdrawDate').value;
+            const withdrawTime = document.getElementById('wrWithdrawTime').value;
+            if (!withdrawDate || !withdrawTime) { alert('يرجى إدخال تاريخ ووقت السحب'); return; }
+            const txs = wrGetTransactions();
+            const tx = txs.find(t => t.id === wrWithdrawingTxId);
+            if (!tx) return;
+            tx.status = 'withdrawn';
+            tx.withdrawDate = withdrawDate;
+            tx.withdrawTime = withdrawTime;
+            tx.withdrawAt = `${withdrawDate}T${withdrawTime}:00`;
+            wrSetTransactions(txs);
+            await wrSave();
+            westrinCloseWithdrawModal();
+            westrinRenderAll();
+            showToast('✅ تم تسجيل السحب بنجاح');
+        }
+
+        // 🔴 فتح نافذة تأكيد لم يتم السحب
+        function westrinOpenFailedModal(txId) {
+            const tx = wrGetTransactions().find(t => t.id === txId);
+            if (!tx) return;
+            wrFailingTxId = txId;
+
+            const now = new Date();
+            const autoDate = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+            const autoTime = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+            document.getElementById('wrFailedDate').value = autoDate;
+            document.getElementById('wrFailedTime').value = autoTime;
+            document.getElementById('wrFailedAutoTime').textContent = `${autoTime} — ${autoDate.split('-').join('/')}`;
+
+            document.getElementById('wrFailedModal').classList.add('active');
+        }
+        function westrinCloseFailedModal() {
+            document.getElementById('wrFailedModal').classList.remove('active');
+            wrFailingTxId = null;
+        }
+        async function westrinConfirmFailed() {
+            if (!wrFailingTxId) return;
+            const failedDate = document.getElementById('wrFailedDate').value;
+            const failedTime = document.getElementById('wrFailedTime').value;
+            if (!failedDate || !failedTime) { alert('يرجى إدخال تاريخ ووقت المحاولة'); return; }
+            const txs = wrGetTransactions();
+            const tx = txs.find(t => t.id === wrFailingTxId);
+            if (!tx) return;
+            tx.status = 'failed';
+            tx.failedDate = failedDate;
+            tx.failedTime = failedTime;
+            tx.failedAt = `${failedDate}T${failedTime}:00`;
+            wrSetTransactions(txs);
+            await wrSave();
+            westrinCloseFailedModal();
+            westrinRenderAll();
+            showToast('❌ تم تسجيل: لم يتم السحب');
+        }
+
+        // 🔄 إعادة تعيين حالة المعاملة إلى "تحت السحب"
+        async function westrinResetToPending(txId) {
+            if (!confirm('إعادة تعيين هذه المعاملة إلى "تحت السحب"؟')) return;
             const txs = wrGetTransactions();
             const tx = txs.find(t => t.id === txId);
             if (!tx) return;
-            tx.status = tx.status === 'pending' ? 'withdrawn' : 'pending';
+            tx.status = 'pending';
+            tx.withdrawDate = null;
+            tx.withdrawTime = null;
+            tx.withdrawAt = null;
+            tx.failedDate = null;
+            tx.failedTime = null;
+            tx.failedAt = null;
             wrSetTransactions(txs);
             await wrSave();
             westrinRenderAll();
+            showToast('تمت الإعادة إلى تحت السحب');
         }
+
         function westrinEnableEdit(txId) {
             const row = document.querySelector(`#westrin-app-container tr[data-txid="${txId}"]`);
             if (row) {
@@ -4024,6 +4048,12 @@
             const db = `${b.date} ${b.time || '00:00'}`;
             return da.localeCompare(db);
         }
+        function westrinSortByLastUpdate(a, b) {
+            const aLast = a.withdrawAt || a.failedAt || `${a.date}T${a.time || '00:00'}:00`;
+            const bLast = b.withdrawAt || b.failedAt || `${b.date}T${b.time || '00:00'}:00`;
+            return aLast.localeCompare(bLast);
+        }
+
         function westrinRenderPending() {
             const txs = westrinGetAccountTransactions().filter(t => t.status === 'pending');
             document.getElementById('wrCountPending').textContent = txs.length;
@@ -4038,27 +4068,30 @@
               <div class="table-wrap">
                 <table class="tx-table">
                   <thead><tr>
-                    <th style="width:110px">تم السحب</th>
+                    <th style="width:140px">تأكيد السحب</th>
                     <th>اسم المعاملة</th>
                     <th>القيمة</th>
-                    <th>التاريخ والوقت</th>
-                    <th style="width:140px">إجراءات</th>
+                    <th>تاريخ الإنشاء</th>
+                    <th style="width:220px">إجراءات</th>
                   </tr></thead>
                   <tbody>
                     ${txs.map(tx => `
                       <tr data-txid="${tx.id}">
                         <td>
-                          <label class="withdraw-check">
-                            <input type="checkbox" onchange="westrinToggleWithdraw(${tx.id})">
-                            <span>تم السحب</span>
+                          <label style="display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;">
+                            <input type="checkbox" onchange="if(this.checked){this.checked=false;westrinOpenWithdrawModal(${tx.id})}" style="appearance:none;-webkit-appearance:none;width:26px;height:26px;border:2px solid #facc15;border-radius:8px;background:rgba(0,0,0,0.4);cursor:pointer;position:relative;flex-shrink:0;transition:all 0.25s;" onmouseover="this.style.borderColor='#fff'" onmouseout="this.style.borderColor='#facc15'">
+                            <span style="font-size:10.5px;color:#a16207;font-weight:700;">تم السحب</span>
                           </label>
                         </td>
                         <td><span class="tx-name">${escapeHtml(tx.name)}</span></td>
                         <td><span class="amount ${tx.amount >= 0 ? 'pos' : 'neg'}">${westrinFmtMoney(tx.amount)}</span></td>
                         <td><span class="tx-date">${westrinFmtDateTime(tx.date, tx.time)}</span></td>
                         <td>
-                          <button class="btn btn-warn btn-sm" onclick="westrinOpenEditModal(${tx.id})" title="تعديل">✏️</button>
-                          <button class="btn btn-danger btn-sm" onclick="westrinDeleteTransaction(${tx.id})" title="حذف" style="margin-inline-start:4px">🗑️</button>
+                          <div class="action-btn-group">
+                            <button class="action-btn gold" onclick="westrinOpenEditModal(${tx.id})" title="تعديل">✏️ تعديل</button>
+                            <button class="action-btn red" onclick="westrinOpenFailedModal(${tx.id})" title="لم يتم السحب">❌ لم يتم السحب</button>
+                            <button class="action-btn dark-red" onclick="westrinDeleteTransaction(${tx.id})" title="حذف">🗑️ حذف</button>
+                          </div>
                         </td>
                       </tr>
                     `).join('')}
@@ -4067,6 +4100,7 @@
               </div>
             `;
         }
+
         function westrinRenderWithdrawn() {
             const txs = westrinGetAccountTransactions().filter(t => t.status === 'withdrawn');
             document.getElementById('wrCountWithdrawn').textContent = txs.length;
@@ -4084,24 +4118,27 @@
                     <th style="width:130px">الحالة</th>
                     <th>اسم المعاملة</th>
                     <th>القيمة</th>
-                    <th>التاريخ والوقت</th>
-                    <th style="width:180px">إجراءات</th>
+                    <th>تاريخ الإنشاء</th>
+                    <th>تاريخ السحب</th>
+                    <th style="width:230px">إجراءات</th>
                   </tr></thead>
                   <tbody>
                     ${txs.map(tx => `
-                      <tr class="withdrawn-row" data-txid="${tx.id}">
+                      <tr data-txid="${tx.id}" style="background:linear-gradient(90deg, rgba(16,185,129,0.05), transparent);">
                         <td>
-                          <label class="withdraw-check">
-                            <input type="checkbox" checked disabled onchange="westrinToggleWithdraw(${tx.id})">
-                            <span>تم السحب ✓</span>
-                          </label>
+                          <span class="status-pill done">✓ تم السحب</span>
                         </td>
                         <td><span class="tx-name">${escapeHtml(tx.name)}</span></td>
                         <td><span class="amount ${tx.amount >= 0 ? 'pos' : 'neg'}">${westrinFmtMoney(tx.amount)}</span></td>
                         <td><span class="tx-date">${westrinFmtDateTime(tx.date, tx.time)}</span></td>
-                        <td class="action-cell">
-                          <button class="btn btn-warn btn-sm" onclick="westrinEnableEdit(${tx.id})">✏️ تعديل</button>
-                          <button class="btn btn-danger btn-sm" onclick="westrinDeleteTransaction(${tx.id})" style="margin-inline-start:4px">🗑️</button>
+                        <td><span class="tx-date" style="color:#34d399;font-weight:800;">${tx.withdrawDate ? westrinFmtDateTime(tx.withdrawDate, tx.withdrawTime) : '—'}</span></td>
+                        <td>
+                          <div class="action-btn-group">
+                            <button class="action-btn gold" onclick="westrinOpenEditModal(${tx.id})">✏️ تعديل</button>
+                            <button class="action-btn blue" onclick="westrinResetToPending(${tx.id})" title="إعادة إلى تحت السحب">↩️ إعادة</button>
+                            <button class="action-btn red" onclick="westrinOpenFailedModal(${tx.id})" title="لم يتم السحب">❌ لم يتم السحب</button>
+                            <button class="action-btn dark-red" onclick="westrinDeleteTransaction(${tx.id})">🗑️ حذف</button>
+                          </div>
                         </td>
                       </tr>
                     `).join('')}
@@ -4110,12 +4147,81 @@
               </div>
             `;
         }
+
+        function westrinRenderFailed() {
+            const txs = westrinGetAccountTransactions().filter(t => t.status === 'failed');
+            document.getElementById('wrCountFailed').textContent = txs.length;
+            const container = document.getElementById('wrFailedList');
+            if (!container) return;
+            if (txs.length === 0) {
+                container.innerHTML = `<div class="empty-state"><div class="icon">🎉</div><p>لا توجد معاملات لم يتم سحبها</p></div>`;
+                return;
+            }
+            txs.sort(westrinSortByDateTime);
+            container.innerHTML = `
+              <div class="table-wrap">
+                <table class="tx-table">
+                  <thead><tr>
+                    <th style="width:130px">الحالة</th>
+                    <th>اسم المعاملة</th>
+                    <th>القيمة</th>
+                    <th>تاريخ الإنشاء</th>
+                    <th>تاريخ المحاولة</th>
+                    <th style="width:230px">إجراءات</th>
+                  </tr></thead>
+                  <tbody>
+                    ${txs.map(tx => `
+                      <tr data-txid="${tx.id}" style="background:linear-gradient(90deg, rgba(239,68,68,0.05), transparent);">
+                        <td>
+                          <span class="status-pill failed">✗ لم يتم السحب</span>
+                        </td>
+                        <td><span class="tx-name">${escapeHtml(tx.name)}</span></td>
+                        <td><span class="amount ${tx.amount >= 0 ? 'pos' : 'neg'}">${westrinFmtMoney(tx.amount)}</span></td>
+                        <td><span class="tx-date">${westrinFmtDateTime(tx.date, tx.time)}</span></td>
+                        <td><span class="tx-date" style="color:#f87171;font-weight:800;">${tx.failedDate ? westrinFmtDateTime(tx.failedDate, tx.failedTime) : '—'}</span></td>
+                        <td>
+                          <div class="action-btn-group">
+                            <button class="action-btn gold" onclick="westrinOpenEditModal(${tx.id})">✏️ تعديل</button>
+                            <button class="action-btn green" onclick="westrinOpenWithdrawModal(${tx.id})" title="تم السحب">✓ تم السحب</button>
+                            <button class="action-btn blue" onclick="westrinResetToPending(${tx.id})" title="إعادة">↩️ إعادة</button>
+                            <button class="action-btn dark-red" onclick="westrinDeleteTransaction(${tx.id})">🗑️ حذف</button>
+                          </div>
+                        </td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
+            `;
+        }
+
         function westrinRenderAll() {
             westrinRenderPending();
             westrinRenderWithdrawn();
+            westrinRenderFailed();
         }
 
-        // ✅ عرض الكشف داخل الصفحة
+        // ✅ عرض الكشف داخل الصفحة - يعتمد على آخر عملية تحديث
+        function westrinGetFilteredTransactions(acc, fromDate, fromTime, toDate, toTime) {
+            let txs = wrGetTransactions().filter(t => t.accountId === acc.id);
+
+            // الفلترة تعتمد على آخر عملية تحديث (سحب/فشل) إن وجدت، وإلا تاريخ الإنشاء
+            txs = txs.filter(t => {
+                const lastUpdateDT = t.withdrawAt || t.failedAt || `${t.date}T${t.time || '00:00'}:00`;
+                if (fromDate) {
+                    const fromDT = `${fromDate}T${fromTime || '00:00'}:00`;
+                    if (lastUpdateDT < fromDT) return false;
+                }
+                if (toDate) {
+                    const toDT = `${toDate}T${toTime || '23:59'}:59`;
+                    if (lastUpdateDT > toDT) return false;
+                }
+                return true;
+            });
+
+            return txs;
+        }
+
         function westrinGenerateReport() {
             const fromDate = document.getElementById('wrReportFrom').value;
             const fromTime = document.getElementById('wrReportFromTime').value;
@@ -4123,26 +4229,24 @@
             const toTime = document.getElementById('wrReportToTime').value;
             const acc = wrGetAccounts().find(a => a.id === wrCurrentAccountId);
             if (!acc) return;
-            let txs = westrinGetAccountTransactions();
-            if (fromDate) {
-                const fromDT = `${fromDate} ${fromTime || '00:00'}`;
-                txs = txs.filter(t => `${t.date} ${t.time || '00:00'}` >= fromDT);
-            }
-            if (toDate) {
-                const toDT = `${toDate} ${toTime || '23:59'}`;
-                txs = txs.filter(t => `${t.date} ${t.time || '00:00'}` <= toDT);
-            }
-            txs.sort(westrinSortByDateTime);
+
+            let txs = westrinGetFilteredTransactions(acc, fromDate, fromTime, toDate, toTime);
+            txs.sort(westrinSortByLastUpdate);
+
             const total = txs.reduce((s,t) => s + Number(t.amount), 0);
             const totalWithdrawn = txs.filter(t => t.status === 'withdrawn').reduce((s,t) => s + Number(t.amount), 0);
             const totalPending = txs.filter(t => t.status === 'pending').reduce((s,t) => s + Number(t.amount), 0);
+            const totalFailed = txs.filter(t => t.status === 'failed').reduce((s,t) => s + Number(t.amount), 0);
+
             const paper = document.getElementById('wrReportPaper');
+
             let periodText = 'كل الفترات';
             if (fromDate || toDate) {
                 const fromPart = fromDate ? `من: ${fromDate.split('-').join('/')}${fromTime ? ' ' + fromTime : ''}` : '';
                 const toPart = toDate ? `إلى: ${toDate.split('-').join('/')}${toTime ? ' ' + toTime : ''}` : '';
                 periodText = `${fromPart}  ${toPart}`.trim();
             }
+
             let fileName = acc.name;
             if (fromDate || toDate) {
                 if (fromDate && toDate) fileName += `_${fromDate.split('-').join('')}_${toDate.split('-').join('')}`;
@@ -4155,72 +4259,97 @@
 
             if (txs.length === 0) {
                 paper.innerHTML = `
-                  <div class="report-brand">WESTRIN</div>
-                  <div class="report-title">
-                    <h2>كشف حساب: ${escapeHtml(acc.name)}</h2>
-                    <div class="period">${periodText}</div>
+                  <div style="position:absolute;top:20px;left:20px;font-family:'Inter',sans-serif;font-weight:900;font-size:14px;letter-spacing:2px;color:#000;padding:6px 14px;border:2px solid #000;border-radius:8px;background:#facc15;">WESTRIN</div>
+                  <div style="text-align:center;border-bottom:2px solid #facc15;padding-bottom:20px;margin-bottom:24px;padding-top:20px;">
+                    <h2 style="color:#0f172a;font-size:26px;margin-bottom:8px;font-weight:800;">كشف حساب: ${escapeHtml(acc.name)}</h2>
+                    <div style="color:#64748b;font-size:13.5px;font-weight:600;direction:ltr;display:inline-block;">${periodText}</div>
                   </div>
-                  <div class="empty-state" style="color:#78350f">
-                    <div class="icon">📄</div>
-                    <p>لا توجد معاملات في هذه الفترة</p>
+                  <div class="empty-state" style="color:#78350f;text-align:center;padding:60px 20px;">
+                    <div style="font-size:56px;margin-bottom:16px;opacity:0.4;">📄</div>
+                    <p style="font-size:15px;font-weight:600;">لا توجد معاملات في هذه الفترة</p>
                   </div>
                 `;
                 return;
             }
+
             paper.innerHTML = `
-              <div class="report-brand">WESTRIN</div>
-              <div class="report-title">
-                <h2>كشف حساب: ${escapeHtml(acc.name)}</h2>
-                <div class="period">${periodText}</div>
+              <div style="position:absolute;top:20px;left:20px;font-family:'Inter',sans-serif;font-weight:900;font-size:14px;letter-spacing:2px;color:#000;padding:6px 14px;border:2px solid #000;border-radius:8px;background:#facc15;">WESTRIN</div>
+              <div style="text-align:center;border-bottom:2px solid #facc15;padding-bottom:20px;margin-bottom:24px;padding-top:20px;">
+                <h2 style="color:#0f172a;font-size:26px;margin-bottom:8px;font-weight:800;">كشف حساب: ${escapeHtml(acc.name)}</h2>
+                <div style="color:#64748b;font-size:13.5px;font-weight:600;direction:ltr;display:inline-block;">${periodText}</div>
               </div>
-              <div class="report-summary">
-                <div class="summary-card">
-                  <div class="label">عدد المعاملات</div>
-                  <div class="value">${txs.length}</div>
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;">
+                <div style="padding:16px;background:linear-gradient(135deg,#fefce8,#fef3c7);border:1px solid #facc15;border-radius:14px;text-align:center;">
+                  <div style="font-size:11.5px;color:#78350f;font-weight:700;margin-bottom:8px;">عدد المعاملات</div>
+                  <div style="font-size:20px;font-weight:800;font-family:'Inter',sans-serif;color:#0f172a;">${txs.length}</div>
                 </div>
-                <div class="summary-card">
-                  <div class="label">تحت السحب</div>
-                  <div class="value">${westrinFmtMoney(totalPending)}</div>
+                <div style="padding:16px;background:linear-gradient(135deg,#d1fae5,#a7f3d0);border:1px solid #10b981;border-radius:14px;text-align:center;">
+                  <div style="font-size:11.5px;color:#065f46;font-weight:700;margin-bottom:8px;">تم السحب</div>
+                  <div style="font-size:20px;font-weight:800;font-family:'Inter',sans-serif;color:#0f172a;">${westrinFmtMoney(totalWithdrawn)}</div>
                 </div>
-                <div class="summary-card">
-                  <div class="label">تم السحب</div>
-                  <div class="value">${westrinFmtMoney(totalWithdrawn)}</div>
+                <div style="padding:16px;background:linear-gradient(135deg,#ffedd5,#fed7aa);border:1px solid #f97316;border-radius:14px;text-align:center;">
+                  <div style="font-size:11.5px;color:#9a3412;font-weight:700;margin-bottom:8px;">تحت السحب</div>
+                  <div style="font-size:20px;font-weight:800;font-family:'Inter',sans-serif;color:#0f172a;">${westrinFmtMoney(totalPending)}</div>
+                </div>
+                <div style="padding:16px;background:linear-gradient(135deg,#fee2e2,#fecaca);border:1px solid #dc2626;border-radius:14px;text-align:center;">
+                  <div style="font-size:11.5px;color:#991b1b;font-weight:700;margin-bottom:8px;">لم يتم السحب</div>
+                  <div style="font-size:20px;font-weight:800;font-family:'Inter',sans-serif;color:#0f172a;">${westrinFmtMoney(totalFailed)}</div>
                 </div>
               </div>
-              <table class="report-table">
-                <thead><tr>
-                  <th style="width:50px">#</th>
-                  <th>اسم المعاملة</th>
-                  <th>التاريخ والوقت</th>
-                  <th>القيمة</th>
-                  <th>الحالة</th>
-                </tr></thead>
+              <table style="width:100%;border-collapse:collapse;margin-top:10px;">
+                <thead>
+                  <tr style="background:#fef3c7;border-bottom:2px solid #facc15;">
+                    <th style="padding:12px 8px;text-align:right;font-size:11px;font-weight:800;color:#78350f;">#</th>
+                    <th style="padding:12px 8px;text-align:right;font-size:11px;font-weight:800;color:#78350f;">اسم المعاملة</th>
+                    <th style="padding:12px 8px;text-align:right;font-size:11px;font-weight:800;color:#78350f;">القيمة</th>
+                    <th style="padding:12px 8px;text-align:right;font-size:11px;font-weight:800;color:#78350f;">تاريخ الإنشاء</th>
+                    <th style="padding:12px 8px;text-align:right;font-size:11px;font-weight:800;color:#78350f;">آخر تحديث</th>
+                    <th style="padding:12px 8px;text-align:right;font-size:11px;font-weight:800;color:#78350f;">الحالة</th>
+                  </tr>
+                </thead>
                 <tbody>
-                  ${txs.map((tx, i) => `
-                    <tr>
-                      <td class="num">${i+1}</td>
-                      <td><b>${escapeHtml(tx.name)}</b></td>
-                      <td class="num">${westrinFmtDateTime(tx.date, tx.time)}</td>
-                      <td class="num ${tx.amount >= 0 ? 'pos' : 'neg'}">${westrinFmtMoney(tx.amount)}</td>
-                      <td>${tx.status === 'withdrawn' ? '<span class="badge-done">✓ تم السحب</span>' : '<span class="badge-done" style="background:rgba(245,158,11,0.15);border-color:rgba(245,158,11,0.4);color:#b45309">⏳ تحت السحب</span>'}</td>
-                    </tr>
-                  `).join('')}
+                  ${txs.map((tx, i) => {
+                      let lastUpdateDT = '—';
+                      if (tx.status === 'withdrawn' && tx.withdrawDate) lastUpdateDT = westrinFmtDateTime(tx.withdrawDate, tx.withdrawTime);
+                      else if (tx.status === 'failed' && tx.failedDate) lastUpdateDT = westrinFmtDateTime(tx.failedDate, tx.failedTime);
+                      else lastUpdateDT = westrinFmtDateTime(tx.date, tx.time);
+
+                      let statusBadge = '';
+                      if (tx.status === 'withdrawn') statusBadge = '<span style="display:inline-block;padding:5px 12px;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);color:#059669;border-radius:20px;font-size:10.5px;font-weight:800;">✓ تم السحب</span>';
+                      else if (tx.status === 'failed') statusBadge = '<span style="display:inline-block;padding:5px 12px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.4);color:#dc2626;border-radius:20px;font-size:10.5px;font-weight:800;">✗ لم يتم السحب</span>';
+                      else statusBadge = '<span style="display:inline-block;padding:5px 12px;background:rgba(250,204,21,0.15);border:1px solid rgba(250,204,21,0.4);color:#b45309;border-radius:20px;font-size:10.5px;font-weight:800;">⏳ تحت السحب</span>';
+
+                      return `
+                        <tr style="border-bottom:1px solid #fef3c7;">
+                          <td style="padding:10px 8px;font-size:13px;font-family:'Inter',sans-serif;font-weight:700;">${i+1}</td>
+                          <td style="padding:10px 8px;font-size:13px;font-weight:700;color:#0f172a;">${escapeHtml(tx.name)}</td>
+                          <td style="padding:10px 8px;font-size:13px;font-family:'Inter',sans-serif;font-weight:700;">${westrinFmtMoney(tx.amount)}</td>
+                          <td style="padding:10px 8px;font-size:12px;font-family:'Inter',sans-serif;color:#64748b;direction:ltr;">${westrinFmtDateTime(tx.date, tx.time)}</td>
+                          <td style="padding:10px 8px;font-size:12px;font-family:'Inter',sans-serif;color:#334155;font-weight:700;direction:ltr;">${lastUpdateDT}</td>
+                          <td style="padding:10px 8px;">${statusBadge}</td>
+                        </tr>
+                      `;
+                  }).join('')}
                 </tbody>
               </table>
-              <div class="totals-box">
-                <div class="item">
-                  <div class="label">المجموع الكلي</div>
-                  <div class="value">${westrinFmtMoney(total)}</div>
+              <div style="margin-top:24px;padding:24px 28px;background:linear-gradient(135deg,#000,#1a1a1a);color:#fefce8;border-radius:16px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;border:2px solid #facc15;">
+                <div style="text-align:center;">
+                  <div style="font-size:12px;opacity:0.85;letter-spacing:0.6px;font-weight:700;margin-bottom:8px;color:#fde047;">المجموع الكلي</div>
+                  <div style="font-size:24px;font-weight:800;font-family:'Inter',sans-serif;">${westrinFmtMoney(total)}</div>
                 </div>
-                <div class="item">
-                  <div class="label">فرق الحساب (تم السحب)</div>
-                  <div class="value">${westrinFmtMoney(totalWithdrawn)}</div>
+                <div style="text-align:center;border-left:1px solid rgba(250,204,21,0.3);border-right:1px solid rgba(250,204,21,0.3);">
+                  <div style="font-size:12px;opacity:0.85;letter-spacing:0.6px;font-weight:700;margin-bottom:8px;color:#fde047;">تم السحب</div>
+                  <div style="font-size:24px;font-weight:800;font-family:'Inter',sans-serif;color:#6ee7b7;">${westrinFmtMoney(totalWithdrawn)}</div>
+                </div>
+                <div style="text-align:center;">
+                  <div style="font-size:12px;opacity:0.85;letter-spacing:0.6px;font-weight:700;margin-bottom:8px;color:#fde047;">لم يتم السحب</div>
+                  <div style="font-size:24px;font-weight:800;font-family:'Inter',sans-serif;color:#fca5a5;">${westrinFmtMoney(totalFailed)}</div>
                 </div>
               </div>
             `;
         }
 
-        // 🖨️ طباعة كشف WESTRIN بالتصميم الاحترافي الموحد
+        // 🖨️ الطباعة الاحترافية
         function westrinPrintReport() {
             const fromDate = document.getElementById('wrReportFrom').value;
             const fromTime = document.getElementById('wrReportFromTime').value;
@@ -4229,20 +4358,13 @@
             const acc = wrGetAccounts().find(a => a.id === wrCurrentAccountId);
             if (!acc) { alert('يرجى اختيار حساب أولاً.'); return; }
 
-            let txs = westrinGetAccountTransactions();
-            if (fromDate) {
-                const fromDT = `${fromDate} ${fromTime || '00:00'}`;
-                txs = txs.filter(t => `${t.date} ${t.time || '00:00'}` >= fromDT);
-            }
-            if (toDate) {
-                const toDT = `${toDate} ${toTime || '23:59'}`;
-                txs = txs.filter(t => `${t.date} ${t.time || '00:00'}` <= toDT);
-            }
-            txs.sort(westrinSortByDateTime);
+            let txs = westrinGetFilteredTransactions(acc, fromDate, fromTime, toDate, toTime);
+            txs.sort(westrinSortByLastUpdate);
 
             const total = txs.reduce((s,t) => s + Number(t.amount), 0);
             const totalWithdrawn = txs.filter(t => t.status === 'withdrawn').reduce((s,t) => s + Number(t.amount), 0);
             const totalPending = txs.filter(t => t.status === 'pending').reduce((s,t) => s + Number(t.amount), 0);
+            const totalFailed = txs.filter(t => t.status === 'failed').reduce((s,t) => s + Number(t.amount), 0);
 
             let periodText = 'كل الفترات';
             if (fromDate || toDate) {
@@ -4251,12 +4373,34 @@
                 periodText = `${fromPart} | ${toPart}`.trim();
             }
 
-            const rows = txs.map(tx => [
-                `<td><span class="tx-name">${escapeHtml(tx.name)}</span></td>`,
-                `<td><span class="num">${westrinFmtDateTime(tx.date, tx.time)}</span></td>`,
-                `<td><span class="num" style="color:#0f172a;">${westrinFmtMoney(tx.amount)}</span></td>`,
-                `<td style="text-align:center;">${tx.status === 'withdrawn' ? '<span class="status-badge done">✓ تم السحب</span>' : '<span class="status-badge pending">⏳ تحت السحب</span>'}</td>`
-            ]);
+            const rows = txs.map(tx => {
+                let lastUpdateDT = '';
+                if (tx.status === 'withdrawn' && tx.withdrawDate) lastUpdateDT = westrinFmtDateTime(tx.withdrawDate, tx.withdrawTime);
+                else if (tx.status === 'failed' && tx.failedDate) lastUpdateDT = westrinFmtDateTime(tx.failedDate, tx.failedTime);
+                else lastUpdateDT = westrinFmtDateTime(tx.date, tx.time);
+
+                let statusBadgeHtml = '';
+                if (tx.status === 'withdrawn') statusBadgeHtml = '<span class="status-badge done">✓ تم السحب</span>';
+                else if (tx.status === 'failed') statusBadgeHtml = '<span class="status-badge failed">✗ لم يتم السحب</span>';
+                else statusBadgeHtml = '<span class="status-badge pending">⏳ تحت السحب</span>';
+
+                return [
+                    `<td><span class="tx-name">${escapeHtml(tx.name)}</span></td>`,
+                    `<td><span class="num">${westrinFmtMoney(tx.amount)}</span></td>`,
+                    `<td><span class="num">${westrinFmtDateTime(tx.date, tx.time)}</span></td>`,
+                    `<td><span class="num" style="color:#0f172a;font-weight:900;">${lastUpdateDT}</span></td>`,
+                    `<td style="text-align:center;">${statusBadgeHtml}</td>`
+                ];
+            });
+
+            const statsArr = [
+                { label: 'إجمالي المبالغ', value: westrinFmtMoney(total), color: 'gold' },
+                { label: 'تم السحب', value: westrinFmtMoney(totalWithdrawn), color: 'green' },
+                { label: 'تحت السحب', value: westrinFmtMoney(totalPending), color: 'amber' }
+            ];
+            if (totalFailed > 0) {
+                statsArr.push({ label: 'لم يتم السحب', value: westrinFmtMoney(totalFailed), color: 'red' });
+            }
 
             doProPrint({
                 logoLetter: 'W',
@@ -4270,15 +4414,12 @@
                     { label: 'NOTE / ملاحظة', value: acc.note ? escapeHtml(acc.note) : '—' },
                     { label: 'TOTAL TRANSACTIONS', value: txs.length + ' معاملة' }
                 ],
-                stats: [
-                    { label: 'إجمالي المبالغ', value: westrinFmtMoney(total), color: 'gold' },
-                    { label: 'تم السحب', value: westrinFmtMoney(totalWithdrawn), color: 'green' },
-                    { label: 'تحت السحب', value: westrinFmtMoney(totalPending), color: 'amber' }
-                ],
+                stats: statsArr,
                 tableHeaders: [
                     { label: 'اسم المعاملة' },
-                    { label: 'التاريخ والوقت' },
                     { label: 'القيمة' },
+                    { label: 'تاريخ الإنشاء' },
+                    { label: 'آخر تحديث' },
                     { label: 'الحالة', center: true, width: '130px' }
                 ],
                 rows: rows,
@@ -4401,7 +4542,13 @@
         window.westrinDeleteForever = westrinDeleteForever;
         window.westrinSwitchTab = westrinSwitchTab;
         window.westrinAddTransaction = westrinAddTransaction;
-        window.westrinToggleWithdraw = westrinToggleWithdraw;
+        window.westrinOpenWithdrawModal = westrinOpenWithdrawModal;
+        window.westrinCloseWithdrawModal = westrinCloseWithdrawModal;
+        window.westrinConfirmWithdraw = westrinConfirmWithdraw;
+        window.westrinOpenFailedModal = westrinOpenFailedModal;
+        window.westrinCloseFailedModal = westrinCloseFailedModal;
+        window.westrinConfirmFailed = westrinConfirmFailed;
+        window.westrinResetToPending = westrinResetToPending;
         window.westrinEnableEdit = westrinEnableEdit;
         window.westrinOpenEditModal = westrinOpenEditModal;
         window.westrinCloseEditModal = westrinCloseEditModal;
