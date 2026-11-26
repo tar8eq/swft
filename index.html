@@ -437,25 +437,23 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-                    <h2 class="text-xl font-bold text-white border-r-4 border-amber-500 pr-3">إدارة الشركات (SWFT)</h2>
-                    <div class="flex gap-2">
-                        <button onclick="switchSwftBottomTab('trash')" class="bg-gray-800 hover:bg-gray-700 text-red-400 border border-red-500/40 font-bold px-4 py-2.5 rounded-xl shadow-lg transition flex items-center gap-2 cursor-pointer text-xs">
-                            🗑️ سلة المحذوفات
-                        </button>
-                        <button onclick="openAddCompanyModal()" class="gold-gradient text-black font-bold px-5 py-2.5 rounded-xl shadow-lg hover:opacity-90 transition flex items-center gap-2 cursor-pointer">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg>
-                            إضافة شركة جديدة
-                        </button>
+                <div class="glass-panel rounded-2xl p-4 border border-amber-500/20 shadow-xl">
+                    <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
+                        <div><h2 id="swftEntityHeading" class="text-xl font-bold text-white border-r-4 border-amber-500 pr-3">إدارة الشركات (SWFT)</h2><p id="swftEntityHint" class="text-xs text-gray-400 mt-2">اختر نوع الحساب من القائمة، أو أضف حساباً جديداً.</p></div>
+                        <div class="flex flex-wrap gap-2 items-center">
+                            <label class="text-xs text-gray-300 font-bold" for="swftEntityFilter">عرض:</label>
+                            <select id="swftEntityFilter" onchange="renderCompanies()" class="bg-black/60 border border-amber-500/40 text-amber-200 rounded-xl px-3 py-2 text-xs font-bold focus:outline-none">
+                                <option value="companies">الشركات</option><option value="customers">الزبائن</option>
+                            </select>
+                            <button id="swftTrashEntityBtn" onclick="switchSwftBottomTab('trash')" class="bg-gray-800 hover:bg-gray-700 text-red-300 border border-red-500/40 font-bold px-4 py-2 rounded-xl text-xs">🗑️ سلة المحذوفات</button>
+                            <button id="swftAddEntityBtn" onclick="openAddCompanyModal()" class="gold-gradient text-black font-black px-5 py-2 rounded-xl text-sm shadow-lg">＋ إضافة حساب</button>
+                        </div>
                     </div>
                 </div>
-
                 <div class="glass-panel rounded-2xl overflow-hidden shadow-2xl">
                     <div class="overflow-x-auto">
                         <table class="w-full text-right border-collapse">
-                            <thead><tr class="bg-black/60 text-amber-400 text-xs uppercase tracking-wider border-b border-amber-500/20">
-                                <th class="p-4">كود الشركة</th><th class="p-4">اسم الشركة</th><th class="p-4 text-center">الإجراءات</th>
-                            </tr></thead>
+                            <thead id="swftEntityTableHead"><tr class="bg-black/60 text-amber-400 text-xs uppercase tracking-wider border-b border-amber-500/20"><th class="p-4">كود الشركة</th><th class="p-4">اسم الشركة</th><th class="p-4">الملف</th><th class="p-4 text-center">الإجراءات</th></tr></thead>
                             <tbody id="companiesTableBody" class="divide-y divide-gray-800 text-sm"></tbody>
                         </table>
                     </div>
@@ -999,18 +997,50 @@
     </div>
 
     <!-- Modals -->
-    <div id="addCompanyModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="glass-panel w-full max-w-md p-6 rounded-3xl border border-amber-500/30 space-y-4 shadow-2xl">
+    <div id="addCompanyModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="glass-panel w-full max-w-lg max-h-[90vh] overflow-y-auto p-6 rounded-3xl border border-amber-500/30 space-y-4 shadow-2xl">
             <h3 id="modalCompanyTitle" class="text-lg font-bold text-amber-400 border-b border-gray-800 pb-3">إضافة شركة جديدة (SWFT)</h3>
             <input type="hidden" id="editingCompanyId" value="">
+            <div><label class="block text-xs text-gray-300 mb-1">نوع الحساب الذي تريد إضافته</label><select id="companyEntityType" onchange="switchSwftEntityFormType()" class="w-full bg-black/50 border border-amber-500/40 rounded-xl px-4 py-2.5 text-amber-200 font-bold"><option value="company">🏢 شركة</option><option value="customer">👤 زبون</option></select></div>
             <div class="space-y-3">
-                <div><label class="block text-xs text-gray-400 mb-1">اسم الشركة</label><input type="text" id="inputCompanyName" class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-2.5 text-white focus:border-amber-500 focus:outline-none"></div>
-                <div><label class="block text-xs text-gray-400 mb-1">كود الشركة</label><input type="text" id="inputCompanyCode" class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-2.5 text-white focus:border-amber-500 focus:outline-none"></div>
+                <div><label id="entityNameLabel" class="block text-xs text-gray-400 mb-1">اسم الشركة</label><input type="text" id="inputCompanyName" class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-2.5 text-white focus:border-amber-500 focus:outline-none"></div>
+                <div class="company-only-field"><label class="block text-xs text-gray-400 mb-1">كود الشركة</label><input type="text" id="inputCompanyCode" class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-2.5 text-white focus:border-amber-500 focus:outline-none"></div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div><label class="block text-xs text-gray-400 mb-1">الشخص المسؤول</label><input type="text" id="companyContact" class="w-full bg-black/50 border border-gray-700 rounded-xl px-3 py-2 text-white"></div>
+                    <div><label class="block text-xs text-gray-400 mb-1">رقم الهاتف</label><input type="text" id="companyPhone" class="w-full bg-black/50 border border-gray-700 rounded-xl px-3 py-2 text-white" dir="ltr"></div>
+                    <div class="company-only-field"><label class="block text-xs text-gray-400 mb-1">البريد الإلكتروني</label><input type="email" id="companyEmail" class="w-full bg-black/50 border border-gray-700 rounded-xl px-3 py-2 text-white" dir="ltr"></div>
+                    <div class="company-only-field"><label class="block text-xs text-gray-400 mb-1">العنوان</label><input type="text" id="companyAddress" class="w-full bg-black/50 border border-gray-700 rounded-xl px-3 py-2 text-white"></div>
+                </div>
+                <div><label class="block text-xs text-gray-400 mb-1">معلومات وملاحظات الشركة</label><textarea id="companyNotes" rows="3" class="w-full bg-black/50 border border-gray-700 rounded-xl px-3 py-2 text-white"></textarea></div>
+                <div class="company-only-field bg-black/30 p-3 rounded-xl border border-gray-800">
+                    <label for="companyAttachmentInput" class="block text-xs text-amber-300 font-bold mb-2">ملفات الشركة وصورها (تحت الملاحظات)</label>
+                    <input type="file" id="companyAttachmentInput" accept="image/*,.pdf,application/pdf" multiple class="block w-full bg-black/40 border border-amber-500/30 rounded-xl p-3 text-xs text-white file:ml-3 file:bg-gradient-to-l file:from-amber-500 file:to-orange-500 file:text-black file:font-bold file:px-4 file:py-2 file:rounded-lg file:border-0 cursor-pointer" onchange="handleCompanyFileUpload(event)">
+                    <p class="text-[10px] text-gray-500 mt-2 mb-2">اختر الصور أو ملفات PDF من جهازك. للمزامنة السحابية: حتى 350KB لكل ملف و700KB إجمالاً لملف الشركة.</p>
+                    <div id="companyAttachmentsPreview" class="flex flex-wrap gap-2 min-h-[28px]"></div>
+                </div>
             </div>
             <div class="flex justify-end gap-3 pt-3">
                 <button onclick="closeModal('addCompanyModal')" class="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-xl text-sm font-semibold transition cursor-pointer">إلغاء</button>
                 <button onclick="saveCompany()" class="gold-gradient text-black font-bold px-5 py-2 rounded-xl shadow-lg hover:opacity-90 transition cursor-pointer">حفظ الشركة</button>
             </div>
+        </div>
+    </div>
+
+    <div id="swftCustomerModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="glass-panel w-full max-w-md max-h-[90vh] overflow-y-auto p-6 rounded-3xl border border-sky-500/30 space-y-4 shadow-2xl">
+            <h3 id="swftCustomerModalTitle" class="text-lg font-bold text-sky-300 border-b border-gray-800 pb-3">إضافة زبون</h3>
+            <input type="hidden" id="editingSwftCustomerId" value="">
+            <div><label class="block text-xs text-gray-400 mb-1">اسم الزبون</label><input id="swftCustomerName" type="text" class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-2.5 text-white"></div>
+            <div><label class="block text-xs text-gray-400 mb-1">رقم الهاتف</label><input id="swftCustomerPhone" type="text" dir="ltr" class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-2.5 text-white"></div>
+            <div><label class="block text-xs text-gray-400 mb-1">معلومات / ملاحظات</label><textarea id="swftCustomerNotes" rows="4" class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-2.5 text-white"></textarea></div>
+            <div class="flex justify-end gap-3 pt-2"><button onclick="closeModal('swftCustomerModal')" class="bg-gray-800 px-4 py-2 rounded-xl text-sm">إلغاء</button><button onclick="saveSwftCustomer()" class="bg-sky-600 hover:bg-sky-500 text-white font-bold px-5 py-2 rounded-xl">حفظ الزبون</button></div>
+        </div>
+    </div>
+
+    <div id="companyProfileModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="glass-panel w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 rounded-3xl border border-amber-500/30 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center"><h3 class="text-lg font-bold text-amber-300">ملف الشركة</h3><button onclick="closeModal('companyProfileModal')" class="text-gray-300 text-2xl">×</button></div>
+            <div id="companyProfileContent" class="space-y-4"></div>
         </div>
     </div>
 
@@ -1240,7 +1270,7 @@
         const db_firestore = getFirestore(app);
 
         let appDb = {
-            companies: [], transactions: [],
+            companies: [], transactions: [], swftCustomers: [],
             rmbClients: [], rmbCompanies: [], rmbTransactions: [],
             bankAccounts: [], bankTransactions: [],
             users: [], accessRequests: [],
@@ -1254,6 +1284,7 @@
         let isFirebaseReady = false;
         let tempBankAttachments = [];
         let tempSwftAttachments = [];
+        let tempCompanyAttachments = [];
         let isCloudSync = false;
         let pendingSaveTimer = null;
         let lastLocalSaveTime = 0;
@@ -1263,6 +1294,7 @@
                 const raw = localStorage.getItem('alanhar_db');
                 if (!raw) return null;
                 const data = JSON.parse(raw);
+                if (!data.swftCustomers) data.swftCustomers = [];
                 if (!data.westrinAccounts) data.westrinAccounts = [];
                 if (!data.westrinTransactions) data.westrinTransactions = [];
                 if (!data.westrinTrash) data.westrinTrash = [];
@@ -1297,7 +1329,7 @@
                     const data = snap.data();
                     isCloudSync = true;
                     appDb = {
-                        companies: data.companies || [], transactions: data.transactions || [],
+                        companies: data.companies || [], transactions: data.transactions || [], swftCustomers: data.swftCustomers || [],
                         rmbClients: data.rmbClients || [], rmbCompanies: data.rmbCompanies || [], rmbTransactions: data.rmbTransactions || [],
                         bankAccounts: data.bankAccounts || [], bankTransactions: data.bankTransactions || [],
                         users: data.users || [], accessRequests: data.accessRequests || [],
@@ -1345,7 +1377,7 @@
         function refreshCurrentView() {
             try {
                 if (!document.getElementById('module-swft').classList.contains('hidden')) {
-                    if (!document.getElementById('swft-tab-home').classList.contains('hidden')) renderCompanies();
+                    if (!document.getElementById('swft-tab-home').classList.contains('hidden')) { renderCompanies(); renderSwftCustomers(); }
                     if (!document.getElementById('swft-tab-preview').classList.contains('hidden')) renderSwftPreview();
                     if (!document.getElementById('swft-tab-statements').classList.contains('hidden')) prepareSwftStatementView();
                     if (!document.getElementById('swft-tab-trash').classList.contains('hidden')) renderSwftTrash();
@@ -1808,37 +1840,145 @@
                 tbody.appendChild(tr);
             });
         }
+        function switchSwftDirectory(which) {
+            const selector = document.getElementById('swftEntityFilter');
+            if (selector) selector.value = which === 'customers' ? 'customers' : 'companies';
+            renderCompanies();
+        }
+        function switchSwftEntityFormType() {
+            const type = document.getElementById('companyEntityType').value;
+            document.getElementById('entityNameLabel').textContent = type === 'customer' ? 'اسم الزبون' : 'اسم الشركة';
+            document.getElementById('modalCompanyTitle').textContent = type === 'customer' ? 'إضافة / تعديل حساب زبون' : 'إضافة / تعديل شركة (SWFT)';
+            document.querySelectorAll('#addCompanyModal .company-only-field').forEach(el => el.classList.toggle('hidden', type === 'customer'));
+            document.getElementById('companyContact').previousElementSibling.textContent = type === 'customer' ? 'اسم الشخص المسؤول (اختياري)' : 'الشخص المسؤول';
+        }
+        function openEditSwftCustomer(id) {
+            const c = (appDb.swftCustomers || []).find(x => x.id === id); if (!c) return;
+            document.getElementById('editingCompanyId').value = c.id;
+            document.getElementById('companyEntityType').value = 'customer';
+            document.getElementById('companyEntityType').disabled = true;
+            document.getElementById('inputCompanyName').value = c.name || '';
+            document.getElementById('inputCompanyCode').value = '';
+            document.getElementById('companyContact').value = c.contactPerson || '';
+            document.getElementById('companyPhone').value = c.phone || '';
+            document.getElementById('companyEmail').value = '';
+            document.getElementById('companyAddress').value = '';
+            document.getElementById('companyNotes').value = c.notes || '';
+            tempCompanyAttachments = [];
+            renderCompanyAttachmentsPreview();
+            switchSwftEntityFormType(); openModal('addCompanyModal');
+        }
+        function openSwftCustomerModal(id = '') {
+            const customer = id ? (appDb.swftCustomers || []).find(c => c.id === id) : null;
+            document.getElementById('editingSwftCustomerId').value = customer ? customer.id : '';
+            document.getElementById('swftCustomerModalTitle').textContent = customer ? 'تعديل بيانات الزبون' : 'إضافة زبون';
+            document.getElementById('swftCustomerName').value = customer?.name || '';
+            document.getElementById('swftCustomerPhone').value = customer?.phone || '';
+            document.getElementById('swftCustomerNotes').value = customer?.notes || '';
+            openModal('swftCustomerModal');
+        }
+        async function saveSwftCustomer() {
+            const id = document.getElementById('editingSwftCustomerId').value;
+            const name = document.getElementById('swftCustomerName').value.trim();
+            if (!name) return alert('اكتب اسم الزبون.');
+            const record = { name, phone: document.getElementById('swftCustomerPhone').value.trim(), notes: document.getElementById('swftCustomerNotes').value.trim() };
+            appDb.swftCustomers = appDb.swftCustomers || [];
+            if (id) { const customer = appDb.swftCustomers.find(c => c.id === id); if (customer) Object.assign(customer, record); }
+            else appDb.swftCustomers.push({ id: 'CUS-' + Date.now() + '-' + Math.random().toString(36).slice(2,6), ...record, createdAt: new Date().toISOString() });
+            await saveToFirebase(appDb); closeModal('swftCustomerModal'); renderSwftCustomers(); showToast(id ? 'تم تعديل الزبون.' : 'تمت إضافة الزبون.');
+        }
+        async function deleteSwftCustomer(id) {
+            const c = (appDb.swftCustomers || []).find(x => x.id === id);
+            if (!c || !confirm(`حذف الزبون "${c.name}"؟`)) return;
+            appDb.swftCustomers = appDb.swftCustomers.filter(x => x.id !== id);
+            await saveToFirebase(appDb); renderSwftCustomers(); showToast('تم حذف الزبون.');
+        }
+        async function handleCompanyFileUpload(event) {
+            for (const file of Array.from(event.target.files || [])) {
+                const type = file.type.startsWith('image/') ? 'image' : (file.type === 'application/pdf' ? 'pdf' : null);
+                if (!type) { alert(`أرفق PDF أو صورة فقط: ${file.name}`); continue; }
+                if (file.size > 350 * 1024) { alert(`حجم الملف "${file.name}" أكبر من 350KB.`); continue; }
+                const currentBytes = tempCompanyAttachments.reduce((sum,a) => sum + (Number(a.sizeBytes) || Math.ceil((a.dataUrl || '').length * 0.75)), 0);
+                if (currentBytes + file.size > 700 * 1024) { alert('إجمالي مرفقات الشركة لا يمكن أن يتجاوز 700KB.'); break; }
+                const dataUrl = await new Promise(resolve => { const r = new FileReader(); r.onload = () => resolve(r.result); r.onerror = () => resolve(null); r.readAsDataURL(file); });
+                if (dataUrl) tempCompanyAttachments.push({ id: 'COATT-' + Date.now() + '-' + Math.random().toString(36).slice(2,7), name: file.name, mime: file.type, type, sizeBytes: file.size, dataUrl });
+                else alert(`تعذرت قراءة الملف ${file.name}`);
+            }
+            event.target.value = ''; renderCompanyAttachmentsPreview();
+        }
+        function renderCompanyAttachmentsPreview() {
+            const wrap = document.getElementById('companyAttachmentsPreview'); if (!wrap) return;
+            if (!tempCompanyAttachments.length) { wrap.innerHTML = '<span class="text-[11px] text-gray-500 italic">لا توجد ملفات مرفقة</span>'; return; }
+            wrap.innerHTML = tempCompanyAttachments.map((a,i) => `<span class="file-chip ${a.type === 'image' ? 'img' : 'pdf'}"><button type="button" onclick="openCompanyTempAttachment(${i})">${a.type === 'image' ? '🖼️' : '📄'} ${escapeHtml(a.name)}</button><button type="button" class="text-red-400 font-black" onclick="removeCompanyAttachment(${i})">×</button></span>`).join('');
+        }
+        function removeCompanyAttachment(i) { tempCompanyAttachments.splice(i,1); renderCompanyAttachmentsPreview(); }
+        function openCompanyTempAttachment(i) { const a=tempCompanyAttachments[i]; if (a?.dataUrl) window.open(a.dataUrl,'_blank','noopener'); }
+        function openCompanyAttachment(companyId, attachmentId) { const c=(appDb.companies||[]).find(x=>x.id===companyId); const a=(c?.attachments||[]).find(x=>x.id===attachmentId); if(a?.dataUrl) window.open(a.dataUrl,'_blank','noopener'); }
+        function openCompanyProfile(id) {
+            const c=(appDb.companies||[]).find(x=>x.id===id); if(!c) return;
+            const fields=[['الكود',c.code],['الشخص المسؤول',c.contactPerson],['الهاتف',c.phone],['البريد الإلكتروني',c.email],['العنوان',c.address],['معلومات وملاحظات',c.notes]];
+            const data=fields.map(([label,value])=>`<div class="bg-black/30 border border-gray-800 rounded-xl p-3"><div class="text-[11px] text-gray-400 mb-1">${label}</div><div class="text-sm text-white whitespace-pre-wrap break-words">${escapeHtml(value||'—')}</div></div>`).join('');
+            const files=(c.attachments||[]).map(a=>`<button class="file-chip ${a.type==='image'?'img':'pdf'}" onclick="openCompanyAttachment('${c.id}','${a.id}')">${a.type==='image'?'🖼️':'📄'} ${escapeHtml(a.name)}</button>`).join(' ') || '<p class="text-xs text-gray-500">لا توجد مرفقات لهذا الملف.</p>';
+            document.getElementById('companyProfileContent').innerHTML=`<h4 class="text-xl font-black text-amber-300">${escapeHtml(c.name)}</h4><div class="grid grid-cols-1 sm:grid-cols-2 gap-3">${data}</div><div class="border-t border-gray-800 pt-3"><h5 class="text-sm font-bold text-amber-300 mb-2">الصور وملفات PDF</h5><div class="flex flex-wrap gap-2">${files}</div></div><div class="flex justify-end"><button onclick="closeModal('companyProfileModal');openEditCompanyModal('${c.id}')" class="gold-gradient text-black font-bold px-4 py-2 rounded-xl text-sm">تعديل الملف</button></div>`;
+            openModal('companyProfileModal');
+        }
+
         function openAddCompanyModal() {
             document.getElementById('editingCompanyId').value = '';
+            document.getElementById('companyEntityType').value = document.getElementById('swftEntityFilter')?.value === 'customers' ? 'customer' : 'company';
+            document.getElementById('companyEntityType').disabled = false;
             document.getElementById('modalCompanyTitle').innerText = 'إضافة شركة جديدة (SWFT)';
             document.getElementById('inputCompanyName').value = '';
             document.getElementById('inputCompanyCode').value = '';
+            ['companyContact','companyPhone','companyEmail','companyAddress','companyNotes'].forEach(id => document.getElementById(id).value = '');
+            tempCompanyAttachments = [];
+            renderCompanyAttachmentsPreview();
+            switchSwftEntityFormType();
             openModal('addCompanyModal');
         }
         function openEditCompanyModal(id) {
             let comp = appDb.companies.find(c => c.id === id);
             if (!comp) return;
             document.getElementById('editingCompanyId').value = comp.id;
+            document.getElementById('companyEntityType').value = 'company';
+            document.getElementById('companyEntityType').disabled = true;
             document.getElementById('modalCompanyTitle').innerText = 'تعديل بيانات الشركة';
             document.getElementById('inputCompanyName').value = comp.name;
             document.getElementById('inputCompanyCode').value = comp.code;
+            document.getElementById('companyContact').value = comp.contactPerson || '';
+            document.getElementById('companyPhone').value = comp.phone || '';
+            document.getElementById('companyEmail').value = comp.email || '';
+            document.getElementById('companyAddress').value = comp.address || '';
+            document.getElementById('companyNotes').value = comp.notes || '';
+            tempCompanyAttachments = (comp.attachments || []).map(a => ({ ...a }));
+            renderCompanyAttachmentsPreview();
+            switchSwftEntityFormType();
             openModal('addCompanyModal');
         }
         async function saveCompany() {
-            let editId = document.getElementById('editingCompanyId').value;
-            let name = document.getElementById('inputCompanyName').value.trim();
-            let code = document.getElementById('inputCompanyCode').value.trim();
-            if (!name || !code) return alert('الرجاء إدخال اسم الكود والشركة.');
-            if (editId) {
-                let comp = appDb.companies.find(c => c.id === editId);
-                if (comp) { comp.name = name; comp.code = code; }
+            const editId = document.getElementById('editingCompanyId').value;
+            const type = document.getElementById('companyEntityType').value || 'company';
+            const name = document.getElementById('inputCompanyName').value.trim();
+            const code = document.getElementById('inputCompanyCode').value.trim();
+            const shared = { name, contactPerson: document.getElementById('companyContact').value.trim(), phone: document.getElementById('companyPhone').value.trim(), notes: document.getElementById('companyNotes').value.trim() };
+            if (!name) return alert(type === 'customer' ? 'الرجاء كتابة اسم الزبون.' : 'الرجاء كتابة اسم الشركة.');
+            if (type === 'company') {
+                if (!code) return alert('الرجاء إدخال كود الشركة.');
+                const profile = { ...shared, code, email: document.getElementById('companyEmail').value.trim(), address: document.getElementById('companyAddress').value.trim(), attachments: tempCompanyAttachments.map(a => ({...a})) };
+                if (editId) { const comp = appDb.companies.find(c => c.id === editId); if (comp) Object.assign(comp, profile); }
+                else appDb.companies.push({ id: Date.now().toString(), ...profile, isDeleted: false });
+                document.getElementById('swftEntityFilter').value = 'companies';
             } else {
-                appDb.companies.push({ id: Date.now().toString(), name, code, isDeleted: false });
+                appDb.swftCustomers = appDb.swftCustomers || [];
+                const profile = { ...shared };
+                if (editId) { const customer = appDb.swftCustomers.find(c => c.id === editId); if (customer) Object.assign(customer, profile); }
+                else appDb.swftCustomers.push({ id: 'CUS-' + Date.now() + '-' + Math.random().toString(36).slice(2,6), ...profile, createdAt: new Date().toISOString() });
+                document.getElementById('swftEntityFilter').value = 'customers';
             }
             await saveToFirebase(appDb);
-            closeModal('addCompanyModal');
-            renderCompanies();
-            showToast(editId ? 'تم التعديل!' : 'تم الحفظ!');
+            document.getElementById('companyEntityType').disabled = false;
+            closeModal('addCompanyModal'); renderCompanies();
+            showToast(editId ? 'تم تعديل الحساب.' : 'تمت إضافة الحساب.');
         }
         function deleteCompany(id) {
             let hasTransactions = appDb.transactions.some(t => t.companyId === id);
@@ -1861,26 +2001,34 @@
             if (comp) { comp.isDeleted = false; await saveToFirebase(appDb); renderCompanies(); renderSwftTrash(); showToast('تم الاستعادة!'); }
         }
         function renderCompanies() {
-            let tbody = document.getElementById('companiesTableBody');
-            if (!tbody) return;
+            const tbody = document.getElementById('companiesTableBody'); if (!tbody) return;
+            const selector = document.getElementById('swftEntityFilter');
+            const type = selector ? selector.value : 'companies';
+            const isCustomer = type === 'customers';
+            const heading = document.getElementById('swftEntityHeading');
+            const hint = document.getElementById('swftEntityHint');
+            const addBtn = document.getElementById('swftAddEntityBtn');
+            const trashBtn = document.getElementById('swftTrashEntityBtn');
+            const thead = document.getElementById('swftEntityTableHead');
+            if (heading) { heading.textContent = isCustomer ? 'إدارة الزبائن (SWFT)' : 'إدارة الشركات (SWFT)'; heading.className = `text-xl font-bold text-white border-r-4 ${isCustomer ? 'border-sky-500' : 'border-amber-500'} pr-3`; }
+            if (hint) hint.textContent = isCustomer ? 'قائمة الزبائن مستقلة عن الشركات؛ استخدم إضافة حساب واختر نوعه.' : 'اختر ملف الشركة للرجوع إلى معلوماتها ومستنداتها، أو افتح معاملاتها.';
+            if (addBtn) { addBtn.textContent = isCustomer ? '＋ إضافة زبون' : '＋ إضافة شركة'; addBtn.className = isCustomer ? 'bg-gradient-to-r from-sky-500 to-violet-600 text-white font-black px-5 py-2 rounded-xl text-sm shadow-lg' : 'gold-gradient text-black font-black px-5 py-2 rounded-xl text-sm shadow-lg'; }
+            if (trashBtn) trashBtn.classList.toggle('hidden', isCustomer);
+            if (thead) thead.innerHTML = isCustomer
+                ? '<tr class="bg-gradient-to-l from-sky-950 to-violet-950 text-sky-200 text-xs border-b border-sky-500/30"><th class="p-4">اسم الزبون</th><th class="p-4">رقم الهاتف</th><th class="p-4">معلومات / ملاحظات</th><th class="p-4 text-center">الإجراءات</th></tr>'
+                : '<tr class="bg-gradient-to-l from-amber-950 to-blue-950 text-amber-300 text-xs border-b border-amber-500/30"><th class="p-4">كود الشركة</th><th class="p-4">اسم الشركة</th><th class="p-4">الملف والمرفقات</th><th class="p-4 text-center">الإجراءات</th></tr>';
             tbody.innerHTML = '';
-            let activeCompanies = appDb.companies.filter(c => !c.isDeleted);
-            if (activeCompanies.length === 0) { tbody.innerHTML = `<tr><td colspan="3" class="text-center py-6 text-gray-500">لا توجد شركات مسجلة.</td></tr>`; return; }
-            activeCompanies.forEach(comp => {
-                let tr = document.createElement('tr');
-                tr.className = "hover:bg-white/5 transition";
-                tr.innerHTML = `
-                    <td class="p-4 font-mono text-amber-400 font-bold">${escapeHtml(comp.code)}</td>
-                    <td class="p-4 font-semibold text-white">${escapeHtml(comp.name)}</td>
-                    <td class="p-4 text-center flex justify-center gap-2">
-                        <button onclick="openCompanyDetails('${comp.id}')" class="bg-amber-500/20 text-amber-400 hover:bg-amber-500 hover:text-black px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer">عرض المعاملات</button>
-                        <button onclick="openEditCompanyModal('${comp.id}')" class="bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer">تعديل</button>
-                        <button onclick="deleteCompany('${comp.id}')" class="bg-red-600/20 text-red-400 hover:bg-red-600 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer">حذف</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
+            if (isCustomer) {
+                const list = (appDb.swftCustomers || []).slice().sort((a,b)=>(a.name||'').localeCompare(b.name||'', 'ar'));
+                if (!list.length) { tbody.innerHTML = '<tr><td colspan="4" class="text-center py-8 text-gray-500">لا يوجد زبائن مسجلون. اختر «إضافة زبون» لإضافة أول حساب.</td></tr>'; return; }
+                tbody.innerHTML = list.map(c => `<tr class="hover:bg-sky-950/30"><td class="p-4 text-white font-bold">👤 ${escapeHtml(c.name||'')}</td><td class="p-4 font-mono text-sky-200" dir="ltr">${escapeHtml(c.phone||'—')}</td><td class="p-4 text-xs text-gray-300 whitespace-pre-wrap">${escapeHtml(c.notes||'—')}</td><td class="p-4 text-center"><button onclick="openEditSwftCustomer('${c.id}')" class="text-sky-300 font-bold text-xs ml-3">تعديل</button><button onclick="deleteSwftCustomer('${c.id}')" class="text-red-400 font-bold text-xs">حذف</button></td></tr>`).join('');
+                return;
+            }
+            const list=(appDb.companies||[]).filter(c=>!c.isDeleted);
+            if (!list.length) { tbody.innerHTML='<tr><td colspan="4" class="text-center py-8 text-gray-500">لا توجد شركات مسجلة.</td></tr>'; return; }
+            tbody.innerHTML=list.map(c=>`<tr class="hover:bg-amber-950/20"><td class="p-4 font-mono text-amber-300 font-bold">${escapeHtml(c.code||'')}</td><td class="p-4 text-white font-bold">🏢 ${escapeHtml(c.name||'')}</td><td class="p-4 text-xs text-gray-300">${(c.attachments||[]).length ? `<span class="text-emerald-300">📎 ${c.attachments.length} ملف</span>` : '<span class="text-gray-500">لا توجد مرفقات</span>'}<div class="text-[10px] text-gray-500 mt-1">${escapeHtml(c.phone||'')}</div></td><td class="p-4 text-center flex flex-wrap justify-center gap-2"><button onclick="openCompanyProfile('${c.id}')" class="bg-emerald-600/20 text-emerald-300 hover:bg-emerald-600 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold">الملف</button><button onclick="openCompanyDetails('${c.id}')" class="bg-amber-500/20 text-amber-300 hover:bg-amber-500 hover:text-black px-3 py-1.5 rounded-lg text-xs font-bold">المعاملات</button><button onclick="openEditCompanyModal('${c.id}')" class="bg-blue-600/20 text-blue-300 hover:bg-blue-600 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold">تعديل</button><button onclick="deleteCompany('${c.id}')" class="bg-red-600/20 text-red-300 hover:bg-red-600 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold">حذف</button></td></tr>`).join('');
         }
+        function renderSwftCustomers() { renderCompanies(); }
         function renderSwftTrash() {
             let tbody = document.getElementById('swftTrashTableBody');
             if (!tbody) return;
@@ -3053,7 +3201,7 @@
                     let importedDb = JSON.parse(e.target.result);
                     if (importedDb.companies || importedDb.rmbClients || importedDb.bankAccounts || importedDb.westrinAccounts) {
                         appDb = {
-                            companies: importedDb.companies || [], transactions: importedDb.transactions || [],
+                            companies: importedDb.companies || [], transactions: importedDb.transactions || [], swftCustomers: importedDb.swftCustomers || [],
                             rmbClients: importedDb.rmbClients || [], rmbCompanies: importedDb.rmbCompanies || [], rmbTransactions: importedDb.rmbTransactions || [],
                             bankAccounts: importedDb.bankAccounts || [], bankTransactions: importedDb.bankTransactions || [],
                             users: importedDb.users || [], accessRequests: importedDb.accessRequests || [],
@@ -3104,7 +3252,7 @@
                     if (Date.now() - lastLocalSaveTime < 1500) return;
                     const data = snap.data();
                     appDb = {
-                        companies: data.companies || [], transactions: data.transactions || [],
+                        companies: data.companies || [], transactions: data.transactions || [], swftCustomers: data.swftCustomers || [],
                         rmbClients: data.rmbClients || [], rmbCompanies: data.rmbCompanies || [], rmbTransactions: data.rmbTransactions || [],
                         bankAccounts: data.bankAccounts || [], bankTransactions: data.bankTransactions || [],
                         users: data.users || [], accessRequests: data.accessRequests || [],
@@ -4581,6 +4729,19 @@
         window.deleteCompany = deleteCompany;
         window.restoreCompany = restoreCompany;
         window.renderCompanies = renderCompanies;
+        window.switchSwftDirectory = switchSwftDirectory;
+        window.openSwftCustomerModal = openSwftCustomerModal;
+        window.saveSwftCustomer = saveSwftCustomer;
+        window.deleteSwftCustomer = deleteSwftCustomer;
+        window.renderSwftCustomers = renderSwftCustomers;
+        window.handleCompanyFileUpload = handleCompanyFileUpload;
+        window.renderCompanyAttachmentsPreview = renderCompanyAttachmentsPreview;
+        window.removeCompanyAttachment = removeCompanyAttachment;
+        window.openCompanyTempAttachment = openCompanyTempAttachment;
+        window.openCompanyAttachment = openCompanyAttachment;
+        window.openCompanyProfile = openCompanyProfile;
+        window.openEditSwftCustomer = openEditSwftCustomer;
+        window.switchSwftEntityFormType = switchSwftEntityFormType;
         window.renderSwftTrash = renderSwftTrash;
         window.openCompanyDetails = openCompanyDetails;
         window.resetCompanyDateToToday = resetCompanyDateToToday;
