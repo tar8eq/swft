@@ -533,9 +533,29 @@
                                 <th class="p-4 text-center">وصول المبدئي</th><th class="p-4 text-center">وصول النهائي</th>
                                 <th class="p-4">اسم الشركة</th><th class="p-4">المبلغ الأساسي</th>
                                 <th class="p-4">الحساب / الجهة</th><th class="p-4">بيانات الحساب والملاحظات</th>
-                                <th class="p-4">الموظف / الحساب</th>
+                                <th class="p-4">الموعد النهائي</th><th class="p-4">المرفقات</th><th class="p-4">الموظف / الحساب</th>
                             </tr></thead>
                             <tbody id="swftPreviewUnifiedTableBody" class="divide-y divide-gray-800 text-sm"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="swft-tab-deadlines" class="space-y-6 hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
+                    <div>
+                        <h2 class="text-xl font-bold text-white border-r-4 border-amber-500 pr-3">قائمة المواعيد النهائية</h2>
+                        <p class="text-xs text-gray-400 mt-2">تظهر هنا المعاملات التي أُضيف لها موعد نهائي، مرتبة من الأقرب إلى الأبعد.</p>
+                    </div>
+                    <button onclick="switchSwftBottomTab('preview')" class="bg-gray-800 text-amber-300 border border-amber-500/30 px-4 py-2 rounded-xl text-xs font-bold cursor-pointer">المبدئي والنهائي</button>
+                </div>
+                <div class="glass-panel rounded-2xl overflow-hidden shadow-2xl">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-right border-collapse">
+                            <thead><tr class="bg-black/60 text-amber-400 text-xs border-b border-amber-500/20">
+                                <th class="p-3">الموعد النهائي</th><th class="p-3">الحالة</th><th class="p-3">الشركة</th><th class="p-3">تاريخ المعاملة</th><th class="p-3">المبلغ</th><th class="p-3">المرفقات</th><th class="p-3 text-center">تحكم</th>
+                            </tr></thead>
+                            <tbody id="swftDeadlinesTableBody" class="divide-y divide-gray-800 text-sm"></tbody>
                         </table>
                     </div>
                 </div>
@@ -608,7 +628,7 @@
         </main>
 
         <nav class="fixed bottom-0 left-0 right-0 glass-panel border-t border-amber-500/20 z-40 px-6 py-3 no-print">
-            <div class="max-w-md mx-auto flex justify-around items-center">
+            <div class="max-w-2xl mx-auto flex justify-around items-center gap-1">
                 <button onclick="switchSwftBottomTab('home')" id="swftNav-home" class="flex flex-col items-center gap-1 text-amber-400 font-bold text-xs cursor-pointer">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                     الرئيسية
@@ -616,6 +636,10 @@
                 <button onclick="switchSwftBottomTab('preview')" id="swftNav-preview" class="flex flex-col items-center gap-1 text-gray-400 hover:text-white font-bold text-xs cursor-pointer">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                     المبدئي والنهائي
+                </button>
+                <button onclick="switchSwftBottomTab('deadlines')" id="swftNav-deadlines" class="flex flex-col items-center gap-1 text-gray-400 hover:text-white font-bold text-xs cursor-pointer">
+                    <span class="text-lg leading-5">📅</span>
+                    المواعيد النهائية
                 </button>
                 <button onclick="switchSwftBottomTab('statements')" id="swftNav-statements" class="flex flex-col items-center gap-1 text-gray-400 hover:text-white font-bold text-xs cursor-pointer">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -990,12 +1014,15 @@
         </div>
     </div>
 
-    <div id="addTransactionModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="glass-panel w-full max-w-lg p-6 rounded-3xl border border-amber-500/30 space-y-4 shadow-2xl">
+    <div id="addTransactionModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="glass-panel w-full max-w-lg max-h-[90vh] overflow-y-auto p-6 rounded-3xl border border-amber-500/30 space-y-4 shadow-2xl">
             <h3 id="modalTransTitle" class="text-lg font-bold text-amber-400 border-b border-gray-800 pb-3">إضافة معاملة جديدة (SWFT)</h3>
             <input type="hidden" id="editingTransId" value="">
             <div class="space-y-4">
-                <div><label class="block text-xs text-gray-400 mb-1">التاريخ</label><input type="date" id="transDate" class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-2 text-white focus:border-amber-500 focus:outline-none font-mono"></div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div><label class="block text-xs text-gray-400 mb-1">تاريخ المعاملة</label><input type="date" id="transDate" class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-2 text-white focus:border-amber-500 focus:outline-none font-mono"></div>
+                    <div><label class="block text-xs text-amber-300 mb-1">الموعد النهائي <span class="text-gray-500">(اختياري)</span></label><input type="date" id="transDeadline" class="w-full bg-black/50 border border-amber-500/30 rounded-xl px-4 py-2 text-white focus:border-amber-500 focus:outline-none font-mono"></div>
+                </div>
                 <div class="grid grid-cols-3 gap-3 items-end">
                     <div class="col-span-2"><label class="block text-xs text-gray-400 mb-1">المبلغ الأساسي</label><input type="text" id="transAmount" oninput="formatFormattedInput(this)" placeholder="أدخل المبلغ..." class="w-full input-number-compact bg-black/50 border border-gray-700 rounded-xl px-4 py-2 text-white focus:border-amber-500 focus:outline-none font-bold text-lg"></div>
                     <div><label class="block text-xs text-gray-400 mb-1">العملة</label><select id="transCurrency" class="w-full bg-amber-500/20 border border-amber-500/50 text-amber-300 font-bold rounded-xl px-3 py-2 text-base focus:border-amber-500 focus:outline-none"><option value="$">$ دولار</option><option value="€">€ يورو</option></select></div>
@@ -1010,6 +1037,16 @@
                     <div><label class="block text-xs text-gray-400 mb-1">نوع الحساب</label><select id="comm2Type" class="w-full bg-black/50 border border-gray-700 rounded-xl px-3 py-2 text-white focus:border-amber-500 focus:outline-none"><option value="permil">بالألف (‰)</option><option value="percent">بالمية (%)</option><option value="value">قيمة مضافة ($/€)</option></select></div>
                 </div>
                 <div><label class="block text-xs text-gray-400 mb-1">ملاحظة المعاملة</label><input type="text" id="transNote" placeholder="اكتب ملاحظتك هنا..." class="w-full bg-black/50 border border-gray-700 rounded-xl px-4 py-2 text-white focus:border-amber-500 focus:outline-none text-xs"></div>
+                <div class="bg-black/30 p-3 rounded-xl border border-gray-800">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                        <label class="text-xs text-amber-300 font-bold">ملفات المعاملة (PDF أو صورة)</label>
+                        <div class="flex gap-2">
+                            <label class="bg-gray-800 hover:bg-gray-700 text-white px-3 py-2 rounded-lg text-xs font-bold cursor-pointer">📎 إرفاق ملف<input type="file" id="swftAttachmentInput" accept="image/*,application/pdf" multiple class="hidden" onchange="handleSwftFileUpload(event)"></label>
+                        </div>
+                    </div>
+                    <p class="text-[10px] text-gray-500 mb-2">لضمان المزامنة: الحد 350KB للملف و700KB إجمالاً لمرفقات المعاملة.</p>
+                    <div id="swftAttachmentsPreview" class="flex flex-wrap gap-2 min-h-[28px]"><span class="text-[11px] text-gray-500 italic">لا توجد مرفقات بعد...</span></div>
+                </div>
             </div>
             <div class="flex justify-end gap-3 pt-3">
                 <button onclick="closeModal('addTransactionModal')" class="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-xl text-sm font-semibold transition cursor-pointer">إلغاء</button>
@@ -1216,6 +1253,7 @@
         let currentBankContext = { type: 'ALL', id: null };
         let isFirebaseReady = false;
         let tempBankAttachments = [];
+        let tempSwftAttachments = [];
         let isCloudSync = false;
         let pendingSaveTimer = null;
         let lastLocalSaveTime = 0;
@@ -1699,7 +1737,7 @@
 
         /* ==================== SWFT ==================== */
         function switchSwftBottomTab(tab) {
-            ['home', 'preview', 'statements', 'trash'].forEach(t => {
+            ['home', 'preview', 'deadlines', 'statements', 'trash'].forEach(t => {
                 let el = document.getElementById(`swft-tab-${t}`);
                 if (el) el.classList.add('hidden');
                 let nav = document.getElementById(`swftNav-${t}`);
@@ -1712,6 +1750,7 @@
             if (activeNav) activeNav.className = "flex flex-col items-center gap-1 text-amber-400 font-bold text-xs cursor-pointer";
             if (tab === 'home') renderCompanies();
             else if (tab === 'preview') renderSwftPreview();
+            else if (tab === 'deadlines') renderSwftDeadlines();
             else if (tab === 'statements') prepareSwftStatementView();
             else if (tab === 'trash') renderSwftTrash();
         }
@@ -1868,7 +1907,7 @@
             document.getElementById('currentCompanyName').innerText = comp.name;
             document.getElementById('currentCompanyCode').innerText = `الكود: ${comp.code}`;
             resetCompanyDateToToday();
-            ['home', 'preview', 'statements', 'trash'].forEach(t => {
+            ['home', 'preview', 'deadlines', 'statements', 'trash'].forEach(t => {
                 let el = document.getElementById(`swft-tab-${t}`);
                 if (el) el.classList.add('hidden');
             });
@@ -1884,6 +1923,9 @@
             document.getElementById('editingTransId').value = '';
             document.getElementById('modalTransTitle').innerText = 'إضافة معاملة جديدة (SWFT)';
             document.getElementById('transDate').value = getTodayDateString();
+            document.getElementById('transDeadline').value = '';
+            tempSwftAttachments = [];
+            renderSwftAttachmentsPreview();
             document.getElementById('transAmount').value = '';
             document.getElementById('comm1Val').value = '0';
             document.getElementById('comm2Val').value = '0';
@@ -1896,15 +1938,60 @@
             document.getElementById('editingTransId').value = t.id;
             document.getElementById('modalTransTitle').innerText = 'تعديل المعاملة';
             document.getElementById('transDate').value = t.date;
+            document.getElementById('transDeadline').value = t.finalDueDate || '';
+            tempSwftAttachments = (t.attachments || []).map(a => ({ ...a }));
+            renderSwftAttachmentsPreview();
             document.getElementById('transAmount').value = t.amount.toString();
             document.getElementById('transCurrency').value = t.currency || '$';
             document.getElementById('transAccountSelect').value = t.account || 'Turkey';
             document.getElementById('transNote').value = t.note || '';
             openModal('addTransactionModal');
         }
+        async function handleSwftFileUpload(event) {
+            const files = Array.from(event.target.files || []);
+            for (const file of files) {
+                const type = file.type.startsWith('image/') ? 'image' : (file.type === 'application/pdf' ? 'pdf' : null);
+                if (!type) { alert(`نوع الملف غير مسموح: ${file.name}. أرفق PDF أو صورة فقط.`); continue; }
+                if (file.size > 350 * 1024) { alert(`حجم الملف "${file.name}" أكبر من 350KB.`); continue; }
+                const currentBytes = tempSwftAttachments.reduce((sum, a) => sum + (Number(a.sizeBytes) || Math.ceil((a.dataUrl || '').length * 0.75)), 0);
+                if (currentBytes + file.size > 700 * 1024) { alert('إجمالي مرفقات المعاملة لا يمكن أن يتجاوز 700KB.'); break; }
+                const dataUrl = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = () => reject(reader.error);
+                    reader.readAsDataURL(file);
+                }).catch(() => null);
+                if (!dataUrl) { alert(`تعذر قراءة الملف: ${file.name}`); continue; }
+                tempSwftAttachments.push({ id: 'SWFTATT-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7), name: file.name, mime: file.type, type, sizeBytes: file.size, dataUrl });
+            }
+            event.target.value = '';
+            renderSwftAttachmentsPreview();
+        }
+        function renderSwftAttachmentsPreview() {
+            const wrap = document.getElementById('swftAttachmentsPreview');
+            if (!wrap) return;
+            if (!tempSwftAttachments.length) { wrap.innerHTML = '<span class="text-[11px] text-gray-500 italic">لا توجد مرفقات بعد...</span>'; return; }
+            wrap.innerHTML = tempSwftAttachments.map((att, idx) => {
+                const cls = 'file-chip ' + (att.type === 'image' ? 'img' : att.type === 'pdf' ? 'pdf' : '');
+                const icon = att.type === 'image' ? '🖼️' : '📄';
+                return `<span class="${cls}"><button type="button" onclick="openSwftAttachmentInNewTab(${idx})" title="فتح ${escapeHtml(att.name)}">${icon} ${escapeHtml(att.name)}</button><button type="button" class="text-red-400 font-black" onclick="removeSwftAttachment(${idx})" title="حذف المرفق">×</button></span>`;
+            }).join('');
+        }
+        function removeSwftAttachment(index) { tempSwftAttachments.splice(index, 1); renderSwftAttachmentsPreview(); }
+        function openSwftAttachmentInNewTab(index) {
+            const att = tempSwftAttachments[index];
+            if (att && att.dataUrl) window.open(att.dataUrl, '_blank', 'noopener');
+        }
+        function openSavedSwftAttachment(transId, attId) {
+            const tx = (appDb.transactions || []).find(t => t.id === transId);
+            const att = tx && (tx.attachments || []).find(a => a.id === attId);
+            if (att && att.dataUrl) window.open(att.dataUrl, '_blank', 'noopener');
+        }
+
         async function saveTransaction() {
             let editId = document.getElementById('editingTransId').value;
             let date = document.getElementById('transDate').value;
+            let finalDueDate = document.getElementById('transDeadline').value || null;
             let amount = parseNumber(document.getElementById('transAmount').value);
             let currency = document.getElementById('transCurrency').value || '$';
             let account = document.getElementById('transAccountSelect').value || 'Turkey';
@@ -1919,10 +2006,10 @@
             if (editId) {
                 let idx = appDb.transactions.findIndex(t => t.id === editId);
                 if (idx !== -1) {
-                    appDb.transactions[idx] = { ...appDb.transactions[idx], date, amount, currency, account, note, c1CalculatedAmount: c1Calc, c2CalculatedAmount: c2Calc, finalTotal: amount + c1Calc + c2Calc, updatedByName: currentUser ? currentUser.name : '' };
+                    appDb.transactions[idx] = { ...appDb.transactions[idx], date, finalDueDate, attachments: tempSwftAttachments.map(a => ({ ...a })), amount, currency, account, note, c1CalculatedAmount: c1Calc, c2CalculatedAmount: c2Calc, finalTotal: amount + c1Calc + c2Calc, updatedByName: currentUser ? currentUser.name : '' };
                 }
             } else {
-                appDb.transactions.push({ id: Date.now().toString() + Math.random().toString(36).slice(2, 6), companyId: currentActiveCompanyId, date, amount, currency, account, note, c1CalculatedAmount: c1Calc, c2CalculatedAmount: c2Calc, finalTotal: amount + c1Calc + c2Calc, employeeName: currentUser ? currentUser.name : 'غير محدد', createdById: currentUser ? currentUser.id : null, initialChecked: false, finalChecked: false });
+                appDb.transactions.push({ id: Date.now().toString() + Math.random().toString(36).slice(2, 6), companyId: currentActiveCompanyId, date, finalDueDate, attachments: tempSwftAttachments.map(a => ({ ...a })), amount, currency, account, note, c1CalculatedAmount: c1Calc, c2CalculatedAmount: c2Calc, finalTotal: amount + c1Calc + c2Calc, employeeName: currentUser ? currentUser.name : 'غير محدد', createdById: currentUser ? currentUser.id : null, initialChecked: false, finalChecked: false });
             }
             await saveToFirebase(appDb);
             closeModal('addTransactionModal');
@@ -1989,12 +2076,13 @@
             let tbody = document.getElementById('swftPreviewUnifiedTableBody');
             if (!tbody) return;
             tbody.innerHTML = '';
-            if (!appDb.transactions || appDb.transactions.length === 0) { tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-gray-500">لا توجد معاملات.</td></tr>`; return; }
+            if (!appDb.transactions || appDb.transactions.length === 0) { tbody.innerHTML = `<tr><td colspan="9" class="text-center py-6 text-gray-500">لا توجد معاملات.</td></tr>`; return; }
             appDb.transactions.forEach(t => {
                 let comp = appDb.companies.find(c => c.id === t.companyId);
                 let curr = t.currency || '$';
                 let accName = t.account === 'Dubai' ? 'DXB - Dubai Main' : 'TR - Turkey Main';
                 let isFullyCompleted = t.initialChecked && t.finalChecked;
+                let files = (t.attachments || []).map(a => `<button class="file-chip ${a.type === 'image' ? 'img' : a.type === 'pdf' ? 'pdf' : ''}" onclick="openSavedSwftAttachment('${t.id}','${a.id}')" title="${escapeHtml(a.name)}">${a.type === 'image' ? '🖼️' : '📄'} ${escapeHtml(a.name)}</button>`).join(' ') || '<span class="text-gray-500">—</span>';
                 let tr = document.createElement('tr');
                 tr.className = isFullyCompleted ? "bg-emerald-950/20 opacity-60" : "hover:bg-white/5 transition";
                 tr.innerHTML = `
@@ -2004,11 +2092,27 @@
                     <td class="p-4 font-mono font-bold text-white">${formatMoney(t.amount)} ${curr}</td>
                     <td class="p-4 font-bold text-blue-400">${accName}</td>
                     <td class="p-4 text-xs text-gray-300 max-w-xs break-words">${escapeHtml(t.note || '-')}</td>
+                    <td class="p-4 font-mono ${t.finalDueDate && t.finalDueDate < getTodayDateString() && !t.finalChecked ? 'text-red-400 font-black' : 'text-amber-300'}">${t.finalDueDate ? escapeHtml(t.finalDueDate) : '<span class="text-gray-500">غير محدد</span>'}</td>
+                    <td class="p-4 text-xs">${files}</td>
                     <td class="p-4 font-bold text-purple-300">${escapeHtml(employeeLabel(t))}</td>
                 `;
                 tbody.appendChild(tr);
             });
         }
+        function renderSwftDeadlines() {
+            const tbody = document.getElementById('swftDeadlinesTableBody');
+            if (!tbody) return;
+            const today = getTodayDateString();
+            const dueTxs = (appDb.transactions || []).filter(t => t.finalDueDate).sort((a, b) => a.finalDueDate.localeCompare(b.finalDueDate));
+            if (!dueTxs.length) { tbody.innerHTML = '<tr><td colspan="7" class="text-center py-8 text-gray-500">لا توجد معاملات لها موعد نهائي. أضف الموعد من شاشة تعديل المعاملة.</td></tr>'; return; }
+            tbody.innerHTML = dueTxs.map(t => {
+                const comp = (appDb.companies || []).find(c => c.id === t.companyId);
+                const state = t.finalChecked ? '<span class="text-emerald-400 font-bold">مكتمل نهائي</span>' : (t.finalDueDate < today ? '<span class="text-red-400 font-black">متأخر</span>' : (t.finalDueDate === today ? '<span class="text-amber-300 font-black">موعد اليوم</span>' : '<span class="text-sky-300">قادم</span>'));
+                const files = (t.attachments || []).map(a => `<button class="file-chip ${a.type === 'image' ? 'img' : a.type === 'pdf' ? 'pdf' : ''}" onclick="openSavedSwftAttachment('${t.id}','${a.id}')" title="${escapeHtml(a.name)}">${a.type === 'image' ? '🖼️' : '📄'} ${escapeHtml(a.name)}</button>`).join(' ') || '—';
+                return `<tr class="hover:bg-white/5"><td class="p-3 font-mono font-black ${t.finalDueDate < today && !t.finalChecked ? 'text-red-400' : 'text-amber-300'}">${escapeHtml(t.finalDueDate)}</td><td class="p-3">${state}</td><td class="p-3 text-amber-300 font-bold">${escapeHtml(comp ? comp.name : 'شركة غير محددة')}</td><td class="p-3 font-mono">${escapeHtml(t.date || '—')}</td><td class="p-3 font-mono">${formatMoney(t.finalTotal || t.amount)} ${escapeHtml(t.currency || '$')}</td><td class="p-3 text-xs">${files}</td><td class="p-3 text-center"><button onclick="editSwftTransaction('${t.id}')" class="text-amber-300 hover:text-white text-xs font-bold">تعديل</button></td></tr>`;
+            }).join('');
+        }
+
         function prepareSwftStatementView() {
             let select = document.getElementById('statementSwftCompany');
             if (!select) return;
@@ -3312,6 +3416,13 @@
               #westrin-app-container .action-btn.blue:hover { background: rgba(59,130,246,.3); transform: translateY(-1px); }
               #westrin-app-container .action-btn.dark-red { background: rgba(220,38,38,.2); border-color: rgba(220,38,38,.5); color: #fca5a5; }
               #westrin-app-container .action-btn.dark-red:hover { background: rgba(220,38,38,.4); transform: translateY(-1px); }
+              #westrin-app-container .wr-date-filter {
+                display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+                margin: 0 0 18px; padding: 12px 14px; border-radius: 14px;
+                background: rgba(250,204,21,.07); border: 1px solid rgba(250,204,21,.25);
+              }
+              #westrin-app-container .wr-date-filter label { color: #fde047; font-size: 12px; font-weight: 800; }
+              #westrin-app-container .wr-date-filter input { max-width: 190px; }
               #westrin-app-container .report-controls {
                 display: grid;
                 grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -3472,10 +3583,20 @@
                   </div>
                   
                   <div class="tab-content" id="wrTab-withdrawn">
+                    <div class="wr-date-filter">
+                      <label for="wrWithdrawnFilterDate">عرض المسحوب بتاريخ:</label>
+                      <input type="date" id="wrWithdrawnFilterDate" onchange="westrinRenderWithdrawn()">
+                      <button class="btn btn-sm btn-ghost" onclick="westrinShowAllStatusDates('withdrawn')">عرض كل التواريخ</button>
+                    </div>
                     <div id="wrWithdrawnList"></div>
                   </div>
                   
                   <div class="tab-content" id="wrTab-failed">
+                    <div class="wr-date-filter">
+                      <label for="wrFailedFilterDate">عرض غير المسحوب بتاريخ المحاولة:</label>
+                      <input type="date" id="wrFailedFilterDate" onchange="westrinRenderFailed()">
+                      <button class="btn btn-sm btn-ghost" onclick="westrinShowAllStatusDates('failed')">عرض كل التواريخ</button>
+                    </div>
                     <div id="wrFailedList"></div>
                   </div>
                   
@@ -3741,6 +3862,8 @@
             document.getElementById('wrAccountNote').textContent = acc.note || 'إدارة المعاملات والكشف';
             document.getElementById('wrTxDate').value = westrinGetCurrentDate();
             document.getElementById('wrTxTime').value = westrinGetCurrentTime();
+            document.getElementById('wrWithdrawnFilterDate').value = westrinGetCurrentDate();
+            document.getElementById('wrFailedFilterDate').value = westrinGetCurrentDate();
             document.getElementById('wrReportFrom').value = '';
             document.getElementById('wrReportFromTime').value = '';
             document.getElementById('wrReportTo').value = '';
@@ -4089,9 +4212,17 @@
             `;
         }
 
+        function westrinShowAllStatusDates(status) {
+            const id = status === 'withdrawn' ? 'wrWithdrawnFilterDate' : 'wrFailedFilterDate';
+            const input = document.getElementById(id);
+            if (input) input.value = '';
+            if (status === 'withdrawn') westrinRenderWithdrawn(); else westrinRenderFailed();
+        }
         function westrinRenderWithdrawn() {
-            const txs = westrinGetAccountTransactions().filter(t => t.status === 'withdrawn');
-            document.getElementById('wrCountWithdrawn').textContent = txs.length;
+            const allTxs = westrinGetAccountTransactions().filter(t => t.status === 'withdrawn');
+            document.getElementById('wrCountWithdrawn').textContent = allTxs.length;
+            const selectedDate = document.getElementById('wrWithdrawnFilterDate')?.value || '';
+            const txs = allTxs.filter(t => !selectedDate || (t.withdrawDate || t.date) === selectedDate);
             const container = document.getElementById('wrWithdrawnList');
             if (!container) return;
             if (txs.length === 0) {
@@ -4137,8 +4268,10 @@
         }
 
         function westrinRenderFailed() {
-            const txs = westrinGetAccountTransactions().filter(t => t.status === 'failed');
-            document.getElementById('wrCountFailed').textContent = txs.length;
+            const allTxs = westrinGetAccountTransactions().filter(t => t.status === 'failed');
+            document.getElementById('wrCountFailed').textContent = allTxs.length;
+            const selectedDate = document.getElementById('wrFailedFilterDate')?.value || '';
+            const txs = allTxs.filter(t => !selectedDate || (t.failedDate || t.date) === selectedDate);
             const container = document.getElementById('wrFailedList');
             if (!container) return;
             if (txs.length === 0) {
@@ -4458,6 +4591,12 @@
         window.deleteSwftTransaction = deleteSwftTransaction;
         window.toggleTransactionStatus = toggleTransactionStatus;
         window.renderSwftPreview = renderSwftPreview;
+        window.renderSwftDeadlines = renderSwftDeadlines;
+        window.handleSwftFileUpload = handleSwftFileUpload;
+        window.renderSwftAttachmentsPreview = renderSwftAttachmentsPreview;
+        window.removeSwftAttachment = removeSwftAttachment;
+        window.openSwftAttachmentInNewTab = openSwftAttachmentInNewTab;
+        window.openSavedSwftAttachment = openSavedSwftAttachment;
         window.prepareSwftStatementView = prepareSwftStatementView;
         window.renderSwftStatement = renderSwftStatement;
         window.clearSwftStatementFilters = clearSwftStatementFilters;
@@ -4537,6 +4676,7 @@
         window.westrinCloseEditModal = westrinCloseEditModal;
         window.westrinSaveEdit = westrinSaveEdit;
         window.westrinDeleteTransaction = westrinDeleteTransaction;
+        window.westrinShowAllStatusDates = westrinShowAllStatusDates;
         window.westrinGenerateReport = westrinGenerateReport;
         window.westrinPrintReport = westrinPrintReport;
     </script>
